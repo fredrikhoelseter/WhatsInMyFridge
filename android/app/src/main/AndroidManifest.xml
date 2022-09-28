@@ -2,8 +2,7 @@
     package="ntnu.idata2503.group6.whats_in_my_fridge">
    <application
         android:label="whats_in_my_fridge"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:name="${applicationName}">
         <activity
             android:name=".MainActivity"
             android:exported="true"
