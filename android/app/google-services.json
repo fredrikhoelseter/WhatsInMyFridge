@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "779278133352",
+    "project_id": "what-s-in-my-fridge-app",
+    "storage_bucket": "what-s-in-my-fridge-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779278133352:android:6891209dcf4ea98978f3dd",
+        "android_client_info": {
+          "package_name": "ntnu.idata2503.group6.whats_in_my_fridge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "779278133352-qka0i8ctkpc5bsu5alvtdh6h00i4iuti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT1JOUOecrCVhdgcFItp8CwdLLRIMepgk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "779278133352-qka0i8ctkpc5bsu5alvtdh6h00i4iuti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

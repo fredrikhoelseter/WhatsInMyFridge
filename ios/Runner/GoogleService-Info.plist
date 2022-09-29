@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>779278133352-ueqla14p7qt9ak61aheed9sn7oaflaid.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.779278133352-ueqla14p7qt9ak61aheed9sn7oaflaid</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC_A60tD3Q5KgQ_1SfjBG11EzSbTmh6BZQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>779278133352</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>ntnu.idata2503.group6.whatsInMyFridge</string>
+	<key>PROJECT_ID</key>
+	<string>what-s-in-my-fridge-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>what-s-in-my-fridge-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:779278133352:ios:2ceae0297c0c4ef378f3dd</string>
+</dict>
+</plist>
