@@ -44,15 +44,9 @@ class _ProfilePageState extends State<ProfilePage> {
               style: Theme.of(context).textTheme.bodyText1,
             ),
             SizedBox(height: 16.0),
-            _currentUser.emailVerified
-                ? Text(
-                    'Email verified',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(color: Colors.green),
-                  )
-                : Text(
+
+            if(_currentUser.emailVerified != true)...{
+                Text(
                     'Email not verified',
                     style: Theme.of(context)
                         .textTheme
@@ -91,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                       ),
                     ],
-                  ),
+                  )},
             SizedBox(height: 16.0),
             _isSigningOut
                 ? CircularProgressIndicator()
