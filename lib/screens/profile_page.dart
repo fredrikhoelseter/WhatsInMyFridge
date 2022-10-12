@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whats_in_my_fridge/screens/login_page.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
+import 'package:whats_in_my_fridge/widgets/bottom_navbar.dart';
+import 'package:whats_in_my_fridge/widgets/floating_addButton.dart';
 
 class ProfilePage extends StatefulWidget {
   final User user;
@@ -121,6 +123,9 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavbar(),
+      floatingActionButton: FloatingAddButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }
