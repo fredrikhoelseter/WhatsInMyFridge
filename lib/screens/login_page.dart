@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Firebase Authentication'),
+          title: const Text("What's in my Fridge"),
         ),
         body: FutureBuilder(
           future: _initializeFirebase(),
