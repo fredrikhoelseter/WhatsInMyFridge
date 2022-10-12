@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             textStyle: TextStyle(
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         textTheme: TextTheme(
           headline1: TextStyle(
             fontSize: 46.0,
-            color: Colors.blue.shade700,
+            color: Colors.green.shade700,
             fontWeight: FontWeight.w500,
           ),
           bodyText1: TextStyle(fontSize: 18.0),
