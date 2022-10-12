@@ -32,3 +32,8 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+defaultConfig {
+    minSdkVersion 16
+    targetSdkVersion 33
+}

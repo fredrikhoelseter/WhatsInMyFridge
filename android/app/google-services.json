@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "779278133352-tm7ehqr1kvsq2qrjcnvl4o9emj39l99v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ntnu.idata2503.group6.whats_in_my_fridge",
+            "certificate_hash": "a01fbb34dc2e32cb1a8c0962235ee69bba58e1f1"
+          }
+        },
+        {
           "client_id": "779278133352-qka0i8ctkpc5bsu5alvtdh6h00i4iuti.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "779278133352-qka0i8ctkpc5bsu5alvtdh6h00i4iuti.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "779278133352-ueqla14p7qt9ak61aheed9sn7oaflaid.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ntnu.idata2503.group6.whatsInMyFridge"
+              }
             }
           ]
         }
