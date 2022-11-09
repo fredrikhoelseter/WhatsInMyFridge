@@ -5,6 +5,8 @@ import 'package:whats_in_my_fridge/screens/profile_page.dart';
 import 'package:whats_in_my_fridge/utilities/validator.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 
+import '../widgets/custom_appbar.dart';
+
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -32,8 +34,10 @@ class _RegisterPageState extends State<RegisterPage> {
         _focusPassword.unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Register'),
+        appBar: const CustomAppBar(
+          title: Text(
+            "Register",
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(24.0),
