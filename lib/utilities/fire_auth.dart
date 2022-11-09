@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class FireAuth {
   // For registering a new user
@@ -65,5 +66,14 @@ class FireAuth {
     User? refreshedUser = auth.currentUser;
 
     return refreshedUser;
+  }
+
+  static Future<void> deleteUser(BuildContext context) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    try {
+      await auth.currentUser!.delete();
+    } on FirebaseAuthException catch (e) {
+      print("Failed with error code: ${e.code}");
+    }
   }
 }
