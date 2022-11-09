@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:whats_in_my_fridge/screens/cabinet_page.dart';
 import 'package:whats_in_my_fridge/screens/container_page.dart';
+import 'package:whats_in_my_fridge/screens/freezer_page.dart';
+import 'package:whats_in_my_fridge/screens/fridge_page.dart';
 
 import 'screens/login_page.dart';
 
@@ -37,6 +40,9 @@ class MyApp extends StatelessWidget {
 
       routes: {
         ContainerPage.routeName: (context) => ContainerPage(),
+        FridgePage.routeName: (context) => FridgePage(),
+        FreezerPage.routeName: (context) => FreezerPage(),
+        CabinetPage.routeName: (context) => CabinetPage(),
       },
     );
   }
