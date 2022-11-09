@@ -1,38 +1,66 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whats_in_my_fridge/firebase_options.dart';
+import 'package:whats_in_my_fridge/screens/home_screen.dart';
+import 'package:whats_in_my_fridge/screens/login_email_password_screen.dart';
+import 'package:whats_in_my_fridge/screens/login_page.dart';
+import 'package:whats_in_my_fridge/screens/signup_email_password_screen.dart';
+import 'package:whats_in_my_fridge/services/firebase_auth_methods.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'screens/login_page.dart';
-
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Authentication',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.blue,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            textStyle: TextStyle(
-              fontSize: 24.0,
-            ),
-            padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-          ),
+    return MultiProvider(
+      providers: [
+        Provider<FirebaseAuthMethods>(
+          create: (_) => FirebaseAuthMethods(FirebaseAuth.instance),
         ),
-        textTheme: TextTheme(
-          headline1: TextStyle(
-            fontSize: 46.0,
-            color: Colors.blue.shade700,
-            fontWeight: FontWeight.w500,
-          ),
-          bodyText1: TextStyle(fontSize: 18.0),
+        StreamProvider(
+          create: (context) => context.read<FirebaseAuthMethods>().authState,
+          initialData: null,
         ),
+      ],
+      child: MaterialApp(
+        title: 'Whats In My Fridge',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          brightness: Brightness.light,
+          primarySwatch: Colors.green,
+        ),
+        home: const AuthWrapper(),
+        routes: {
+          EmailPasswordSignup.routeName: (context) =>
+              const EmailPasswordSignup(),
+          EmailPasswordLogin.routeName: (context) => const EmailPasswordLogin(),
+          HomeScreen.routeName: ((context) => const HomeScreen()),
+        },
       ),
-      home: LoginPage(),
     );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User?>();
+
+    if (firebaseUser != null) {
+      return HomeScreen();
+    } else
+      return LoginScreen();
   }
 }
