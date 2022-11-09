@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whats_in_my_fridge/widgets/appbar_buttons.dart';
 import 'package:whats_in_my_fridge/widgets/google_signin_button.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -7,7 +8,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   const CustomAppBar({
     Key? key, required this.title,
-    this.height = kToolbarHeight,
+    this.height = kToolbarHeight*3,
   }) : super(key: key);
 
 
@@ -22,24 +23,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       [
         AppBar(
           title: title,
+          centerTitle: true,
+          flexibleSpace: AppbarButtons(),
         ),
-        Row(
-          children: <Widget>
-          [
-            ElevatedButton(
-              child: Text("Fridge"),
-              onPressed: () {},
-            ),
-            ElevatedButton(
-              child: Text("Freezer"),
-              onPressed: () {},
-            ),
-            ElevatedButton(
-              child: Text("Other"),
-              onPressed: () {},
-            )
-          ],
-        )
+
       ],
     );
   }
