@@ -5,6 +5,8 @@ import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:whats_in_my_fridge/widgets/bottom_navbar.dart';
 import 'package:whats_in_my_fridge/widgets/floating_addButton.dart';
 
+import 'container_page.dart';
+
 class ProfilePage extends StatefulWidget {
   final User user;
 
@@ -38,10 +40,6 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'NAME: ${_currentUser.displayName}',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
             SizedBox(height: 16.0),
             Text(
               'EMAIL: ${_currentUser.email}',
@@ -80,6 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           });
                         },
                         child: Text('Verify email'),
+                        style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
                       ),
                       SizedBox(width: 8.0),
                       IconButton(
@@ -172,6 +171,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ),
+            SizedBox(height: 16.0),
+            ElevatedButton(onPressed: () {Navigator.pushNamed(context, ContainerPage.routeName);
+            },
+                child: Text('View Containers'),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),
+              )
+            ),
+            )
           ],
         ),
       ),
