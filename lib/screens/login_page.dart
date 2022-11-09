@@ -5,6 +5,7 @@ import 'package:whats_in_my_fridge/screens/profile_page.dart';
 import 'package:whats_in_my_fridge/screens/register_page.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:whats_in_my_fridge/utilities/validator.dart';
+import 'package:whats_in_my_fridge/widgets/google_signin_button.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -49,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Firebase Authentication'),
+          title: const Text("What's in my Fridge"),
         ),
         body: FutureBuilder(
           future: _initializeFirebase(),
@@ -176,6 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
+
               );
             }
 
