@@ -18,6 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
   bool _isSendingVerification = false;
   bool _isSigningOut = false;
   bool _isDeletingUser = false;
+  bool _isResettingPassword = false;
 
   late User _currentUser;
 
@@ -141,6 +142,29 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
                     },
                     child: Text('Delete User'),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                  ),
+            SizedBox(height: 16.0),
+            _isResettingPassword
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        _isResettingPassword = true;
+                      });
+                      await FireAuth.resetPassword(
+                          email: '${_currentUser.email}');
+
+                      setState(() {
+                        _isResettingPassword = false;
+                      });
+                    },
+                    child: Text('Reset password'),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.red,
                       shape: RoundedRectangleBorder(

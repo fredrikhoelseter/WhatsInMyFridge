@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FireAuth {
+  final _auth = FirebaseAuth.instance;
+
   // For registering a new user
   static Future<User?> registerUsingEmailPassword({
     required String name,
@@ -75,5 +77,9 @@ class FireAuth {
     } on FirebaseAuthException catch (e) {
       print("Failed with error code: ${e.code}");
     }
+  }
+
+  static Future<void> resetPassword({required email}) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 }
