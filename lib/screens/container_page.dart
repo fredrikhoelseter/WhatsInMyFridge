@@ -5,22 +5,71 @@ import '../widgets/bottom_navbar.dart';
 import '../widgets/floating_addButton.dart';
 
 class ContainerPage extends StatefulWidget {
+  static String routeName = '/containerPage';
+
   @override
-  State<StatefulWidget> createState() {
+  State<ContainerPage> createState() => _ContainerPageState();
     // TODO: implement createState
-    throw UnimplementedError();
-  }
 }
 
-  Widget build(BuildContext context){
+class _ContainerPageState extends State<ContainerPage> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Containers'),
       ),
 
+      body: Center(
+        child: Align(
+          alignment: Alignment.topCenter,
+        child: Container(margin: EdgeInsets.fromLTRB(0, 16.0, 0, 16.0), child: Row(
+
+          children: [
+            Spacer(),
+            ElevatedButton(onPressed: () {},
+                child: Text('Fridge'),
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  )
+                ),
+            ),
+
+            Spacer(),
+            ElevatedButton(onPressed: () {},
+              child: Text('Freezer'),
+              style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  )
+              ),
+            ),
+
+            Spacer(),
+            ElevatedButton(onPressed: () {},
+              child: Text('Others'),
+              style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  )
+              ),
+            ),
+
+            Spacer(),
+          ],
+        ),
+        ),
+      ),
+      ),
+
       bottomNavigationBar: BottomNavbar(),
       floatingActionButton: FloatingAddButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation
+          .miniCenterDocked,
     );
-
   }
+}

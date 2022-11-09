@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whats_in_my_fridge/screens/container_page.dart';
 
 import 'screens/login_page.dart';
 
@@ -33,6 +34,10 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: LoginPage(),
+
+      routes: {
+        ContainerPage.routeName: (context) => ContainerPage(),
+      },
     );
   }
 }
