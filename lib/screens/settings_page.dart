@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:whats_in_my_fridge/screens/databasetest_page.dart';
 import 'package:whats_in_my_fridge/screens/login_page.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:whats_in_my_fridge/widgets/bottom_navbar.dart';
@@ -8,16 +7,16 @@ import 'package:whats_in_my_fridge/widgets/floating_addButton.dart';
 
 import 'container_page.dart';
 
-class ProfilePage extends StatefulWidget {
+class SettingsPage extends StatefulWidget {
   final User user;
 
-  const ProfilePage({required this.user});
+  const SettingsPage({required this.user});
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _SettingsPageState extends State<SettingsPage> {
   bool _isSendingVerification = false;
   bool _isSigningOut = false;
   bool _isDeletingUser = false;
@@ -35,13 +34,17 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text('Settings'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 16.0),
+            Text(
+              'NAME: ${_currentUser.displayName}',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
             Text(
               'EMAIL: ${_currentUser.email}',
               style: Theme.of(context).textTheme.bodyText1,
@@ -79,9 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           });
                         },
                         child: Text('Verify email'),
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30))),
+                        style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
                       ),
                       SizedBox(width: 8.0),
                       IconButton(
@@ -175,26 +176,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
             SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, ContainerPage.routeName);
-              },
-              child: Text('View Containers'),
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              )),
+            ElevatedButton(onPressed: () {Navigator.pushNamed(context, ContainerPage.routeName);
+            },
+                child: Text('View Containers'),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),
+              )
             ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, DataBaseTestPage.routeName);
-              },
-              child: Text('Datbase Test Page'),
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              )),
             )
           ],
         ),
