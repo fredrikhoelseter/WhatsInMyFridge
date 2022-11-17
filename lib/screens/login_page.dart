@@ -50,10 +50,10 @@ class _LoginPageState extends State<LoginPage> {
         _focusPassword.unfocus();
       },
       child: Scaffold(
-        appBar: const CustomAppBar(
-            title: Text(
-              "What's in my Fridge",
-            ),
+        appBar: AppBar(
+          title: Text(
+            "What's in my Fridge",
+          ),
         ),
         body: FutureBuilder(
           future: _initializeFirebase(),
@@ -180,7 +180,6 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
-
               );
             }
 
