@@ -34,7 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _focusPassword.unfocus();
       },
       child: Scaffold(
-        appBar: const CustomAppBar(
+        appBar: AppBar(
           title: Text(
             "Register",
           ),

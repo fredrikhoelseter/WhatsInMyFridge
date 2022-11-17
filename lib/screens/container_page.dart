@@ -14,7 +14,7 @@ class ContainerPage extends StatefulWidget {
 
   @override
   State<ContainerPage> createState() => _ContainerPageState();
-    // TODO: implement createState
+  // TODO: implement createState
 }
 
 class _ContainerPageState extends State<ContainerPage> {
@@ -22,14 +22,12 @@ class _ContainerPageState extends State<ContainerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: Text('Your Containers'),
+        title: Text('Containers'),
       ),
-
-
       bottomNavigationBar: BottomNavbar(),
       floatingActionButton: FloatingAddButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation
-          .miniCenterDocked,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }

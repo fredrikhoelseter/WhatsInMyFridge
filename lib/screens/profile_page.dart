@@ -190,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 Navigator.pushNamed(context, DataBaseTestPage.routeName);
               },
-              child: Text('Datbase Test Page'),
+              child: Text('Database Test Page'),
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
