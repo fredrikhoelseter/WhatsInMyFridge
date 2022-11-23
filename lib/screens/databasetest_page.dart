@@ -162,6 +162,14 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
     return userID;
   }
 
+  String id = "";
+
+  void getIDAsString() async {
+
+    id = (await getID())!;
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,13 +179,15 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
         body: StreamBuilder(
           stream: _foodItems.snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+            getIDAsString();
             if (streamSnapshot.hasData) {
               return ListView.builder(
                 itemCount: streamSnapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   final DocumentSnapshot documentSnapshot =
                       streamSnapshot.data!.docs[index];
-                  return (documentSnapshot['User ID'] == 'thMStiHgHXWmWIt45FLyuNLOkET2') ? Card(
+
+                  return (documentSnapshot['User ID'] == id) ? Card(
                     margin: const EdgeInsets.all(10),
                     child: ListTile(
                       title: Text(documentSnapshot['Product Name']),
