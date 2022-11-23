@@ -38,8 +38,10 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Text('Profile'),
       ),
       body: Center(
+        child: SizedBox(
+          width: 300,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 16.0),
             Text(
@@ -197,6 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
               )),
             )
           ],
+        ),
         ),
       ),
       bottomNavigationBar: BottomNavbar(),

@@ -8,7 +8,7 @@ class AppbarButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 100, 0, 15),
+      margin: EdgeInsets.fromLTRB(0, 75, 0, 15),
       child: Row(
         children: [
           Spacer(),
