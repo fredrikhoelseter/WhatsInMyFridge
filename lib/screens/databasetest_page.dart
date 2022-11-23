@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 
 class DataBaseTestPage extends StatefulWidget {
   static String routeName = '/databasetestpage';
@@ -11,6 +13,7 @@ class DataBaseTestPage extends StatefulWidget {
 }
 
 class _DataBaseTestPageState extends State<DataBaseTestPage> {
+  User? user;
 // text fields' controllers
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _productCategoryController =
@@ -21,6 +24,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
       FirebaseFirestore.instance.collection('foodItems');
 
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
+    user = await FireAuth.getCurrentUser();
     await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -61,6 +65,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
                     if (productName != null) {
                       await _foodItems.add({
+                        "User ID": user?.uid,
                         "Product Name": productName,
                         "Product Category": productCategory,
                         "Manufacturer": manufacturer
@@ -147,8 +152,14 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
   Future<void> _delete(String productId) async {
     await _foodItems.doc(productId).delete();
 
+
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You have successfully deleted a product')));
+  }
+
+  Future<String?> getID() async {
+    String? userID = await FireAuth.getCurrentUserID();
+    return userID;
   }
 
   @override
@@ -166,7 +177,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                 itemBuilder: (context, index) {
                   final DocumentSnapshot documentSnapshot =
                       streamSnapshot.data!.docs[index];
-                  return Card(
+                  return (documentSnapshot['User ID'] == 'thMStiHgHXWmWIt45FLyuNLOkET2') ? Card(
                     margin: const EdgeInsets.all(10),
                     child: ListTile(
                       title: Text(documentSnapshot['Product Name']),
@@ -185,7 +196,8 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                         ),
                       ),
                     ),
-                  );
+                  )
+                  : SizedBox();
                 },
               );
             }

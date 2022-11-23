@@ -70,6 +70,13 @@ class FireAuth {
     return refreshedUser;
   }
 
+  static Future<User?> getCurrentUser() async {
+    return FirebaseAuth.instance.currentUser;
+  }
+
+  static Future<String?> getCurrentUserID() async {
+    return FirebaseAuth.instance.currentUser?.uid;
+  }
   static Future<void> deleteUser(BuildContext context) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     try {
