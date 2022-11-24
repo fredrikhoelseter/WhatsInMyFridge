@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
+import 'package:whats_in_my_fridge/widgets/appbar_buttons.dart';
 
 class DataBaseTestPage extends StatefulWidget {
   static String routeName = '/databasetestpage';
@@ -218,7 +219,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
           },
         ),
 // Add new product
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.large(
           onPressed: () => _create(),
           child: const Icon(Icons.add),
         ),

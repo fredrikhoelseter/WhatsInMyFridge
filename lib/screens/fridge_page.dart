@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:whats_in_my_fridge/screens/profile_page.dart';
 import 'package:whats_in_my_fridge/screens/register_page.dart';
 import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
+import 'package:whats_in_my_fridge/widgets/navigation_buttons.dart';
 import '../widgets/appbar_buttons.dart';
 import '../widgets/bottom_navbar.dart';
 import '../widgets/floating_addButton.dart';
@@ -25,8 +26,7 @@ class _FridgePageState extends State<FridgePage> {
       ),
 
 
-      bottomNavigationBar: BottomNavbar(),
-      floatingActionButton: FloatingAddButton(),
+      floatingActionButton: NavigationButtons(),
       floatingActionButtonLocation: FloatingActionButtonLocation
           .miniCenterDocked,
     );
