@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:whats_in_my_fridge/widgets/appbar_buttons.dart';
+import 'package:intl/intl.dart';
 
 class DataBaseTestPage extends StatefulWidget {
   static String routeName = '/databasetestpage';
@@ -17,12 +18,25 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
   User? user;
 // text fields' controllers
   final TextEditingController _productNameController = TextEditingController();
-  final TextEditingController _productCategoryController =
-      TextEditingController();
+  final TextEditingController _productCategoryController = TextEditingController();
   final TextEditingController _manufacturerController = TextEditingController();
+  final TextEditingController _dateinput = TextEditingController();
+  final TextEditingController _containerInput = TextEditingController();
 
   final CollectionReference _foodItems =
       FirebaseFirestore.instance.collection('foodItems');
+
+  // Needs to be initialized in firebase
+  // Example categories
+  var foodCategories = ['Beverage', 'Dairy', 'Meats', 'Dry', 'Other'];
+
+  var foodContainers = ['Fridge', 'Freezer', 'Other'];
+
+  @override
+  void initState() {
+    _dateinput.text = "";
+    super.initState();
+  }
 
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
     user = await FireAuth.getCurrentUser();
@@ -34,27 +48,112 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
             padding: EdgeInsets.only(
                 top: 20,
                 left: 20,
-                right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
+                right: 30,
+                bottom: MediaQuery.of(ctx).viewInsets.bottom),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  cursorColor: Colors.green,
+                  decoration: InputDecoration(
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none
+                    ),
+                    hintText: 'Search',
+                    prefixIcon: Container(
+                      padding: EdgeInsets.all(10),
+                      child: const Icon(Icons.search),
+                    )
+                  ),
+                ),
+                const SizedBox(
+                    height: 25,
+                ),
+
+                TextField(
                   controller: _productNameController,
-                  decoration: const InputDecoration(labelText: 'Product Name'),
+                  decoration: const InputDecoration(labelText: 'Product Name', icon: Icon(Icons.calendar_today),),
                 ),
                 TextField(
                   controller: _productCategoryController,
                   decoration:
-                      const InputDecoration(labelText: 'Product Category'),
+                       InputDecoration(
+                        labelText: 'Product Category',
+                        icon: Icon(Icons.category_rounded),
+                        suffixIcon: PopupMenuButton<String>(
+                          icon:  Icon(Icons.arrow_drop_down),
+                          onSelected: (String value) {
+                            _productCategoryController.text = value;
+                          },
+                          itemBuilder: (BuildContext context) {
+                            return foodCategories
+                                .map<PopupMenuItem<String>>((String value) {
+                                  return new PopupMenuItem(child: new Text(value), value: value);
+                            }).toList();
+                          },
+                        ),
+                      ),
                 ),
                 TextField(
                   controller: _manufacturerController,
-                  decoration: const InputDecoration(labelText: 'Manufacturer'),
+                  decoration: const InputDecoration(labelText: 'Manufacturer', icon: Icon(Icons.business_center_rounded),),
                 ),
+                TextField(
+                  controller: _dateinput,
+                  decoration: InputDecoration(
+                    labelText: "Enter expiration date",
+                    icon: Icon(Icons.alarm,),
+
+                ),
+                  readOnly: true,
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101)
+                    );
+
+                    if(pickedDate != null) {
+                      print(pickedDate);
+                      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                      print(formattedDate);
+
+                      setState(() {
+                        _dateinput.text = formattedDate;
+                      });
+                    } else{
+                      print("Date is not selected");
+                    }
+                  },
+                ),
+                TextField(
+                  controller: _containerInput,
+                  decoration:
+                  InputDecoration(
+                    labelText: 'Choose storage location',
+                    icon: Icon(Icons.storage_rounded),
+                    suffixIcon: PopupMenuButton<String>(
+                      icon:  Icon(Icons.arrow_drop_down),
+                      onSelected: (String value) {
+                        _containerInput.text = value;
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return foodContainers
+                            .map<PopupMenuItem<String>>((String value) {
+                          return new PopupMenuItem(child: new Text(value), value: value);
+                        }).toList();
+                      },
+                    ),
+                  ),
+                ),
+
+
                 const SizedBox(
-                  height: 20,
+                  height: 50,
                 ),
                 ElevatedButton(
                   child: const Text('Create'),
@@ -79,7 +178,8 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                       Navigator.of(context).pop();
                     }
                   },
-                )
+                ),
+                SizedBox(height: 20),
               ],
             ),
           );
