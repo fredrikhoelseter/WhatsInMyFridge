@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:whats_in_my_fridge/widgets/appbar_buttons.dart';
 import 'package:intl/intl.dart';
+import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
 
 class DataBaseTestPage extends StatefulWidget {
   static String routeName = '/databasetestpage';
@@ -49,7 +50,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                 top: 20,
                 left: 20,
                 right: 30,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom),
+                bottom: MediaQuery.of(ctx).size.height * 0.15),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,13 +71,19 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                   ),
                 ),
                 const SizedBox(
-                    height: 25,
+                    height: 10,
                 ),
 
                 TextField(
                   controller: _productNameController,
                   decoration: const InputDecoration(labelText: 'Product Name', icon: Icon(Icons.calendar_today),),
                 ),
+
+                TextField(
+                  controller: _manufacturerController,
+                  decoration: const InputDecoration(labelText: 'Manufacturer', icon: Icon(Icons.business_center_rounded),),
+                ),
+
                 TextField(
                   controller: _productCategoryController,
                   decoration:
@@ -97,14 +104,32 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                         ),
                       ),
                 ),
+
                 TextField(
-                  controller: _manufacturerController,
-                  decoration: const InputDecoration(labelText: 'Manufacturer', icon: Icon(Icons.business_center_rounded),),
+                  controller: _containerInput,
+                  decoration:
+                  InputDecoration(
+                    labelText: 'Choose storage location',
+                    icon: Icon(Icons.storage_rounded),
+                    suffixIcon: PopupMenuButton<String>(
+                      icon:  Icon(Icons.arrow_drop_down),
+                      onSelected: (String value) {
+                        _containerInput.text = value;
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return foodContainers
+                            .map<PopupMenuItem<String>>((String value) {
+                          return new PopupMenuItem(child: new Text(value), value: value);
+                        }).toList();
+                      },
+                    ),
+                  ),
                 ),
+
                 TextField(
                   controller: _dateinput,
                   decoration: InputDecoration(
-                    labelText: "Enter expiration date",
+                    labelText: "Expiration Date",
                     icon: Icon(Icons.alarm,),
 
                 ),
@@ -130,54 +155,45 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                     }
                   },
                 ),
-                TextField(
-                  controller: _containerInput,
-                  decoration:
-                  InputDecoration(
-                    labelText: 'Choose storage location',
-                    icon: Icon(Icons.storage_rounded),
-                    suffixIcon: PopupMenuButton<String>(
-                      icon:  Icon(Icons.arrow_drop_down),
-                      onSelected: (String value) {
-                        _containerInput.text = value;
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return foodContainers
-                            .map<PopupMenuItem<String>>((String value) {
-                          return new PopupMenuItem(child: new Text(value), value: value);
-                        }).toList();
-                      },
-                    ),
-                  ),
-                ),
-
 
                 const SizedBox(
                   height: 50,
                 ),
-                ElevatedButton(
-                  child: const Text('Create'),
-                  onPressed: () async {
-                    final String productName = _productNameController.text;
-                    final String productCategory =
-                        _productCategoryController.text;
-                    final String manufacturer = _manufacturerController.text;
 
-                    if (productName != null) {
-                      await _foodItems.add({
-                        "User ID": user?.uid,
-                        "Product Name": productName,
-                        "Product Category": productCategory,
-                        "Manufacturer": manufacturer
-                      });
+                Container(
+                  child: Align(alignment: Alignment.center,
+                    child:
+                    ElevatedButton(
+                      child: const Text('Add product'),
+                      onPressed: () async {
+                        final String productName = _productNameController.text;
+                        final String productCategory =
+                            _productCategoryController.text;
+                        final String manufacturer = _manufacturerController.text;
+                        final String container = _containerInput.text;
+                        final String expDate = _dateinput.text;
 
-                      _productNameController.text = '';
-                      _productCategoryController.text = '';
-                      _manufacturerController.text = '';
+                        if (productName != null) {
+                          await _foodItems.add({
+                            "User ID": user?.uid,
+                            "Product Name": productName,
+                            "Product Category": productCategory,
+                            "Manufacturer": manufacturer,
+                            "Container": container,
+                            "Expiration Date": expDate
+                          });
 
-                      Navigator.of(context).pop();
-                    }
-                  },
+                          _productNameController.text = '';
+                          _productCategoryController.text = '';
+                          _manufacturerController.text = '';
+                          _containerInput.text = "";
+                          _dateinput.text = "";
+
+                          Navigator.of(context).pop();
+                        }
+                        },
+                    ),
+                  ),
                 ),
                 SizedBox(height: 20),
               ],
@@ -191,6 +207,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
       _productNameController.text = documentSnapshot['Product Name'];
       _productCategoryController.text = documentSnapshot['Product Category'];
       _manufacturerController.text = documentSnapshot['Manufacturer'];
+      _containerInput.text = documentSnapshot['Container'];
     }
 
     await showModalBottomSheet(
@@ -199,7 +216,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
         builder: (BuildContext ctx) {
           return Padding(
             padding: EdgeInsets.only(
-                top: 20,
+                top: 0,
                 left: 20,
                 right: 20,
                 bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
@@ -220,6 +237,14 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                   controller: _manufacturerController,
                   decoration: const InputDecoration(labelText: 'Manufacturer'),
                 ),
+                TextField(
+                  controller: _containerInput,
+                  decoration: const InputDecoration(labelText: 'Container'),
+                ),
+                TextField(
+                  controller: _dateinput,
+                  decoration: const InputDecoration(labelText: 'Expiration Date'),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -230,16 +255,21 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                     final String productCategory =
                         _productCategoryController.text;
                     final String manufacturer = _manufacturerController.text;
+                    final String container = _containerInput.text;
 
                     if (productName != null) {
                       await _foodItems.doc(documentSnapshot!.id).update({
                         "Product Name": productName,
                         "Product Category": productCategory,
-                        "Manufacturer": manufacturer
+                        "Manufacturer": manufacturer,
+                        "Container": container,
                       });
+
                       _productNameController.text = '';
                       _productCategoryController.text = '';
                       _manufacturerController.text = '';
+                      _containerInput.text = '';
+
                       Navigator.of(context).pop();
                     }
                   },
@@ -274,49 +304,99 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text('Database Test Page')),
+        appBar: AppBar(title: Text("Storage"),
         ),
-        body: StreamBuilder(
-          stream: _foodItems.snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-            getIDAsString();
-            if (streamSnapshot.hasData) {
-              return ListView.builder(
-                itemCount: streamSnapshot.data!.docs.length,
-                itemBuilder: (context, index) {
-                  final DocumentSnapshot documentSnapshot =
-                      streamSnapshot.data!.docs[index];
-
-                  return (documentSnapshot['User ID'] == id) ? Card(
-                    margin: const EdgeInsets.all(10),
-                    child: ListTile(
-                      title: Text(documentSnapshot['Product Name']),
-                      subtitle: Text(documentSnapshot['Product Category']),
-                      trailing: SizedBox(
-                        width: 100,
-                        child: Row(
-                          children: [
-                            IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () => _update(documentSnapshot)),
-                            IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () => _delete(documentSnapshot.id)),
-                          ],
+        body:
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Stack(
+            children: <Widget> [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(onPressed: () {}, child: Text("Fridge"),
+                        style: ElevatedButton.styleFrom(
+                        side: BorderSide(width: 2.0, color: Colors.white),
+                        padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ElevatedButton(onPressed: () {}, child: Text("Freezer"),
+                        style: ElevatedButton.styleFrom(
+                          side: BorderSide(width: 2.0, color: Colors.white),
+                          padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       ),
                     ),
-                  )
-                  : SizedBox();
-                },
-              );
-            }
+                    Expanded(
+                      child: ElevatedButton(onPressed: () {}, child: Text("Other"),
+                        style: ElevatedButton.styleFrom(
+                          side: BorderSide(width: 2.0, color: Colors.white),
+                          padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
+              Padding(
+                padding: const EdgeInsets.only(top: 75),
+                child: StreamBuilder(
+                stream: _foodItems.snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                  getIDAsString();
+                  if (streamSnapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: streamSnapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        final DocumentSnapshot documentSnapshot =
+                        streamSnapshot.data!.docs[index];
+
+                        return (documentSnapshot['User ID'] == id) ? Card(
+                          margin: const EdgeInsets.all(10),
+                          child: ListTile(
+                            title: Text(documentSnapshot['Product Name']),
+                            subtitle: Text(documentSnapshot['Product Category']),
+                            trailing: SizedBox(
+                              width: 100,
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                      icon: const Icon(Icons.edit),
+                                      onPressed: () => _update(documentSnapshot)),
+                                  IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () => _delete(documentSnapshot.id)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                            : SizedBox();
+                      },
+                    );
+                  }
+
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+            ),
+              ),]
+          ),
         ),
 // Add new product
         floatingActionButton: FloatingActionButton.large(

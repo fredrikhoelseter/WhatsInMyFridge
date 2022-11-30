@@ -28,17 +28,6 @@ class NavigationButtons extends StatelessWidget {
             ),
 
             Align(
-              alignment: Alignment.bottomCenter,
-                child: FloatingActionButton.large(
-                  heroTag: "navBtn2",
-                  onPressed: () {
-                    Navigator.pushNamed(context, DataBaseTestPage.routeName);
-                    },
-                  child: const Icon(Icons.add, ),
-                ),
-            ),
-
-            Align(
               alignment: Alignment.bottomRight,
               child: FloatingActionButton(
                 heroTag: "navBtn3",

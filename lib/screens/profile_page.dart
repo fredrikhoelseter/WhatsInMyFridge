@@ -34,12 +34,25 @@ class _ProfilePageState extends State<ProfilePage> {
   }
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       appBar: CustomAppBar(
         title: Text('Whats in my fridge'),
       ),
-      body: Center(
-
+      body: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: [
+                Text('Welcome back', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.green),),
+                Text('${_currentUser.email}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.blue),),
+              ],
+            ),
+            SizedBox(height: 16,),
+            Text('What will you cook today?'),
+            Text('Just enter ingredrients you have and we will show the best recipe for you'),
+          ],
+        ),
       ),
       floatingActionButton: NavigationButtons(),
       floatingActionButtonLocation:

@@ -8,7 +8,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   const CustomAppBar({
     Key? key, required this.title,
-    this.height = kToolbarHeight*3,
+    this.height = kToolbarHeight*1,
   }) : super(key: key);
 
 
