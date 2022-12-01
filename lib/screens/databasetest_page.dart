@@ -33,6 +33,10 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
   var foodContainers = ['Fridge', 'Freezer', 'Other'];
 
+  var sortBy = ['Expiration Date', 'Product Name', 'Product Category'];
+
+  String currentSort = "Expiration Date";
+
   String containerString = "Fridge";
   String searchString = "";
   bool _search = false;
@@ -316,18 +320,32 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
     });
   }
+  
+  Widget _buildSortDropDown() {
+    return DropdownButton<String>(
+      underline: Container(),
+      icon: Icon(Icons.sort,color: Colors.white),
+      items: sortBy.map((sort) => DropdownMenuItem(value: sort, child: Text(sort))).toList(),
+      onChanged: (sort) => _sortSelected(sort),
+    );
+  }
+
+  void _sortSelected(String? sort){
+    currentSort = sort!;
+    setState(() {});
+  }
 
   Widget _searchBar() { //add
     return TextField(
       controller: _searchBarController,
       autofocus: true,
       cursorColor: Colors.white,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.white,
         fontSize: 20,
       ),
       textInputAction: TextInputAction.search,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.white)
         ),
@@ -355,13 +373,14 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
           title: _search ? _searchBar() : Text("Storage"),
             actions: !_search
                 ? [
+              _buildSortDropDown(),
               IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
                     setState(() {
                       _search = true;
                     });
-                  })
+                  }),
             ]
                 : [
               IconButton(
@@ -373,8 +392,8 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                   }
               )
             ]
-
         ),
+
         body:
         Padding(
           padding: const EdgeInsets.only(top: 10.0),
@@ -441,11 +460,10 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                   ],
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.only(top: 75),
                 child: StreamBuilder(
-                stream: _foodItems.orderBy("Expiration Date", descending: false).snapshots(),
+                stream: _foodItems.orderBy(currentSort, descending: false).snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                   getIDAsString();
                   if (streamSnapshot.hasData) {

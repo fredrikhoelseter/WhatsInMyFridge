@@ -29,7 +29,6 @@ class _ProfilePageState extends State<ProfilePage> {
   bool _isDeletingUser = false;
   bool _isResettingPassword = false;
 
-
   late User _currentUser;
 
   List<RecipeModel> recipes = <RecipeModel>[];
@@ -42,25 +41,23 @@ class _ProfilePageState extends State<ProfilePage> {
 //  String applicationId = "fe4d49fb";
 //  String applicationKey = "a69ae39077969bd8cf29bc34ce2d6816";
 
-  getRecipes(String query) async{
-
-    String url = "https://api.edamam.com/search?q=$query&app_id=fe4d49fb&app_key=a69ae39077969bd8cf29bc34ce2d6816";
+  getRecipes(String query) async {
+    String url =
+        "https://api.edamam.com/search?q=$query&app_id=fe4d49fb&app_key=a69ae39077969bd8cf29bc34ce2d6816";
 
     var response = await http.get(Uri.parse(url));
     Map<String, dynamic> jsonData = jsonDecode(response.body);
 
-    jsonData["hits"].forEach((element){
+    jsonData["hits"].forEach((element) {
       //print(element.toString());
 
-      RecipeModel recipeModel = new RecipeModel(url: '', source: '', image: '', label: '');
+      RecipeModel recipeModel =
+          new RecipeModel(url: '', source: '', image: '', label: '');
       recipeModel = RecipeModel.fromMap(element["recipe"]);
       recipes.add(recipeModel);
-
     });
 
     print("${recipes.toString()}");
-
-
   }
 
   @override
@@ -68,6 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _currentUser = widget.user;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,17 +80,40 @@ class _ProfilePageState extends State<ProfilePage> {
             children: <Widget>[
               Row(
                 children: [
-                  Text('Welcome back', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.green),),
-                  Text('${_currentUser.email}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.blue),),
+                  Text(
+                    'Welcome back',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.green),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    '${_currentUser.displayName}',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue),
+                  ),
                 ],
-        ),
-
-              SizedBox(height: 10,),
-              Text('What will you cook today?', style: TextStyle(fontSize: 20),),
-              SizedBox(height: 10,),
-              Text('Just enter ingredrients you have and we will show the best recipe for you'),
-              SizedBox(height: 30,),
-
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'What will you cook today?',
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                  'Just enter ingredrients you have and we will show the best recipe for you'),
+              SizedBox(
+                height: 30,
+              ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Row(
@@ -101,22 +122,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: TextField(
                         controller: recipeSearchController,
                         decoration: InputDecoration(
-                          hintText: 'Enter Ingridients',
-                          hintStyle: TextStyle(
-                            fontSize: 18
-                          )
-                        ),
-
-                        style: TextStyle(
-                          fontSize: 18
-                        ),
+                            hintText: 'Enter Ingridients',
+                            hintStyle: TextStyle(fontSize: 18)),
+                        style: TextStyle(fontSize: 18),
                       ),
                     ),
-                    SizedBox(width: 16,),
-
+                    SizedBox(
+                      width: 16,
+                    ),
                     InkWell(
                       onTap: () async {
-                        if(recipeSearchController.text.isNotEmpty){
+                        if (recipeSearchController.text.isNotEmpty) {
                           getRecipes(recipeSearchController.text);
                           print("Just do it");
                         } else {
@@ -130,7 +146,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               Container(
                 child: GridView.count(
                   shrinkWrap: true,
@@ -139,47 +157,49 @@ class _ProfilePageState extends State<ProfilePage> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
                   children: List.generate(recipes.length, (index) {
-                    return GridTile(child: RecipeTile(
+                    return GridTile(
+                        child: RecipeTile(
                       title: recipes[index].label,
                       imgUrl: recipes[index].image,
                       desc: recipes[index].source,
                       url: recipes[index].url,
-                    )
-                    );
-                  }
-                  ),
-                  ),
+                    ));
+                  }),
                 ),
+              ),
             ],
           ),
         ),
       ),
       floatingActionButton: NavigationButtons(),
       floatingActionButtonLocation:
-      FloatingActionButtonLocation.miniCenterDocked,
+          FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }
 
 class RecipeTile extends StatefulWidget {
-
   final String url, desc, title, imgUrl;
 
-  RecipeTile({required this.url, required this.desc, required this.title, required this.imgUrl});
+  RecipeTile(
+      {required this.url,
+      required this.desc,
+      required this.title,
+      required this.imgUrl});
 
   @override
   _RecipeTileState createState() => _RecipeTileState();
 }
 
 class _RecipeTileState extends State<RecipeTile> {
-    _launchURL(String url) async {
-      print(url);
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
+  _launchURL(String url) async {
+    print(url);
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -249,9 +269,9 @@ class GradientCard extends StatelessWidget {
 
   GradientCard(
       {required this.topColor,
-        required this.bottomColor,
-        required this.topColorCode,
-        required this.bottomColorCode});
+      required this.bottomColor,
+      required this.topColorCode,
+      required this.bottomColorCode});
 
   @override
   Widget build(BuildContext context) {
