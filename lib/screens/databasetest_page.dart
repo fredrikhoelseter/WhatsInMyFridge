@@ -22,6 +22,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
   final TextEditingController _manufacturerController = TextEditingController();
   final TextEditingController _dateinput = TextEditingController();
   final TextEditingController _containerInput = TextEditingController();
+  final TextEditingController _searchBarController = TextEditingController();
 
   final CollectionReference _foodItems =
       FirebaseFirestore.instance.collection('foodItems');
@@ -39,6 +40,8 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
   bool isDescending = false;
 
   String containerString = "Fridge";
+  String searchString = "";
+  bool _search = false;
 
   @override
   void initState() {
@@ -314,6 +317,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
   void setContainer(String string)
   {
     containerString = string;
+    _search = false;
     setState(() {
 
     });
@@ -349,14 +353,65 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
     setState(() {});
   }
 
-
+  Widget _searchBar() { //add
+    return TextField(
+      controller: _searchBarController,
+      autofocus: true,
+      cursorColor: Colors.white,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+      ),
+      textInputAction: TextInputAction.search,
+      decoration: const InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white)
+        ),
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white)
+        ),
+        hintText: 'Search',
+        hintStyle: TextStyle(
+          color: Colors.white60,
+          fontSize: 20,
+        ),
+      ),
+      onChanged: (String s) {
+        setState(() {
+          searchString = s.toLowerCase();
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Storage"),
-            actions: [_buildSortDropDown()],
+        appBar: AppBar(
+          title: _search ? _searchBar() : Text("Storage"),
+            actions: !_search
+                ? [
+              _buildSortDropDown(),
+              IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      _search = true;
+                    });
+                  }),
+            ]
+                : [
+              IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      _search = false;
+                    });
+                  }
+              )
+            ]
         ),
+
         body:
         Padding(
           padding: const EdgeInsets.only(top: 10.0),
@@ -436,7 +491,13 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                         final DocumentSnapshot documentSnapshot =
                         streamSnapshot.data!.docs[index];
 
-                        return (documentSnapshot['User ID'] == id && documentSnapshot['Container'] == containerString) ? Card(
+                        final String productName = documentSnapshot['Product Name'].toString().toLowerCase();
+                        final String manufacturerName = documentSnapshot['Manufacturer'].toString().toLowerCase();
+
+                        return (documentSnapshot['User ID'] == id
+                            && (documentSnapshot['Container'] == containerString && !_search
+                        || (_search && (productName.contains(searchString)
+                                || manufacturerName.contains(searchString))))) ? Card(
                           margin: const EdgeInsets.all(10),
                           child: ListTile(
                             title: Text(documentSnapshot['Product Name']),
