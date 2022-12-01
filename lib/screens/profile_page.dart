@@ -32,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _currentUser = widget.user;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,20 +45,34 @@ class _ProfilePageState extends State<ProfilePage> {
           children: <Widget>[
             Row(
               children: [
-                Text('Welcome back', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.green),),
-                Text('${_currentUser.email}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.blue),),
+                Text(
+                  'Welcome back',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.green),
+                ),
+                Text(
+                  '${_currentUser.email}',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.blue),
+                ),
               ],
             ),
-            SizedBox(height: 16,),
+            SizedBox(
+              height: 16,
+            ),
             Text('What will you cook today?'),
-            Text('Just enter ingredrients you have and we will show the best recipe for you'),
+            Text(
+                'Just enter ingredrients you have and we will show the best recipe for you'),
           ],
         ),
       ),
-      floatingActionButton: NavigationButtons(),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
-
+      // floatingActionButton: NavigationButtons(),
+      // floatingActionButtonLocation:
+      //     FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }
