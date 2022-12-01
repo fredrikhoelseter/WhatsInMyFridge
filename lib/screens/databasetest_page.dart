@@ -37,6 +37,8 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
   String currentSort = "Expiration Date";
 
+  bool isDescending = false;
+
   String containerString = "Fridge";
   String searchString = "";
   bool _search = false;
@@ -331,7 +333,23 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
   }
 
   void _sortSelected(String? sort){
-    currentSort = sort!;
+
+    if(currentSort == sort)
+    {
+      if (isDescending == false)
+      {
+        isDescending = true;
+      }
+      else
+      {
+        isDescending = false;
+      }
+    }
+    else
+    {
+      currentSort = sort!;
+    }
+
     setState(() {});
   }
 
@@ -463,7 +481,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 75),
                 child: StreamBuilder(
-                stream: _foodItems.orderBy(currentSort, descending: false).snapshots(),
+                stream: _foodItems.orderBy(currentSort, descending: isDescending).snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                   getIDAsString();
                   if (streamSnapshot.hasData) {
