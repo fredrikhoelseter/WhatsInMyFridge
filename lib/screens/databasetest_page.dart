@@ -33,6 +33,8 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
   var foodContainers = ['Fridge', 'Freezer', 'Other'];
 
+  String containerString = "Fridge";
+
   @override
   void initState() {
     _dateinput.text = "";
@@ -301,6 +303,16 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
   }
 
+  void setContainer(String string)
+  {
+    containerString = string;
+    setState(() {
+
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -316,7 +328,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: ElevatedButton(onPressed: () {}, child: Text("Fridge"),
+                      child: ElevatedButton(onPressed: () => setContainer("Fridge"), child: Text("Fridge"),
                         style: ElevatedButton.styleFrom(
                         side: BorderSide(width: 2.0, color: Colors.white),
                         padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -327,7 +339,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                       ),
                     ),
                     Expanded(
-                      child: ElevatedButton(onPressed: () {}, child: Text("Freezer"),
+                      child: ElevatedButton(onPressed: () => setContainer("Freezer"), child: Text("Freezer"),
                         style: ElevatedButton.styleFrom(
                           side: BorderSide(width: 2.0, color: Colors.white),
                           padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -338,7 +350,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                       ),
                     ),
                     Expanded(
-                      child: ElevatedButton(onPressed: () {}, child: Text("Other"),
+                      child: ElevatedButton(onPressed: () => setContainer("Other"), child: Text("Other"),
                         style: ElevatedButton.styleFrom(
                           side: BorderSide(width: 2.0, color: Colors.white),
                           padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -365,7 +377,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                         final DocumentSnapshot documentSnapshot =
                         streamSnapshot.data!.docs[index];
 
-                        return (documentSnapshot['User ID'] == id) ? Card(
+                        return (documentSnapshot['User ID'] == id && documentSnapshot['Container'] == containerString) ? Card(
                           margin: const EdgeInsets.all(10),
                           child: ListTile(
                             title: Text(documentSnapshot['Product Name']),
