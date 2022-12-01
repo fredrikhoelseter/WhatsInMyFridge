@@ -88,6 +88,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
                 TextField(
                   controller: _productCategoryController,
+                  readOnly: true,
                   decoration:
                        InputDecoration(
                         labelText: 'Product Category',
@@ -126,6 +127,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                       },
                     ),
                   ),
+                  readOnly: true,
                 ),
 
                 TextField(
@@ -210,6 +212,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
       _productCategoryController.text = documentSnapshot['Product Category'];
       _manufacturerController.text = documentSnapshot['Manufacturer'];
       _containerInput.text = documentSnapshot['Container'];
+      _dateinput.text = documentSnapshot['Expiration Date'];
     }
 
     await showModalBottomSheet(
@@ -388,7 +391,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 75),
                 child: StreamBuilder(
-                stream: _foodItems.snapshots(),
+                stream: _foodItems.orderBy("Expiration Date", descending: false).snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                   getIDAsString();
                   if (streamSnapshot.hasData) {
