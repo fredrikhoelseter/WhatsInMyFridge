@@ -314,13 +314,21 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
   }
 
+  /// Sets the containerString and hides the search bar and then
+  /// calls set state. This changes the product content on the page.
   void setContainer(String string)
   {
     containerString = string;
-    _search = false;
+    hideSearchBar();
     setState(() {
 
     });
+  }
+
+  /// Hides the searchBar. Needs a setState call to update in the UI.
+  void hideSearchBar() {
+    _search = false;
+    _searchBarController.text = "";
   }
   
   Widget _buildSortDropDown() {
@@ -403,10 +411,11 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                 : [
               IconButton(
                   icon: Icon(Icons.clear),
-                  onPressed: () {
+                  onPressed: () => {
+                    hideSearchBar(),
                     setState(() {
-                      _search = false;
-                    });
+
+                    }),
                   }
               )
             ]
@@ -491,13 +500,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                         final DocumentSnapshot documentSnapshot =
                         streamSnapshot.data!.docs[index];
 
-                        final String productName = documentSnapshot['Product Name'].toString().toLowerCase();
-                        final String manufacturerName = documentSnapshot['Manufacturer'].toString().toLowerCase();
-
-                        return (documentSnapshot['User ID'] == id
-                            && (documentSnapshot['Container'] == containerString && !_search
-                        || (_search && (productName.contains(searchString)
-                                || manufacturerName.contains(searchString))))) ? Card(
+                        return shouldProductShow(documentSnapshot) ? Card(
                           margin: const EdgeInsets.all(10),
                           child: ListTile(
                             title: Text(documentSnapshot['Product Name']),
@@ -536,5 +539,48 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
           child: const Icon(Icons.add),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
+  }
+
+  /// Checks whether a product in the document snapshot should be shown o the page.
+  /// The document snapshot needs to have fields with these exact names 'User ID',
+  /// 'Container', 'Product Name', 'Manufacturer'
+  bool shouldProductShow(DocumentSnapshot documentSnapshot) {
+    /// If the product UID does not match the user UID, returns false
+    if (documentSnapshot['User ID'] != id) {
+      return false;
+    }
+
+    /// If the user is not searching and the containerString matches
+    /// the product container name, return true
+    if (documentSnapshot['Container'] == containerString && !_search) {
+      return true;
+    }
+
+    /// If the user is not searching, returns false.
+    if (!_search) {
+      return false;
+    }
+
+    /// Split the search up into keywords based on spacing.
+    final List<String> searchKeywords = searchString.split(" ");
+    final String productName = documentSnapshot['Product Name'].toString().toLowerCase();
+    final String manufacturerName = documentSnapshot['Manufacturer'].toString().toLowerCase();
+    int keywordMatchCount = 0;
+
+    /// Iterates over all the keywords and increments a counter based on if the
+    /// keyword matches the product name or manufacturer name.
+    for (int i = 0; i < searchKeywords.length; i++) {
+      if (productName.contains(searchKeywords[i]) || manufacturerName.contains(searchKeywords[i])) {
+        keywordMatchCount++;
+      }
+    }
+
+    /// If the keywordMatchCount matches (or is greater than) the length of the
+    /// keywords, returns true.
+    if (keywordMatchCount >= searchKeywords.length) {
+      return true;
+    }
+
+    return false;
   }
 }
