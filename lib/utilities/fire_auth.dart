@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class FireAuth {
+class FireAuth with ChangeNotifier {
   final _auth = FirebaseAuth.instance;
 
   // For registering a new user
@@ -77,6 +77,7 @@ class FireAuth {
   static Future<String?> getCurrentUserID() async {
     return FirebaseAuth.instance.currentUser?.uid;
   }
+
   static Future<void> deleteUser(BuildContext context) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     try {
