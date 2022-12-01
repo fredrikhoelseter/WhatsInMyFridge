@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
-import 'package:whats_in_my_fridge/widgets/appbar_buttons.dart';
 import 'package:intl/intl.dart';
 import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
 
