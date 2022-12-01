@@ -328,34 +328,55 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: ElevatedButton(onPressed: () => setContainer("Fridge"), child: Text("Fridge"),
+                      child: ElevatedButton(onPressed: () => setContainer("Fridge"),
                         style: ElevatedButton.styleFrom(
-                        side: BorderSide(width: 2.0, color: Colors.white),
-                        padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        side: BorderSide(width: 2.0, color: containerString == "Fridge" ? Colors.green : Colors.white),
+                        padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
+
                         ),
+                          backgroundColor: containerString == "Fridge" ? Colors.white : Colors.green
                       ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ElevatedButton(onPressed: () => setContainer("Freezer"), child: Text("Freezer"),
-                        style: ElevatedButton.styleFrom(
-                          side: BorderSide(width: 2.0, color: Colors.white),
-                          padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                        child: Text("Fridge",
+                          style: TextStyle(
+                            color: containerString == "Fridge" ? Colors.green : Colors.white,
                           ),
                         ),
                       ),
                     ),
                     Expanded(
-                      child: ElevatedButton(onPressed: () => setContainer("Other"), child: Text("Other"),
+                      child: ElevatedButton(onPressed: () => setContainer("Freezer"),
                         style: ElevatedButton.styleFrom(
-                          side: BorderSide(width: 2.0, color: Colors.white),
-                          padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(width: 2.0, color: containerString == "Freezer" ? Colors.green : Colors.white),
+                            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+
+                            ),
+                            backgroundColor: containerString == "Freezer" ? Colors.white : Colors.green
+                        ),
+                        child: Text("Freezer",
+                          style: TextStyle(
+                            color: containerString == "Freezer" ? Colors.green : Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ElevatedButton(onPressed: () => setContainer("Other"),
+                        style: ElevatedButton.styleFrom(
+                            side: BorderSide(width: 2.0, color: containerString == "Other" ? Colors.green : Colors.white),
+                            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+
+                            ),
+                            backgroundColor: containerString == "Other" ? Colors.white : Colors.green
+                        ),
+                        child: Text("Other",
+                          style: TextStyle(
+                            color: containerString == "Other" ? Colors.green : Colors.white,
                           ),
                         ),
                       ),
