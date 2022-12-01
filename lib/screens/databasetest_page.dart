@@ -33,6 +33,10 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
   var foodContainers = ['Fridge', 'Freezer', 'Other'];
 
+  var sortBy = ['Expiration Date', 'Product Name', 'Product Category'];
+
+  String currentSort = "Expiration Date";
+
   String containerString = "Fridge";
 
   @override
@@ -313,6 +317,20 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
     });
   }
+  
+  Widget _buildSortDropDown() {
+    return DropdownButton<String>(
+      underline: Container(),
+      icon: Icon(Icons.sort,color: Colors.white),
+      items: sortBy.map((sort) => DropdownMenuItem(value: sort, child: Text(sort))).toList(),
+      onChanged: (sort) => _sortSelected(sort),
+    );
+  }
+
+  void _sortSelected(String? sort){
+    currentSort = sort!;
+    setState(() {});
+  }
 
 
 
@@ -320,6 +338,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("Storage"),
+            actions: [_buildSortDropDown()],
         ),
         body:
         Padding(
@@ -387,11 +406,10 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                   ],
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.only(top: 75),
                 child: StreamBuilder(
-                stream: _foodItems.orderBy("Expiration Date", descending: false).snapshots(),
+                stream: _foodItems.orderBy(currentSort, descending: false).snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                   getIDAsString();
                   if (streamSnapshot.hasData) {
