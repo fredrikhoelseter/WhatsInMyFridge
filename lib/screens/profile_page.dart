@@ -9,12 +9,10 @@ import 'package:whats_in_my_fridge/screens/recipe_view.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:whats_in_my_fridge/widgets/bottom_navbar.dart';
 import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
-import 'package:whats_in_my_fridge/widgets/floating_addButton.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import '../models/recipe_model.dart';
 import '../widgets/navigation_buttons.dart';
-import 'container_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final User user;
