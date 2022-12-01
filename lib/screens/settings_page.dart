@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:whats_in_my_fridge/screens/login_page.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:whats_in_my_fridge/widgets/bottom_navbar.dart';
-import 'package:whats_in_my_fridge/widgets/floating_addButton.dart';
 
-import 'container_page.dart';
 
 class SettingsPage extends StatefulWidget {
   final User user;
@@ -176,21 +174,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
             SizedBox(height: 16.0),
-            ElevatedButton(onPressed: () {Navigator.pushNamed(context, ContainerPage.routeName);
-            },
-                child: Text('View Containers'),
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),
-              )
-            ),
-            )
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavbar(),
-      floatingActionButton: FloatingAddButton(),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }
