@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FireAuth with ChangeNotifier {
+  final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
 
   // For registering a new user
@@ -10,6 +12,7 @@ class FireAuth with ChangeNotifier {
     required String email,
     required String password,
   }) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
@@ -23,6 +26,17 @@ class FireAuth with ChangeNotifier {
       await user!.updateDisplayName(name);
       await user.reload();
       user = auth.currentUser;
+
+      Map<String, dynamic> userToJson() => {
+            "Email": email,
+            "Name": name,
+            "UserID": userCredential.user!.uid,
+          };
+
+      await firestore
+          .collection("users")
+          .doc(userCredential.user!.uid)
+          .set(userToJson());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
