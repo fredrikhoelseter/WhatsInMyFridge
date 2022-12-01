@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:whats_in_my_fridge/responsive/mobile_screen_layout.dart';
 import 'package:whats_in_my_fridge/screens/add_product_page.dart';
 import 'package:whats_in_my_fridge/screens/cabinet_page.dart';
 import 'package:whats_in_my_fridge/screens/container_page.dart';
@@ -7,10 +9,13 @@ import 'package:whats_in_my_fridge/screens/databasetest_page.dart';
 import 'package:whats_in_my_fridge/screens/freezer_page.dart';
 import 'package:whats_in_my_fridge/screens/fridge_page.dart';
 import 'package:whats_in_my_fridge/screens/profile_page.dart';
+import 'package:provider/provider.dart';
 
 import 'screens/login_page.dart';
 
-void main() {
+void main() async {
+  Firebase.initializeApp;
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -40,7 +45,7 @@ class MyApp extends StatelessWidget {
           bodyText1: TextStyle(fontSize: 18.0),
         ),
       ),
-      home: LoginPage(),
+      home: MobileScreenLayout(),
       routes: {
         ContainerPage.routeName: (context) => ContainerPage(),
         FridgePage.routeName: (context) => FridgePage(),
@@ -50,5 +55,20 @@ class MyApp extends StatelessWidget {
         AddProductPage.routeName: (context) => AddProductPage(),
       },
     );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User?>();
+
+    if (firebaseUser != null) {
+      return const MobileScreenLayout();
+    } else {
+      return LoginPage();
+    }
   }
 }
