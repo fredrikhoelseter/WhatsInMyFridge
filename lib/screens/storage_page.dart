@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
+import 'package:whats_in_my_fridge/widgets/food_item_form.dart';
 
 class StoragePage extends StatefulWidget {
   static String routeName = '/storagePage';
@@ -58,162 +59,41 @@ class _StoragePageState extends State<StoragePage> {
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 20,
-                left: 20,
-                right: 30,
-                bottom: MediaQuery.of(ctx).size.height * 0.15),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  cursorColor: Colors.green,
-                  decoration: InputDecoration(
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none
-                    ),
-                    hintText: 'Search',
-                    prefixIcon: Container(
-                      padding: EdgeInsets.all(10),
-                      child: const Icon(Icons.search),
-                    )
-                  ),
-                ),
-                const SizedBox(
-                    height: 10,
-                ),
+          return FoodItemForm(foodItems: _foodItems, user: user,
+              productNameController: _productNameController,
+              productCategoryController: _productCategoryController,
+              manufacturerController: _manufacturerController,
+              dateInput: _dateinput, containerInput: _containerInput,
+          child: ElevatedButton(
+            child: const Text('Add product'),
+            onPressed: () async {
+              final String productName = _productNameController.text;
+              final String productCategory =
+                  _productCategoryController.text;
+              final String manufacturer = _manufacturerController.text;
+              final String container = _containerInput.text;
+              final String expDate = _dateinput.text;
 
-                TextField(
-                  controller: _productNameController,
-                  decoration: const InputDecoration(labelText: 'Product Name', icon: Icon(Icons.calendar_today),),
-                ),
+              if (productName != null) {
+                await _foodItems.add({
+                  "User ID": user?.uid,
+                  "Product Name": productName,
+                  "Product Category": productCategory,
+                  "Manufacturer": manufacturer,
+                  "Container": container,
+                  "Expiration Date": expDate
+                });
 
-                TextField(
-                  controller: _manufacturerController,
-                  decoration: const InputDecoration(labelText: 'Manufacturer', icon: Icon(Icons.business_center_rounded),),
-                ),
+                _productNameController.text = '';
+                _productCategoryController.text = '';
+                _manufacturerController.text = '';
+                _containerInput.text = "";
+                _dateinput.text = "";
 
-                TextField(
-                  controller: _productCategoryController,
-                  readOnly: true,
-                  decoration:
-                       InputDecoration(
-                        labelText: 'Product Category',
-                        icon: Icon(Icons.category_rounded),
-                        suffixIcon: PopupMenuButton<String>(
-                          icon:  Icon(Icons.arrow_drop_down),
-                          onSelected: (String value) {
-                            _productCategoryController.text = value;
-                          },
-                          itemBuilder: (BuildContext context) {
-                            return foodCategories
-                                .map<PopupMenuItem<String>>((String value) {
-                                  return new PopupMenuItem(child: new Text(value), value: value);
-                            }).toList();
-                          },
-                        ),
-                      ),
-                ),
-
-                TextField(
-                  controller: _containerInput,
-                  decoration:
-                  InputDecoration(
-                    labelText: 'Choose storage location',
-                    icon: Icon(Icons.storage_rounded),
-                    suffixIcon: PopupMenuButton<String>(
-                      icon:  Icon(Icons.arrow_drop_down),
-                      onSelected: (String value) {
-                        _containerInput.text = value;
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return foodContainers
-                            .map<PopupMenuItem<String>>((String value) {
-                          return new PopupMenuItem(child: new Text(value), value: value);
-                        }).toList();
-                      },
-                    ),
-                  ),
-                  readOnly: true,
-                ),
-
-                TextField(
-                  controller: _dateinput,
-                  decoration: InputDecoration(
-                    labelText: "Expiration Date",
-                    icon: Icon(Icons.alarm,),
-
-                ),
-                  readOnly: true,
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2101)
-                    );
-
-                    if(pickedDate != null) {
-                      print(pickedDate);
-                      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                      print(formattedDate);
-
-                      setState(() {
-                        _dateinput.text = formattedDate;
-                      });
-                    } else{
-                      print("Date is not selected");
-                    }
-                  },
-                ),
-
-                const SizedBox(
-                  height: 50,
-                ),
-
-                Container(
-                  child: Align(alignment: Alignment.center,
-                    child:
-                    ElevatedButton(
-                      child: const Text('Add product'),
-                      onPressed: () async {
-                        final String productName = _productNameController.text;
-                        final String productCategory =
-                            _productCategoryController.text;
-                        final String manufacturer = _manufacturerController.text;
-                        final String container = _containerInput.text;
-                        final String expDate = _dateinput.text;
-
-                        if (productName != null) {
-                          await _foodItems.add({
-                            "User ID": user?.uid,
-                            "Product Name": productName,
-                            "Product Category": productCategory,
-                            "Manufacturer": manufacturer,
-                            "Container": container,
-                            "Expiration Date": expDate
-                          });
-
-                          _productNameController.text = '';
-                          _productCategoryController.text = '';
-                          _manufacturerController.text = '';
-                          _containerInput.text = "";
-                          _dateinput.text = "";
-
-                          Navigator.of(context).pop();
-                        }
-                        },
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
-          );
+                Navigator.of(context).pop();
+              }
+            },
+          ),);
         });
   }
 
@@ -230,94 +110,39 @@ class _StoragePageState extends State<StoragePage> {
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 0,
-                left: 20,
-                right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: _productNameController,
-                  decoration: const InputDecoration(labelText: 'Product Name'),
-                ),
-                TextField(
-                  controller: _productCategoryController,
-                  decoration:
-                      const InputDecoration(labelText: 'Product Category'),
-                ),
-                TextField(
-                  controller: _manufacturerController,
-                  decoration: const InputDecoration(labelText: 'Manufacturer'),
-                ),
-                TextField(
-                  controller: _containerInput,
-                  decoration: const InputDecoration(labelText: 'Container'),
-                ),
-                TextField(
-                  controller: _dateinput,
-                  decoration: InputDecoration(
-                    labelText: "Expiration Date",
-                    icon: Icon(Icons.alarm,),
+          return FoodItemForm(foodItems: _foodItems, user: user,
+              productNameController: _productNameController,
+              productCategoryController: _productCategoryController,
+              manufacturerController: _manufacturerController,
+              dateInput: _dateinput, containerInput: _containerInput,
+          child: ElevatedButton(
+            child: const Text('Update'),
+            onPressed: () async {
+              final String productName = _productNameController.text;
+              final String productCategory =
+                  _productCategoryController.text;
+              final String manufacturer = _manufacturerController.text;
+              final String container = _containerInput.text;
+              final String date = _dateinput.text;
 
-                  ),
-                  readOnly: true,
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2101)
-                    );
+              if (productName != null) {
+                await _foodItems.doc(documentSnapshot!.id).update({
+                  "Product Name": productName,
+                  "Product Category": productCategory,
+                  "Manufacturer": manufacturer,
+                  "Container": container,
+                  "Expiration Date": date,
+                });
 
-                    if(pickedDate != null) {
-                      print(pickedDate);
-                      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                      print(formattedDate);
+                _productNameController.text = '';
+                _productCategoryController.text = '';
+                _manufacturerController.text = '';
+                _containerInput.text = '';
 
-                      setState(() {
-                        _dateinput.text = formattedDate;
-                      });
-                    } else{
-                      print("Date is not selected");
-                    }
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  child: const Text('Update'),
-                  onPressed: () async {
-                    final String productName = _productNameController.text;
-                    final String productCategory =
-                        _productCategoryController.text;
-                    final String manufacturer = _manufacturerController.text;
-                    final String container = _containerInput.text;
-
-                    if (productName != null) {
-                      await _foodItems.doc(documentSnapshot!.id).update({
-                        "Product Name": productName,
-                        "Product Category": productCategory,
-                        "Manufacturer": manufacturer,
-                        "Container": container,
-                      });
-
-                      _productNameController.text = '';
-                      _productCategoryController.text = '';
-                      _manufacturerController.text = '';
-                      _containerInput.text = '';
-
-                      Navigator.of(context).pop();
-                    }
-                  },
-                )
-              ],
-            ),
-          );
+                Navigator.of(context).pop();
+              }
+            },
+          ),);
         });
   }
 
