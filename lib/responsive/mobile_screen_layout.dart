@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../screens/databasetest_page.dart';
-import '../screens/profile_page.dart';
+import '../screens/storage_page.dart';
+import '../screens/home_page.dart';
 import '../screens/settings_page.dart';
 import '../utilities/global_variable.dart';
 
@@ -43,10 +43,10 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
   List<Widget>_buildHomeScreenItems() {
     return [
-      ProfilePage(
+      HomePage(
       user: widget.user,
     ),
-    const DataBaseTestPage(),
+    const StoragePage(),
     SettingsPage(user: widget.user)
     ];
   }

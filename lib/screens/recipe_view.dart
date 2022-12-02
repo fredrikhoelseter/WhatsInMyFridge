@@ -63,7 +63,5 @@ class _RecipeViewState extends State<RecipeView> {
                 ),
               ),
     );
-
-
   }
 }

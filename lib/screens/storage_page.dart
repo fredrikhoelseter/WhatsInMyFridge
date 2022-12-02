@@ -9,15 +9,15 @@ import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
 
-class DataBaseTestPage extends StatefulWidget {
-  static String routeName = '/databasetestpage';
-  const DataBaseTestPage({Key? key}) : super(key: key);
+class StoragePage extends StatefulWidget {
+  static String routeName = '/storagePage';
+  const StoragePage({Key? key}) : super(key: key);
 
   @override
-  _DataBaseTestPageState createState() => _DataBaseTestPageState();
+  _StoragePageState createState() => _StoragePageState();
 }
 
-class _DataBaseTestPageState extends State<DataBaseTestPage> {
+class _StoragePageState extends State<StoragePage> {
   User? user;
 // text fields' controllers
   final TextEditingController _productNameController = TextEditingController();

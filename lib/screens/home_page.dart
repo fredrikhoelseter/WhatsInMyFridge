@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:whats_in_my_fridge/screens/databasetest_page.dart';
+import 'package:whats_in_my_fridge/screens/storage_page.dart';
 import 'package:whats_in_my_fridge/screens/login_page.dart';
 import 'package:whats_in_my_fridge/screens/recipe_view.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
@@ -14,17 +14,17 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/recipe_model.dart';
 import '../widgets/navigation_buttons.dart';
 
-class ProfilePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   final User user;
 
 
-  const ProfilePage({required this.user});
+  const HomePage({required this.user});
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _HomePageState extends State<HomePage> {
   bool _isSendingVerification = false;
   bool _isSigningOut = false;
   bool _isDeletingUser = false;
