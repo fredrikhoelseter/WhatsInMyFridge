@@ -49,7 +49,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       ),
       const StoragePage(),
       ProfilePage(user: widget.user),
-      SettingsPage(user: widget.user)
+      SettingsPage(user: widget.user),
     ];
   }
 
