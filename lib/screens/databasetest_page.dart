@@ -518,9 +518,10 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                           child: ListTile(
                             title: Text(documentSnapshot['Product Name']),
                             subtitle: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(documentSnapshot['Product Category']),
-                                SizedBox(width: 50,),
+
                                 _buildExpirationMessage(documentSnapshot),
                               ],
                             ),
