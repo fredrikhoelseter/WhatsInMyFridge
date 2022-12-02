@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:whats_in_my_fridge/screens/profile_page.dart';
 import '../screens/storage_page.dart';
 import '../screens/home_page.dart';
 import '../screens/settings_page.dart';
@@ -41,17 +42,16 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     pageController.jumpToPage(page);
   }
 
-  List<Widget>_buildHomeScreenItems() {
+  List<Widget> _buildHomeScreenItems() {
     return [
       HomePage(
-      user: widget.user,
-    ),
-    const StoragePage(),
-    SettingsPage(user: widget.user)
+        user: widget.user,
+      ),
+      const StoragePage(),
+      ProfilePage(user: widget.user),
+      SettingsPage(user: widget.user)
     ];
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +79,13 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
                 size: 30,
               ),
               label: 'Storage',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                size: 30,
+              ),
+              label: 'Profile',
             ),
             BottomNavigationBarItem(
               icon: Icon(
