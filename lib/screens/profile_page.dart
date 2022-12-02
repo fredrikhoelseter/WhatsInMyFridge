@@ -64,21 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     _currentUser = widget.user;
-    setUser();
     super.initState();
-  }
-
-
-  ///Temporary solution for changing the name of the user to the correct one.
-  Future<User?> getUser(){
-    Future<User?> user = FireAuth.getCurrentUser();
-    return user;
-  }
-
-  void setUser() async {
-    _currentUser = (await getUser())!;
-    setState(() {});
-    _currentUser.reload();
   }
 
   @override
