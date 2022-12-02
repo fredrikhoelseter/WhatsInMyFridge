@@ -43,20 +43,28 @@ class _HomePageState extends State<HomePage> {
 //  String applicationKey = "a69ae39077969bd8cf29bc34ce2d6816";
 
   getRecipes(String query) async {
+    ///Clears recipe list
+    recipes.clear();
+
     String url =
         "https://api.edamam.com/search?q=$query&app_id=fe4d49fb&app_key=a69ae39077969bd8cf29bc34ce2d6816";
 
     var response = await http.get(Uri.parse(url));
     Map<String, dynamic> jsonData = jsonDecode(response.body);
 
+    ///Checks every recipe that contains the key words(?)
     jsonData["hits"].forEach((element) {
       //print(element.toString());
 
       RecipeModel recipeModel =
           new RecipeModel(url: '', source: '', image: '', label: '');
       recipeModel = RecipeModel.fromMap(element["recipe"]);
+      ///Adds recipe to list
       recipes.add(recipeModel);
     });
+
+    ///Sets the state and reloads the page
+    setState(() {});
 
     print("${recipes.toString()}");
   }
