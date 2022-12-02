@@ -561,30 +561,31 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
   }
 
   Widget _buildExpirationMessage(DocumentSnapshot documentSnapshot) {
-    int dayDifference = expirationDifferenceInDays(documentSnapshot);
+    int secondsDifference = expirationDifferenceInSeconds(documentSnapshot);
     String expirationMessage = "";
     bool expiredOrSoon = false;
+    int day = 60*60*24;
     if (documentSnapshot["Expiration Date"].toString().isEmpty) {
       expirationMessage = "";
-    } else if (dayDifference < 0) {
+    } else if (secondsDifference < 0) {
       expirationMessage = "Expired: " + documentSnapshot["Expiration Date"];
-    } else if (dayDifference == 0) {
+    } else if (secondsDifference >= 0 && secondsDifference < day) {
       expirationMessage = "Expires today";
-    } else if (dayDifference == 1) {
+    } else if (secondsDifference >= day && secondsDifference < 2*day) {
       expirationMessage = "Expires tomorrow";
-    } else if (dayDifference > 1 && dayDifference < 7) {
-      expirationMessage = "Expires in " + dayDifference.toString() + " days";
-    } else if (dayDifference >= 7 && dayDifference < 14) {
+    } else if (secondsDifference >= 2*day && secondsDifference < 7*day) {
+      expirationMessage = "Expires in " + (secondsDifference/day).round().toString() + " days";
+    } else if (secondsDifference >= 7*day && secondsDifference < 14*day) {
       expirationMessage = "Expires in 1 week";
-    } else if (dayDifference >= 14 && dayDifference < 21) {
+    } else if (secondsDifference >= 14*day && secondsDifference < 21*day) {
       expirationMessage = "Expires in 2 weeks";
-    } else if (dayDifference >= 21 && dayDifference < 28) {
+    } else if (secondsDifference >= 21*day && secondsDifference < 28*day) {
       expirationMessage = "Expires in 3 weeks";
     } else {
       expirationMessage = "Expires in 1 month+";
     }
 
-    if (dayDifference <= 2) {
+    if (secondsDifference <= 2*day) {
       expiredOrSoon = true;
     }
 
@@ -597,7 +598,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
   }
 
 
-  int expirationDifferenceInDays(DocumentSnapshot documentSnapshot) {
+  int expirationDifferenceInSeconds(DocumentSnapshot documentSnapshot) {
     if (documentSnapshot["Expiration Date"].toString().isEmpty) {
       return -1000000;
     }
@@ -613,7 +614,7 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
     Duration difference = expirationDate.difference(currentTime);
 
-    return difference.inDays;
+    return difference.inSeconds;
   }
 
   /// Checks whether a product in the document snapshot should be shown o the page.
