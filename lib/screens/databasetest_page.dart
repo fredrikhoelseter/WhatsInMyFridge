@@ -325,6 +325,16 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
   
   Widget _buildSortDropDown() {
     return DropdownButton<String>(
+      hint: Container(
+        child:
+        const Text('Sort by',
+            style:
+            TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            )
+        ),
+      ),
       underline: Container(),
       icon: Icon(Icons.sort,color: Colors.white),
       items: sortBy.map((sort) => DropdownMenuItem(value: sort, child: Text(sort))).toList(),
