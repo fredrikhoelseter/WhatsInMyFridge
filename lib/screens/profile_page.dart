@@ -17,12 +17,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late User _currentUser;
 
-  Image avatar1 = Image.asset('assets/images/boy.png');
-  Image avatar2 = Image.asset('assets/images/boytwo.png');
-  Image avatar3 = Image.asset('assets/images/girl.png');
-  Image avatar4 = Image.asset('assets/images/girltwo.png');
-
-
   @override
   void initState() {
     _currentUser = widget.user;
@@ -37,7 +31,21 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-      title: Text('Profile Page'),
+        title: Row(
+          children: [
+            Text('Profile Page'),
+            SizedBox(width: 220,),
+            CircleAvatar(
+              radius: 22,
+              backgroundColor: Colors.black,
+              child: CircleAvatar(
+                radius: 21,
+                backgroundColor: Colors.lightGreen,
+                backgroundImage: AssetImage('assets/images/boy.png'),
+              ),
+            ),
+          ],
+        ),
     ),
       body:
          Stack(
@@ -72,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           },
                         child: CircleAvatar(
                           radius: 28,
-                          backgroundColor: Colors.lightGreen,
+                          backgroundColor: Colors.white,
                           backgroundImage: AssetImage('assets/images/boy.png'),
                         ),
                         ),
@@ -117,6 +125,20 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 400.0),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  children: [
+                    Text("Logged in as: ${_currentUser.displayName}", style: TextStyle(fontSize: 28),),
+                    Text("Email: ${_currentUser.email}", style: TextStyle(fontSize: 22),),
+                    Text("Member since: ${_currentUser.metadata.creationTime}", style: TextStyle(fontSize: 16),)
+                  ],
+                ),
+                  
+                ),
+              ),
         ],
         ),
     );

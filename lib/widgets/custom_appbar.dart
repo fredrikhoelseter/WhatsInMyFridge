@@ -23,13 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           centerTitle: true,
           //flexibleSpace: AppbarButtons(),
           actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(Icons.account_circle),
-              ),
-            )
+
           ],
         ),
       ],
