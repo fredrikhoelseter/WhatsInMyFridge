@@ -4,10 +4,4 @@ import 'package:whats_in_my_fridge/screens/databasetest_page.dart';
 import 'package:whats_in_my_fridge/screens/profile_page.dart';
 import 'package:whats_in_my_fridge/screens/settings_page.dart';
 
-List<Widget> homeScreenItems = [
-  ProfilePage(
-    user: FirebaseAuth.instance.currentUser!,
-  ),
-  const DataBaseTestPage(),
-  SettingsPage(user: FirebaseAuth.instance.currentUser!)
-];
+List<Widget> homeScreenItems = [];

@@ -1,3 +1,6 @@
+import 'dart:ffi';
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -256,7 +259,32 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                 ),
                 TextField(
                   controller: _dateinput,
-                  decoration: const InputDecoration(labelText: 'Expiration Date'),
+                  decoration: InputDecoration(
+                    labelText: "Expiration Date",
+                    icon: Icon(Icons.alarm,),
+
+                  ),
+                  readOnly: true,
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101)
+                    );
+
+                    if(pickedDate != null) {
+                      print(pickedDate);
+                      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                      print(formattedDate);
+
+                      setState(() {
+                        _dateinput.text = formattedDate;
+                      });
+                    } else{
+                      print("Date is not selected");
+                    }
+                  },
                 ),
                 const SizedBox(
                   height: 20,
@@ -314,13 +342,21 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
 
   }
 
+  /// Sets the containerString and hides the search bar and then
+  /// calls set state. This changes the product content on the page.
   void setContainer(String string)
   {
     containerString = string;
-    _search = false;
+    hideSearchBar();
     setState(() {
 
     });
+  }
+
+  /// Hides the searchBar. Needs a setState call to update in the UI.
+  void hideSearchBar() {
+    _search = false;
+    _searchBarController.text = "";
   }
   
   Widget _buildSortDropDown() {
@@ -394,9 +430,29 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
     );
   }
 
+  Widget _buildContainerButton(String containerName) {
+    return ElevatedButton(onPressed: () => setContainer(containerName),
+      style: ElevatedButton.styleFrom(
+          side: BorderSide(width: 2.0, color: containerString == containerName ? Colors.green : Colors.white),
+          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+
+          ),
+          backgroundColor: containerString == containerName ? Colors.white : Colors.green
+      ),
+      child: Text(containerName,
+        style: TextStyle(
+          color: containerString == containerName ? Colors.green : Colors.white,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: _search ? _searchBar() : Text("Storage"),
             actions: !_search
@@ -413,10 +469,11 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                 : [
               IconButton(
                   icon: Icon(Icons.clear),
-                  onPressed: () {
+                  onPressed: () => {
+                    hideSearchBar(),
                     setState(() {
-                      _search = false;
-                    });
+
+                    }),
                   }
               )
             ]
@@ -432,59 +489,14 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: ElevatedButton(onPressed: () => setContainer("Fridge"),
-                        style: ElevatedButton.styleFrom(
-                        side: BorderSide(width: 2.0, color: containerString == "Fridge" ? Colors.green : Colors.white),
-                        padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-
-                        ),
-                          backgroundColor: containerString == "Fridge" ? Colors.white : Colors.green
-                      ),
-                        child: Text("Fridge",
-                          style: TextStyle(
-                            color: containerString == "Fridge" ? Colors.green : Colors.white,
-                          ),
-                        ),
-                      ),
+                      child: _buildContainerButton("Fridge"),
                     ),
                     Expanded(
-                      child: ElevatedButton(onPressed: () => setContainer("Freezer"),
-                        style: ElevatedButton.styleFrom(
-                            side: BorderSide(width: 2.0, color: containerString == "Freezer" ? Colors.green : Colors.white),
-                            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-
-                            ),
-                            backgroundColor: containerString == "Freezer" ? Colors.white : Colors.green
-                        ),
-                        child: Text("Freezer",
-                          style: TextStyle(
-                            color: containerString == "Freezer" ? Colors.green : Colors.white,
-                          ),
-                        ),
-                      ),
+                      child: _buildContainerButton("Freezer"),
                     ),
                     Expanded(
-                      child: ElevatedButton(onPressed: () => setContainer("Other"),
-                        style: ElevatedButton.styleFrom(
-                            side: BorderSide(width: 2.0, color: containerString == "Other" ? Colors.green : Colors.white),
-                            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-
-                            ),
-                            backgroundColor: containerString == "Other" ? Colors.white : Colors.green
-                        ),
-                        child: Text("Other",
-                          style: TextStyle(
-                            color: containerString == "Other" ? Colors.green : Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
+                      child: _buildContainerButton("Other"),
+                    )
                   ],
                 ),
               ),
@@ -501,17 +513,17 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
                         final DocumentSnapshot documentSnapshot =
                         streamSnapshot.data!.docs[index];
 
-                        final String productName = documentSnapshot['Product Name'].toString().toLowerCase();
-                        final String manufacturerName = documentSnapshot['Manufacturer'].toString().toLowerCase();
-
-                        return (documentSnapshot['User ID'] == id
-                            && (documentSnapshot['Container'] == containerString && !_search
-                        || (_search && (productName.contains(searchString)
-                                || manufacturerName.contains(searchString))))) ? Card(
+                        return shouldProductShow(documentSnapshot) ? Card(
                           margin: const EdgeInsets.all(10),
                           child: ListTile(
                             title: Text(documentSnapshot['Product Name']),
-                            subtitle: Text(documentSnapshot['Product Category']),
+                            subtitle: Row(
+                              children: [
+                                Text(documentSnapshot['Product Category']),
+                                SizedBox(width: 50,),
+                                _buildExpirationMessage(documentSnapshot),
+                              ],
+                            ),
                             trailing: SizedBox(
                               width: 100,
                               child: Row(
@@ -546,5 +558,104 @@ class _DataBaseTestPageState extends State<DataBaseTestPage> {
           child: const Icon(Icons.add),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
+  }
+
+  Widget _buildExpirationMessage(DocumentSnapshot documentSnapshot) {
+    int dayDifference = expirationDifferenceInDays(documentSnapshot);
+    String expirationMessage = "";
+    bool expiredOrSoon = false;
+    if (documentSnapshot["Expiration Date"].toString().isEmpty) {
+      expirationMessage = "";
+    } else if (dayDifference < 0) {
+      expirationMessage = "Expired: " + documentSnapshot["Expiration Date"];
+    } else if (dayDifference == 0) {
+      expirationMessage = "Expires today";
+    } else if (dayDifference == 1) {
+      expirationMessage = "Expires tomorrow";
+    } else if (dayDifference > 1 && dayDifference < 7) {
+      expirationMessage = "Expires in " + dayDifference.toString() + " days";
+    } else if (dayDifference >= 7 && dayDifference < 14) {
+      expirationMessage = "Expires in 1 week";
+    } else if (dayDifference >= 14 && dayDifference < 21) {
+      expirationMessage = "Expires in 2 weeks";
+    } else if (dayDifference >= 21 && dayDifference < 28) {
+      expirationMessage = "Expires in 3 weeks";
+    } else {
+      expirationMessage = "Expires in 1 month+";
+    }
+
+    if (dayDifference <= 2) {
+      expiredOrSoon = true;
+    }
+
+    return Text(
+      expirationMessage,
+      style: TextStyle(
+        color: expiredOrSoon ? Colors.red : Colors.grey,
+      ),
+    );
+  }
+
+
+  int expirationDifferenceInDays(DocumentSnapshot documentSnapshot) {
+    if (documentSnapshot["Expiration Date"].toString().isEmpty) {
+      return -1000000;
+    }
+
+
+    final DateTime currentTime = DateTime.now();
+    DateTime expirationDate = DateTime.parse(documentSnapshot["Expiration Date"]);
+    expirationDate = DateTime(
+      expirationDate.year,
+      expirationDate.month,
+      expirationDate.day+1
+    );
+
+    Duration difference = expirationDate.difference(currentTime);
+
+    return difference.inDays;
+  }
+
+  /// Checks whether a product in the document snapshot should be shown o the page.
+  /// The document snapshot needs to have fields with these exact names 'User ID',
+  /// 'Container', 'Product Name', 'Manufacturer'
+  bool shouldProductShow(DocumentSnapshot documentSnapshot) {
+    /// If the product UID does not match the user UID, returns false
+    if (documentSnapshot['User ID'] != id) {
+      return false;
+    }
+
+    /// If the user is not searching and the containerString matches
+    /// the product container name, return true
+    if (documentSnapshot['Container'] == containerString && !_search) {
+      return true;
+    }
+
+    /// If the user is not searching, returns false.
+    if (!_search) {
+      return false;
+    }
+
+    /// Split the search up into keywords based on spacing.
+    final List<String> searchKeywords = searchString.split(" ");
+    final String productName = documentSnapshot['Product Name'].toString().toLowerCase();
+    final String manufacturerName = documentSnapshot['Manufacturer'].toString().toLowerCase();
+    int keywordMatchCount = 0;
+
+    /// Iterates over all the keywords and increments a counter based on if the
+    /// keyword matches the product name or manufacturer name.
+    for (int i = 0; i < searchKeywords.length; i++) {
+      if (productName.contains(searchKeywords[i]) || manufacturerName.contains(searchKeywords[i])) {
+        keywordMatchCount++;
+      }
+    }
+
+    /// If the keywordMatchCount matches (or is greater than) the length of the
+    /// keywords, returns true.
+    if (keywordMatchCount >= searchKeywords.length) {
+      return true;
+    }
+
+    return false;
   }
 }

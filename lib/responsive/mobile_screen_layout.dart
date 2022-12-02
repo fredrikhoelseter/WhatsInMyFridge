@@ -1,9 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../screens/databasetest_page.dart';
+import '../screens/profile_page.dart';
+import '../screens/settings_page.dart';
 import '../utilities/global_variable.dart';
 
 class MobileScreenLayout extends StatefulWidget {
-  const MobileScreenLayout({Key? key}) : super(key: key);
+  MobileScreenLayout({Key? key, required this.user}) : super(key: key);
+  User user;
 
   @override
   State<MobileScreenLayout> createState() => _MobileScreenLayoutState();
@@ -36,37 +41,56 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     pageController.jumpToPage(page);
   }
 
+  List<Widget>_buildHomeScreenItems() {
+    return [
+      ProfilePage(
+      user: widget.user,
+    ),
+    const DataBaseTestPage(),
+    SettingsPage(user: widget.user)
+    ];
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: homeScreenItems,
+        children: _buildHomeScreenItems(),
         controller: pageController,
         onPageChanged: onPageChanged,
       ),
-      bottomNavigationBar: CupertinoTabBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: CupertinoTabBar(
+          height: 50,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                size: 30,
+              ),
+              label: 'Home',
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.storage,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.storage,
+                size: 30,
+              ),
+              label: 'Storage',
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings,
+                size: 30,
+              ),
+              label: 'Settings',
             ),
-            label: '',
-          ),
-        ],
-        onTap: navigationTapped,
-        currentIndex: _page,
+          ],
+          onTap: navigationTapped,
+          currentIndex: _page,
+        ),
       ),
     );
   }

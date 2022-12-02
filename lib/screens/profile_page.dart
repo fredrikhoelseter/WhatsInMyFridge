@@ -186,9 +186,9 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      floatingActionButton: NavigationButtons(),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
+      // floatingActionButton: NavigationButtons(),
+      // floatingActionButtonLocation:
+      //     FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }
@@ -226,11 +226,11 @@ class _RecipeTileState extends State<RecipeTile> {
               _launchURL(widget.url);
             } else {
               print(widget.url + " this is what we are going to see");
-              //Navigator.push(
-              //    context,
-              //    MaterialPageRoute(
-              //        builder: (context) => RecipeView(postUrl: widget.url,))
-              //);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                     builder: (context) => RecipeView(postUrl: widget.url,))
+              );
             }
           },
           child: Container(
