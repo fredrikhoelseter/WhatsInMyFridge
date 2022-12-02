@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   .pushReplacement(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      MobileScreenLayout(),
+                                                      MobileScreenLayout(user: user),
                                                 ),
                                               );
                                             }
