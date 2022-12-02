@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => MobileScreenLayout(),
+          builder: (context) => MobileScreenLayout(user: user),
         ),
       );
     }

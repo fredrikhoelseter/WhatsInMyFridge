@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
               bodyText1: TextStyle(fontSize: 18.0),
             ),
           ),
-          home: MobileScreenLayout(),
+          home: AuthWrapper(),
           routes: {
             DataBaseTestPage.routeName: (context) => DataBaseTestPage(),
           },
@@ -58,16 +58,16 @@ class MyApp extends StatelessWidget {
 }
 
 class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({Key? key}) : super(key: key);
+   const AuthWrapper({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    final firebaseUser = context.watch<User?>();
+   @override
+   Widget build(BuildContext context) {
+     final firebaseUser = context.watch<User?>();
 
-    if (firebaseUser != null) {
-      return const MobileScreenLayout();
-    } else {
-      return LoginPage();
-    }
-  }
+     if (firebaseUser != null) {
+       return MobileScreenLayout(user: firebaseUser);
+     } else {
+       return LoginPage();
+     }
+   }
 }
