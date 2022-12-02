@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.green),
                   ),
                   SizedBox(
-                    width: 15,
+                    width: 5,
                   ),
                   Text(
                     '${_currentUser.displayName}',
@@ -109,19 +109,23 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(
-                height: 10,
+                height: 50,
               ),
-              Text(
-                'What will you cook today?',
-                style: TextStyle(fontSize: 20),
+              Text("Here are some of your available food items stored in your containers: "),
+              SizedBox(
+                height: 100,
+                width: 400,
+                child: Container(padding: EdgeInsets.all(10), decoration: const BoxDecoration(color: Colors.red),
+                  child: Text("Maybe display items in storage here some way"),
+                ),
               ),
               SizedBox(
-                height: 10,
+                height: 50,
               ),
               Text(
                   'Just enter ingredrients you have and we will show the best recipe for you'),
               SizedBox(
-                height: 30,
+                height: 10,
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
