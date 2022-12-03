@@ -9,16 +9,18 @@ import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
 import 'package:whats_in_my_fridge/widgets/food_item_form.dart';
+import 'package:whats_in_my_fridge/widgets/search_bar.dart';
+import 'package:whats_in_my_fridge/utilities/global_variable.dart';
 
 class StoragePage extends StatefulWidget {
   static String routeName = '/storagePage';
   const StoragePage({Key? key}) : super(key: key);
 
   @override
-  _StoragePageState createState() => _StoragePageState();
+  _storagePageState createState() => _storagePageState();
 }
 
-class _StoragePageState extends State<StoragePage> {
+class _storagePageState extends State<StoragePage> {
   User? user;
 // text fields' controllers
   final TextEditingController _productNameController = TextEditingController();
@@ -44,7 +46,14 @@ class _StoragePageState extends State<StoragePage> {
   bool isDescending = false;
 
   String containerString = "Fridge";
-  String searchString = "";
+
+
+  void refresh() {
+    setState(() {
+
+    });
+  }
+
   bool _search = false;
 
   @override
@@ -257,36 +266,6 @@ class _StoragePageState extends State<StoragePage> {
     setState(() {});
   }
 
-  Widget _searchBar() { //add
-    return TextField(
-      controller: _searchBarController,
-      autofocus: true,
-      cursorColor: Colors.white,
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-      ),
-      textInputAction: TextInputAction.search,
-      decoration: const InputDecoration(
-        enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white)
-        ),
-        focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white)
-        ),
-        hintText: 'Search',
-        hintStyle: TextStyle(
-          color: Colors.white60,
-          fontSize: 20,
-        ),
-      ),
-      onChanged: (String s) {
-        setState(() {
-          searchString = s.toLowerCase();
-        });
-      },
-    );
-  }
 
   Widget _buildContainerButton(String containerName) {
     return ElevatedButton(onPressed: () => setContainer(containerName),
@@ -309,10 +288,13 @@ class _StoragePageState extends State<StoragePage> {
 
   @override
   Widget build(BuildContext context) {
+    SearchBar searchBar = SearchBar(searchBarController: _searchBarController,
+        notifyParent: refresh);
     return Scaffold(
       resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: _search ? _searchBar() : Text("Storage"),
+          title: _search ? searchBar
+              : Text("Storage"),
             actions: !_search
                 ? [
               _buildSortDropDown(),
@@ -507,7 +489,7 @@ class _StoragePageState extends State<StoragePage> {
     }
 
     /// Split the search up into keywords based on spacing.
-    final List<String> searchKeywords = searchString.split(" ");
+    final List<String> searchKeywords = SearchStringItemPage.split(" ");
     final String productName = documentSnapshot['Product Name'].toString().toLowerCase();
     final String manufacturerName = documentSnapshot['Manufacturer'].toString().toLowerCase();
     int keywordMatchCount = 0;

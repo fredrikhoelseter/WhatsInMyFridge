@@ -40,6 +40,8 @@ class _foodItemFormState extends State<FoodItemForm> {
 
   var foodContainers = ['Fridge', 'Freezer', 'Other'];
 
+  String searchString = "";
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -54,7 +56,7 @@ class _foodItemFormState extends State<FoodItemForm> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextFormField(
+            TextField(
               cursorColor: Colors.green,
               decoration: InputDecoration(
                   filled: true,
