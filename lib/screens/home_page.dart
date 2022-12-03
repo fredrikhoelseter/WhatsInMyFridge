@@ -90,15 +90,15 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: <Widget>[
               SizedBox(height: 16,),
-              Row(
+              Column(
                 children: [
                   Text(
-                    'Welgome back',
+                    'Welcome back',
                     style: GoogleFonts.openSans(fontSize: 25,
                         fontWeight: FontWeight.w400,
                         color: Colors.green),),
                   SizedBox(
-                    width: 5,
+                    height: 5,
                   ),
                   Text(
                     '${_currentUser.displayName}',

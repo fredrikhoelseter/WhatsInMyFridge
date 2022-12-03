@@ -32,8 +32,7 @@ class _storagePageState extends State<StoragePage> {
   final TextEditingController _containerInput = TextEditingController();
   final TextEditingController _searchBarController = TextEditingController();
 
-  final CollectionReference _foodItems =
-      FirebaseFirestore.instance.collection('foodItems');
+
 
   // Needs to be initialized in firebase
   // Example categories
@@ -64,7 +63,7 @@ class _storagePageState extends State<StoragePage> {
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
-          return FoodItemForm(foodItems: _foodItems, user: user,
+          return FoodItemForm(foodItems: foodItems, user: user,
               productNameController: _productNameController,
               productCategoryController: _productCategoryController,
               manufacturerController: _manufacturerController,
@@ -80,7 +79,7 @@ class _storagePageState extends State<StoragePage> {
               final String expDate = _dateinput.text;
 
               if (FoodItemForm.ProductFormKey.currentState!.validate()) {
-                await _foodItems.add({
+                await foodItems.add({
                   "User ID": user?.uid,
                   "Product Name": productName,
                   "Product Category": productCategory,
@@ -112,7 +111,7 @@ class _storagePageState extends State<StoragePage> {
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
-          return FoodItemForm(foodItems: _foodItems, user: user,
+          return FoodItemForm(foodItems: foodItems, user: user,
               productNameController: _productNameController,
               productCategoryController: _productCategoryController,
               manufacturerController: _manufacturerController,
@@ -127,7 +126,7 @@ class _storagePageState extends State<StoragePage> {
               final String container = _containerInput.text;
               final String date = _dateinput.text;
               if (FoodItemForm.ProductFormKey.currentState!.validate()) {
-                await _foodItems.doc(documentSnapshot!.id).update({
+                await foodItems.doc(documentSnapshot!.id).update({
                   "Product Name": productName,
                   "Product Category": productCategory,
                   "Manufacturer": manufacturer,
@@ -164,7 +163,7 @@ class _storagePageState extends State<StoragePage> {
                 SizedBox(height: 16,),
                 ElevatedButton(
                     onPressed: () {
-                      _foodItems.doc(productId).delete();
+                      foodItems.doc(productId).delete();
                       Navigator.of(context).pop();
                       },
                     child: Text("Delete"),
@@ -300,7 +299,7 @@ class _storagePageState extends State<StoragePage> {
               Padding(
                 padding: const EdgeInsets.only(top: 75),
                 child: StreamBuilder(
-                stream: _foodItems.orderBy(CurrentStringSortSelected, descending: CurrentSortSelectedIsDescending).snapshots(),
+                stream: foodItems.orderBy(CurrentStringSortSelected, descending: CurrentSortSelectedIsDescending).snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                   getIDAsString();
                   if (streamSnapshot.hasData) {
