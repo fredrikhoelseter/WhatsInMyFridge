@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:whats_in_my_fridge/main.dart';
 import 'package:whats_in_my_fridge/responsive/mobile_screen_layout.dart';
 import 'package:whats_in_my_fridge/screens/home_page.dart';
 import 'package:whats_in_my_fridge/screens/register_page.dart';
@@ -143,7 +146,8 @@ class _LoginPageState extends State<LoginPage> {
                                                   .pushReplacement(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      MobileScreenLayout(user: user),
+                                                      MobileScreenLayout(
+                                                          user: user),
                                                 ),
                                               );
                                             }
@@ -168,6 +172,21 @@ class _LoginPageState extends State<LoginPage> {
                                         },
                                         child: Text(
                                           'Register',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 24.0),
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          final provider =
+                                              Provider.of<FireAuth>(context,
+                                                  listen: false);
+                                          provider.googleLogin();
+                                        },
+                                        child: Text(
+                                          'Google Sign In',
                                           style: TextStyle(color: Colors.white),
                                         ),
                                       ),
