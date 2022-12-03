@@ -11,6 +11,7 @@ import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
 import 'package:whats_in_my_fridge/widgets/food_item_form.dart';
 import 'package:whats_in_my_fridge/widgets/search_bar.dart';
 import 'package:whats_in_my_fridge/utilities/global_variable.dart';
+import 'package:whats_in_my_fridge/widgets/sort_selector.dart';
 
 class StoragePage extends StatefulWidget {
   static String routeName = '/storagePage';
@@ -38,12 +39,6 @@ class _storagePageState extends State<StoragePage> {
   var foodCategories = ['Beverage', 'Dairy', 'Meats', 'Dry', 'Other'];
 
   var foodContainers = ['Fridge', 'Freezer', 'Other'];
-
-  var sortBy = ['Expiration Date', 'Product Name', 'Product Category'];
-
-  String currentSort = "Expiration Date";
-
-  bool isDescending = false;
 
   String containerString = "Fridge";
 
@@ -225,46 +220,7 @@ class _storagePageState extends State<StoragePage> {
     _search = false;
     _searchBarController.text = "";
   }
-  
-  Widget _buildSortDropDown() {
-    return DropdownButton<String>(
-      hint: Container(
-        child:
-        const Text('',
-            style:
-            TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-            )
-        ),
-      ),
-      underline: Container(),
-      icon: Icon(Icons.sort,color: Colors.white),
-      items: sortBy.map((sort) => DropdownMenuItem(value: sort, child: Text(sort))).toList(),
-      onChanged: (sort) => _sortSelected(sort),
-    );
-  }
 
-  void _sortSelected(String? sort){
-
-    if(currentSort == sort)
-    {
-      if (isDescending == false)
-      {
-        isDescending = true;
-      }
-      else
-      {
-        isDescending = false;
-      }
-    }
-    else
-    {
-      currentSort = sort!;
-    }
-
-    setState(() {});
-  }
 
 
   Widget _buildContainerButton(String containerName) {
@@ -297,7 +253,7 @@ class _storagePageState extends State<StoragePage> {
               : Text("Storage"),
             actions: !_search
                 ? [
-              _buildSortDropDown(),
+              SortSelector(notifyParent: refresh,),
               IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
@@ -343,7 +299,7 @@ class _storagePageState extends State<StoragePage> {
               Padding(
                 padding: const EdgeInsets.only(top: 75),
                 child: StreamBuilder(
-                stream: _foodItems.orderBy(currentSort, descending: isDescending).snapshots(),
+                stream: _foodItems.orderBy(CurrentStringSortSelected, descending: CurrentSortSelectedIsDescending).snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                   getIDAsString();
                   if (streamSnapshot.hasData) {
