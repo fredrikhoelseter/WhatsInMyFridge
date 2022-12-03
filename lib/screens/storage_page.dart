@@ -427,27 +427,34 @@ class _StoragePageState extends State<StoragePage> {
     );
   }
 
-
+  /// Parses the documentSnapshot of the expiration date to a DateTime
+  /// and returns the difference from the current time in seconds.
+  /// Prone to error if the documentSnapshot has an invalid date format,
   int expirationDifferenceInSeconds(DocumentSnapshot documentSnapshot) {
     if (documentSnapshot["Expiration Date"].toString().isEmpty) {
-      return -1000000;
+      return -100000000;
     }
 
+    try {
+      final DateTime currentTime = DateTime.now();
+      DateTime expirationDate = DateTime.parse(
+          documentSnapshot["Expiration Date"]);
+      expirationDate = DateTime(
+          expirationDate.year,
+          expirationDate.month,
+          expirationDate.day + 1
+      );
 
-    final DateTime currentTime = DateTime.now();
-    DateTime expirationDate = DateTime.parse(documentSnapshot["Expiration Date"]);
-    expirationDate = DateTime(
-      expirationDate.year,
-      expirationDate.month,
-      expirationDate.day+1
-    );
+      Duration difference = expirationDate.difference(currentTime);
 
-    Duration difference = expirationDate.difference(currentTime);
-
-    return difference.inSeconds;
+      return difference.inSeconds;
+    } catch (e) {
+      print("The expiration date was in an invalid format. " + e.toString());
+      return -1000000000;
+    }
   }
 
-  /// Checks whether a product in the document snapshot should be shown o the page.
+  /// Checks whether a product in the document snapshot should be shown on the page.
   /// The document snapshot needs to have fields with these exact names 'User ID',
   /// 'Container', 'Product Name', 'Manufacturer'
   bool shouldProductShow(DocumentSnapshot documentSnapshot) {
