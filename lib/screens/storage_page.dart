@@ -140,11 +140,41 @@ class _StoragePageState extends State<StoragePage> {
   }
 
   Future<void> _delete(String productId) async {
-    await _foodItems.doc(productId).delete();
+    await showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext ctx) {
+        return Padding(
+          padding: EdgeInsets.only(
+              top: 20,
+              left: 20,
+              right: 20,
+              bottom: MediaQuery.of(context).size.height * 0.15),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("Are you sure you want to delete this item?",
+                style: TextStyle(fontSize: 16),),
+                SizedBox(height: 16,),
+                ElevatedButton(
+                    onPressed: () {
+                      _foodItems.doc(productId).delete();
+                      Navigator.of(context).pop();
+                      },
+                    child: Text("Delete"),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
+                    )
+              ]
+          ),
+        );
+
+    }
+    );
 
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('You have successfully deleted a product')));
+    //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //    content: Text('You have successfully deleted a product')));
   }
 
   Future<String?> getID() async {
@@ -343,7 +373,9 @@ class _StoragePageState extends State<StoragePage> {
 
                         return shouldProductShow(documentSnapshot) ? Card(
                           margin: const EdgeInsets.all(10),
-                          child: ListTile(
+                          child: GestureDetector (
+                            onLongPress: () => _update(documentSnapshot),
+                            child: ListTile(
                             title: Text(documentSnapshot['Product Name']),
                             subtitle: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -366,7 +398,7 @@ class _StoragePageState extends State<StoragePage> {
                                 ],
                               ),
                             ),
-                          ),
+                          ),),
                         )
                             : SizedBox();
                       },
