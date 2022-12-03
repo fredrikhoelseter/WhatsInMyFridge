@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:whats_in_my_fridge/screens/storage_page.dart';
 import 'package:whats_in_my_fridge/screens/login_page.dart';
 import 'package:whats_in_my_fridge/screens/recipe_view.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
+import 'package:whats_in_my_fridge/utilities/global_variable.dart';
 import 'package:whats_in_my_fridge/widgets/bottom_navbar.dart';
 import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
 import 'package:http/http.dart' as http;
@@ -26,10 +28,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _isSendingVerification = false;
-  bool _isSigningOut = false;
-  bool _isDeletingUser = false;
-  bool _isResettingPassword = false;
 
   late User _currentUser;
 
@@ -76,8 +74,21 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+
+  Future<String?> getID() async {
+    String? userID = await FireAuth.getCurrentUserID();
+    return userID;
+  }
+
+  String id = "";
+
+  void getIDAsString() async {
+    id = (await getID())!;
+  }
+
   @override
   Widget build(BuildContext context) {
+    var _foodItems;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(
@@ -89,7 +100,6 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.all(20),
           child: Column(
             children: <Widget>[
-              SizedBox(height: 16,),
               Column(
                 children: [
                   Text(
@@ -109,12 +119,52 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(
-                height: 50,
+                height: 20,
               ),
               Text("Here are some of your available food items stored in your containers: ", style: GoogleFonts.openSans(fontSize: 20),),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 200,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.green, width: 2), borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: StreamBuilder(
+                      stream: foodItems.orderBy(CurrentStringSortSelected).snapshots(),
+                      builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                        getIDAsString();
+                        if (streamSnapshot.hasData) {
+                          return ListView.builder(
+                              itemCount: streamSnapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                            final DocumentSnapshot documentSnapshot =
+                            streamSnapshot.data!.docs[index];
+
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Colors.black))
+                                ),
+                                child: ListTile(
+                                  title: Text(documentSnapshot['Product Name'], style: TextStyle(fontSize: 18),),
+                                  subtitle: Text("Expiring:   ${documentSnapshot['Expiration Date']}"),
+                                ),
+                              ),
+                            );
+                          }
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                  ),
+              ),
 
               SizedBox(
-                height: 50,
+                height: 20,
               ),
               Text(
                   'Just enter ingredrients you have and we will show the best recipe for you',
