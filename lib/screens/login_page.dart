@@ -184,6 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                                               Provider.of<FireAuth>(context,
                                                   listen: false);
                                           provider.googleLogin();
+                                          setState(() {});
                                         },
                                         child: Text(
                                           'Google Sign In',
