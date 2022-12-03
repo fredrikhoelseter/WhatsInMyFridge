@@ -75,6 +75,45 @@ class _SettingsPageState extends State<SettingsPage> {
     resettingPasswordText = "Link sent to your connect email!";
   }
 
+  //Show warning pop up dialog when user tries to delete accout.
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop(); // dismiss dialog
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () async {
+        await FireAuth.deleteUser(context);
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ),
+        );
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Confirm Dialog"),
+      content:
+          Text("Are you sure you want to permanently delete your account?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,20 +197,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 //Button that calls the delete user function.
                 //Gets pushed back to the login page.
                 SettingsItem(
-                  onTap: () async {
-                    setState(() {
-                      _isDeletingUser = true;
-                    });
-                    await FireAuth.deleteUser(context);
-
-                    setState(() {
-                      _isDeletingUser = false;
-                    });
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ),
-                    );
+                  onTap: () {
+                    showAlertDialog(context);
                   },
                   icons: CupertinoIcons.delete_solid,
                   title: "Delete account",
