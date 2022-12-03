@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   late String ingridents;
   bool _loading = false;
+  ///input from recipe-search
   String query = "";
   TextEditingController recipeSearchController = new TextEditingController();
 
@@ -45,13 +46,12 @@ class _HomePageState extends State<HomePage> {
     ///Clears recipe list
     recipes.clear();
 
-    String url =
-        "https://api.edamam.com/search?q=$query&app_id=fe4d49fb&app_key=a69ae39077969bd8cf29bc34ce2d6816";
+    String url = "https://api.edamam.com/search?q=$query&app_id=fe4d49fb&app_key=a69ae39077969bd8cf29bc34ce2d6816";
 
     var response = await http.get(Uri.parse(url));
     Map<String, dynamic> jsonData = jsonDecode(response.body);
 
-    ///Checks every recipe that contains the key words(?)
+    ///Checks every recipe that contains the key words
     jsonData["hits"].forEach((element) {
       //print(element.toString());
 
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(15),
           child: Column(
             children: <Widget>[
               Column(
@@ -125,10 +125,12 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 20,
               ),
+
+              /// Section displaying stored foods on homepage.
               Container(
-                height: 200,
+                height: 250,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green, width: 2), borderRadius: BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(color: Colors.black, width: 1), borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
                   child: StreamBuilder(
                       stream: foodItems.orderBy(CurrentStringSortSelected).snapshots(),
@@ -142,10 +144,11 @@ class _HomePageState extends State<HomePage> {
                             streamSnapshot.data!.docs[index];
 
                             return Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border(bottom: BorderSide(color: Colors.black))
+                                  border: Border.all(color: Colors.green, width: 2), borderRadius: BorderRadius.all(Radius.circular(15)),
+                                //  border: Border(bottom: BorderSide(color: Colors.black))
                                 ),
                                 child: ListTile(
                                   title: Text(documentSnapshot['Product Name'], style: TextStyle(fontSize: 18),),
@@ -172,6 +175,8 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 20,
               ),
+
+              /// Searchfield for recipe-searches
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Row(
@@ -197,6 +202,8 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       width: 16,
                     ),
+
+                    /// onTap trigger Recipe-search based on the content of the textfield
                     InkWell(
                       onTap: () async {
                         if (recipeSearchController.text.isNotEmpty) {
@@ -216,6 +223,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 30,
               ),
+              /// Section for recipes from API-search shown in a grid.
               Container(
                 child: GridView.count(
                   shrinkWrap: true,
@@ -260,7 +268,9 @@ class RecipeTile extends StatefulWidget {
 
 class _RecipeTileState extends State<RecipeTile> {
   _launchURL(String url) async {
-    print(url);
+    if (kDebugMode) {
+      print(url);
+    }
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -268,6 +278,7 @@ class _RecipeTileState extends State<RecipeTile> {
     }
   }
 
+  ///onTap push navigator to webpage url showing original recipe from API.
   @override
   Widget build(BuildContext context) {
     return Wrap(

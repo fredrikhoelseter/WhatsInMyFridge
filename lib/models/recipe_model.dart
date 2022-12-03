@@ -1,3 +1,4 @@
+/// Class holding necessary elements from API-search.
 class RecipeModel {
 
   String label;
