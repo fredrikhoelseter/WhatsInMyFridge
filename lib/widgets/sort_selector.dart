@@ -22,13 +22,6 @@ class _SortSelectorState extends State<SortSelector> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
-      hint: const Text('Sort by',
-          style:
-          TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-          )
-      ),
       underline: Container(),
       icon: const Icon(Icons.sort, color: Colors.white),
       items: SortSelector.sortBy.map((sort) =>
