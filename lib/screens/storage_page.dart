@@ -74,7 +74,7 @@ class _StoragePageState extends State<StoragePage> {
               final String container = _containerInput.text;
               final String expDate = _dateinput.text;
 
-              if (productName != null) {
+              if (FoodItemForm.ProductFormKey.currentState!.validate()) {
                 await _foodItems.add({
                   "User ID": user?.uid,
                   "Product Name": productName,
@@ -84,17 +84,14 @@ class _StoragePageState extends State<StoragePage> {
                   "Expiration Date": expDate
                 });
 
-                _productNameController.text = '';
-                _productCategoryController.text = '';
-                _manufacturerController.text = '';
-                _containerInput.text = "";
-                _dateinput.text = "";
+                resetTextFields();
 
                 Navigator.of(context).pop();
               }
             },
           ),);
-        });
+        }).whenComplete(() => {
+        resetTextFields()});
   }
 
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
@@ -124,8 +121,7 @@ class _StoragePageState extends State<StoragePage> {
               final String manufacturer = _manufacturerController.text;
               final String container = _containerInput.text;
               final String date = _dateinput.text;
-
-              if (productName != null) {
+              if (FoodItemForm.ProductFormKey.currentState!.validate()) {
                 await _foodItems.doc(documentSnapshot!.id).update({
                   "Product Name": productName,
                   "Product Category": productCategory,
@@ -134,16 +130,13 @@ class _StoragePageState extends State<StoragePage> {
                   "Expiration Date": date,
                 });
 
-                _productNameController.text = '';
-                _productCategoryController.text = '';
-                _manufacturerController.text = '';
-                _containerInput.text = '';
+                resetTextFields();
 
                 Navigator.of(context).pop();
               }
             },
           ),);
-        });
+        }).whenComplete(() => resetTextFields());
   }
 
   Future<void> _delete(String productId) async {
@@ -164,6 +157,16 @@ class _StoragePageState extends State<StoragePage> {
   void getIDAsString() async {
 
     id = (await getID())!;
+
+  }
+
+  void resetTextFields() {
+    _productNameController.text = '';
+    _productCategoryController.text = '';
+    _manufacturerController.text = '';
+    _containerInput.text = "";
+    _dateinput.text = "";
+
 
   }
 
