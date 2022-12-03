@@ -53,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
         _focusPassword.unfocus();
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title:
           Text('Whats in my fridge', style: GoogleFonts.pacifico(fontSize: 28),
