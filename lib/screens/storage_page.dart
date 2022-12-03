@@ -188,7 +188,7 @@ class _StoragePageState extends State<StoragePage> {
     return DropdownButton<String>(
       hint: Container(
         child:
-        const Text('Sort by',
+        const Text('',
             style:
             TextStyle(
               color: Colors.white,
@@ -383,7 +383,8 @@ class _StoragePageState extends State<StoragePage> {
           onPressed: () => _create(),
           child: const Icon(Icons.add),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat
+    );
   }
 
   Widget _buildExpirationMessage(DocumentSnapshot documentSnapshot) {

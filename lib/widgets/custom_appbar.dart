@@ -6,11 +6,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
 
   const CustomAppBar({
-    Key? key, required this.title,
-    this.height = kToolbarHeight*1,
+    Key? key,
+    required this.title,
+    this.height = kToolbarHeight * 1,
   }) : super(key: key);
-
-
 
   @override
   Size get preferredSize => Size.fromHeight(height);
@@ -18,21 +17,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>
-      [
+      children: <Widget>[
         AppBar(
           title: title,
           centerTitle: true,
           //flexibleSpace: AppbarButtons(),
           actions: <Widget>[
-            Padding(padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () {},
-              child: Icon(Icons.account_circle),
-            ),)
+
           ],
         ),
-
       ],
     );
   }
