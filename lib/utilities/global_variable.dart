@@ -8,3 +8,7 @@ List<Widget> homeScreenItems = [];
 
 String SearchStringItemPage = "";
 
+String CurrentStringSortSelected = "Expiration Date";
+
+bool CurrentSortSelectedIsDescending = false;
+

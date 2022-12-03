@@ -121,12 +121,13 @@ class _SettingsPageState extends State<SettingsPage> {
         title: Text('Settings'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
         child: ListView(
           children: [
             //A group for the settings items.
             SettingsGroup(
-              settingsGroupTitle: "Account",
+              settingsGroupTitle: "Account: ${_currentUser.email}",
+              settingsGroupTitleStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
               items: [
                 //Send a link to the current users email
                 //User can verify email
