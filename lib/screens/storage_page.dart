@@ -84,17 +84,14 @@ class _StoragePageState extends State<StoragePage> {
                   "Expiration Date": expDate
                 });
 
-                _productNameController.text = '';
-                _productCategoryController.text = '';
-                _manufacturerController.text = '';
-                _containerInput.text = "";
-                _dateinput.text = "";
+                resetTextFields();
 
                 Navigator.of(context).pop();
               }
             },
           ),);
-        });
+        }).whenComplete(() => {
+        resetTextFields()});
   }
 
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
@@ -134,16 +131,13 @@ class _StoragePageState extends State<StoragePage> {
                   "Expiration Date": date,
                 });
 
-                _productNameController.text = '';
-                _productCategoryController.text = '';
-                _manufacturerController.text = '';
-                _containerInput.text = '';
+                resetTextFields();
 
                 Navigator.of(context).pop();
               }
             },
           ),);
-        });
+        }).whenComplete(() => resetTextFields());
   }
 
   Future<void> _delete(String productId) async {
@@ -165,6 +159,14 @@ class _StoragePageState extends State<StoragePage> {
 
     id = (await getID())!;
 
+  }
+
+  void resetTextFields() {
+    _productNameController.text = '';
+    _productCategoryController.text = '';
+    _manufacturerController.text = '';
+    _containerInput.text = "";
+    _dateinput.text = "";
   }
 
   /// Sets the containerString and hides the search bar and then
