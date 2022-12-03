@@ -41,4 +41,30 @@ class Validator {
 
     return null;
   }
+
+  static String? validateProductField({required String? field}) {
+    if (field == null) {
+      return null;
+    }
+
+    if (field.isEmpty) {
+      return 'Field must be filled out';
+    } else if (field.length > 30) {
+      return 'Field cannot exceed 30 characters';
+    }
+
+    return null;
+  }
+
+  static String? validateContainer({required String? container}) {
+    if (container == null) {
+      return null;
+    }
+
+    if (container.isEmpty) {
+      return 'Choose a container';
+    }
+
+    return null;
+  }
 }
