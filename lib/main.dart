@@ -6,7 +6,7 @@ import 'package:whats_in_my_fridge/screens/storage_page.dart';
 import 'package:whats_in_my_fridge/screens/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'screens/login_page.dart';
 
 void main() async {
@@ -30,6 +30,8 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Authentication',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
+            fontFamily: GoogleFonts.openSans().fontFamily,
+            primaryTextTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
             brightness: Brightness.light,
             primarySwatch: Colors.green,
             elevatedButtonTheme: ElevatedButtonThemeData(
@@ -46,7 +48,9 @@ class MyApp extends StatelessWidget {
                 color: Colors.green.shade700,
                 fontWeight: FontWeight.w500,
               ),
-              bodyText1: TextStyle(fontSize: 18.0),
+              bodyText1: TextStyle(fontSize: 18.0, fontFamily: GoogleFonts.openSans().fontFamily,),
+              bodyText2: TextStyle(fontSize: 12, fontFamily: GoogleFonts.openSans().fontFamily,),
+
             ),
           ),
           home: AuthWrapper(),

@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import '../models/recipe_model.dart';
 import '../widgets/navigation_buttons.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   final User user;
@@ -80,52 +81,46 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(
-        title: Text('Whats in my fridge'),
+        title: Text('Whats in my fridge', style: GoogleFonts.pacifico(fontSize: 28),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(20),
           child: Column(
             children: <Widget>[
+              SizedBox(height: 16,),
               Row(
                 children: [
                   Text(
-                    'Welcome back',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.green),
-                  ),
+                    'Welgome back',
+                    style: GoogleFonts.openSans(fontSize: 25,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.green),),
                   SizedBox(
                     width: 5,
                   ),
                   Text(
                     '${_currentUser.displayName}',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.blue),
+                    style: GoogleFonts.openSans(fontSize: 25,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ],
               ),
               SizedBox(
                 height: 50,
               ),
-              Text("Here are some of your available food items stored in your containers: "),
-              SizedBox(
-                height: 100,
-                width: 400,
-                child: Container(padding: EdgeInsets.all(10), decoration: const BoxDecoration(color: Colors.red),
-                  child: Text("Maybe display items in storage here some way"),
-                ),
-              ),
+              Text("Here are some of your available food items stored in your containers: ", style: GoogleFonts.openSans(fontSize: 20),),
+
               SizedBox(
                 height: 50,
               ),
               Text(
-                  'Just enter ingredrients you have and we will show the best recipe for you'),
+                  'Just enter ingredrients you have and we will show the best recipe for you',
+                  style: GoogleFonts.openSans(fontSize: 20)),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
@@ -136,8 +131,17 @@ class _HomePageState extends State<HomePage> {
                         controller: recipeSearchController,
                         decoration: InputDecoration(
                             hintText: 'Enter Ingridients',
-                            hintStyle: TextStyle(fontSize: 18)),
-                        style: TextStyle(fontSize: 18),
+                            hintStyle: TextStyle(fontSize: 18),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey, width: 2),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.black, width: 2),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        style: GoogleFonts.openSans(),
                       ),
                     ),
                     SizedBox(
@@ -153,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                       child: Container(
-                        child: Icon(Icons.search),
+                        child: Icon(Icons.search, size: 40,),
                       ),
                     )
                   ],

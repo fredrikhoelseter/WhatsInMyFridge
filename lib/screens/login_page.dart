@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_in_my_fridge/main.dart';
 import 'package:whats_in_my_fridge/responsive/mobile_screen_layout.dart';
@@ -52,10 +53,12 @@ class _LoginPageState extends State<LoginPage> {
         _focusPassword.unfocus();
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text(
-            "What's in my Fridge",
+          title:
+          Text('Whats in my fridge', style: GoogleFonts.pacifico(fontSize: 28),
           ),
+          centerTitle: true,
         ),
         body: FutureBuilder(
           future: _initializeFirebase(),
@@ -115,85 +118,82 @@ class _LoginPageState extends State<LoginPage> {
                           _isProcessing
                               ? CircularProgressIndicator()
                               : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: ElevatedButton(
-                                        onPressed: () async {
-                                          _focusEmail.unfocus();
-                                          _focusPassword.unfocus();
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    _focusEmail.unfocus();
+                                    _focusPassword.unfocus();
 
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            setState(() {
-                                              _isProcessing = true;
-                                            });
+                                    if (_formKey.currentState!
+                                        .validate()) {
+                                      setState(() {
+                                        _isProcessing = true;
+                                      });
 
-                                            User? user = await FireAuth
-                                                .signInUsingEmailPassword(
-                                              email: _emailTextController.text,
-                                              password:
-                                                  _passwordTextController.text,
-                                            );
+                                      User? user = await FireAuth
+                                          .signInUsingEmailPassword(
+                                        email: _emailTextController.text,
+                                        password:
+                                        _passwordTextController.text,
+                                      );
 
-                                            setState(() {
-                                              _isProcessing = false;
-                                            });
+                                      setState(() {
+                                        _isProcessing = false;
+                                      });
 
-                                            if (user != null) {
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MobileScreenLayout(
-                                                          user: user),
-                                                ),
-                                              );
-                                            }
-                                          }
-                                        },
-                                        child: Text(
-                                          'Sign In',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
+                                      if (user != null) {
+                                        Navigator.of(context)
+                                            .pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                MobileScreenLayout(
+                                                    user: user),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  child: Text(
+                                    'Sign In',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 24.0),
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            RegisterPage(),
                                       ),
-                                    ),
-                                    SizedBox(width: 24.0),
-                                    Expanded(
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  RegisterPage(),
-                                            ),
-                                          );
-                                        },
-                                        child: Text(
-                                          'Register',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 24.0),
-                                    Expanded(
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          final provider =
-                                              Provider.of<FireAuth>(context,
-                                                  listen: false);
-                                          provider.googleLogin();
-                                          setState(() {});
-                                        },
-                                        child: Text(
-                                          'Google Sign In',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
+                                    );
+                                  },
+                                  child: Text(
+                                    'Register',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 24,),
+                          InkWell(
+                            onTap: () {
+                              final provider =
+                              Provider.of<FireAuth>(context,
+                                  listen: false);
+                              provider.googleLogin();
+                            },
+                            child: Image(image: AssetImage("assets/images/google_logo.png"),
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ],
                       ),
                     )

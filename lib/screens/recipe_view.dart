@@ -25,7 +25,6 @@ class _RecipeViewState extends State<RecipeView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     finalUrl = widget.postUrl;
     if (widget.postUrl.contains('http://')) {

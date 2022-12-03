@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
@@ -227,7 +228,7 @@ class _storagePageState extends State<StoragePage> {
     return ElevatedButton(onPressed: () => setContainer(containerName),
       style: ElevatedButton.styleFrom(
           side: BorderSide(width: 2.0, color: containerString == containerName ? Colors.green : Colors.white),
-          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          padding: const EdgeInsets.fromLTRB(20.0, 7.0, 20.0, 10.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
 
@@ -236,6 +237,7 @@ class _storagePageState extends State<StoragePage> {
       ),
       child: Text(containerName,
         style: TextStyle(
+          fontFamily: GoogleFonts.openSans().fontFamily,
           color: containerString == containerName ? Colors.green : Colors.white,
         ),
       ),
@@ -249,8 +251,7 @@ class _storagePageState extends State<StoragePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: _search ? searchBar
-              : Text("Storage"),
+          title: _search ? searchBar : Text("Storage", style: GoogleFonts.openSans(),),
             actions: !_search
                 ? [
               SortSelector(notifyParent: refresh,),
@@ -328,10 +329,10 @@ class _storagePageState extends State<StoragePage> {
                               child: Row(
                                 children: [
                                   IconButton(
-                                      icon: const Icon(Icons.edit),
+                                      icon: const Icon(Icons.edit_note, color: Colors.lightBlueAccent, size: 35,),
                                       onPressed: () => _update(documentSnapshot)),
                                   IconButton(
-                                      icon: const Icon(Icons.delete),
+                                      icon: const Icon(Icons.delete, color: Colors.red, size: 35,),
                                       onPressed: () => _delete(documentSnapshot.id)),
                                 ],
                               ),
