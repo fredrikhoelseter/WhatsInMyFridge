@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../responsive/mobile_screen_layout.dart';
-import '../screens/login_page.dart';
+import '../screens/redirect_page.dart';
 
 class FireAuth with ChangeNotifier {
   final _auth = FirebaseAuth.instance;

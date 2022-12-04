@@ -5,7 +5,7 @@ import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:whats_in_my_fridge/screens/login_page.dart';
+import 'package:whats_in_my_fridge/screens/redirect_page.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:whats_in_my_fridge/widgets/bottom_navbar.dart';
 import 'package:image_picker/image_picker.dart';
@@ -95,7 +95,7 @@ class _SettingsPageState extends State<SettingsPage> {
         await FireAuth.deleteUser(context);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => LoginPage(),
+            builder: (context) => RedirectPage(),
           ),
         );
       },
@@ -251,7 +251,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         });
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => LoginPage(),
+                            builder: (context) => RedirectPage(),
                           ),
                         );
                       },

@@ -1,81 +1,205 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_in_my_fridge/main.dart';
-import 'package:whats_in_my_fridge/responsive/mobile_screen_layout.dart';
-import 'package:whats_in_my_fridge/screens/home_page.dart';
 import 'package:whats_in_my_fridge/screens/register_page.dart';
-import 'package:whats_in_my_fridge/screens/true_login_page.dart';
-import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
-import 'package:whats_in_my_fridge/utilities/validator.dart';
-import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
-import 'package:whats_in_my_fridge/widgets/google_signin_button.dart';
+import 'package:whats_in_my_fridge/screens/reset_password_page.dart';
+
+import '../responsive/mobile_screen_layout.dart';
+import '../utilities/fire_auth.dart';
+import '../utilities/validator.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+
   final _focusEmail = FocusNode();
   final _focusPassword = FocusNode();
 
-  Future<FirebaseApp> _initializeFirebase() async {
-    FirebaseApp firebaseApp = await Firebase.initializeApp();
+  final _emailTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
 
-    User? user = FirebaseAuth.instance.currentUser;
-
-    sendToMobileLayout(user!);
-    return firebaseApp;
-  }
-
-  void sendToMobileLayout(User user) {
-    if (user != null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => MobileScreenLayout(user: user),
-        ),
-      );
-    }
-  }
-
-  late User currentUser;
-
-  void setCurrentUser() {
-    User? loginUser = FirebaseAuth.instance.currentUser;
-    currentUser = loginUser!;
-  }
+  bool _isProcessing = false;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        _focusEmail.unfocus();
-        _focusPassword.unfocus();
-      },
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: FutureBuilder(
-              future: _initializeFirebase(),
-              builder: (context, snapshot) {
-                return StreamBuilder(
-                    stream: FirebaseAuth.instance.authStateChanges(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (snapshot.hasData) {
-                        setCurrentUser();
-                        return MobileScreenLayout(user: currentUser);
-                      } else {
-                        return TrueLoginPage();
-                      }
-                    });
-              })),
+    appBar:
+    AppBar(
+      title: Text(
+        'Whats in my fridge',
+        style: GoogleFonts.pacifico(fontSize: 28),
+      ),
+      centerTitle: true,
+    );
+    return Padding(
+      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Whats in my fridge", style: GoogleFonts.pacifico(fontSize: 36)),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 24.0),
+            // child: Text(
+            //   'Login',
+            //   style: Theme.of(context).textTheme.headline4,
+            // ),
+          ),
+          Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  controller: _emailTextController,
+                  focusNode: _focusEmail,
+                  validator: (value) => Validator.validateEmail(
+                    email: value,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: "Email",
+                    errorBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: BorderSide(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                TextFormField(
+                  controller: _passwordTextController,
+                  focusNode: _focusPassword,
+                  obscureText: true,
+                  validator: (value) => Validator.validatePassword(
+                    password: value,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: "Password",
+                    errorBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: BorderSide(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24.0),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                  child: Text(
+                    'Have you forgotten your password?',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ResetPasswordPage(),
+                      ),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 0.0),
+                  ),
+                  child: const Text(
+                    'Click here to recover it.',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                _isProcessing
+                    ? CircularProgressIndicator()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                _focusEmail.unfocus();
+                                _focusPassword.unfocus();
+
+                                if (_formKey.currentState!.validate()) {
+                                  setState(() {
+                                    _isProcessing = true;
+                                  });
+
+                                  User? user =
+                                      await FireAuth.signInUsingEmailPassword(
+                                    email: _emailTextController.text,
+                                    password: _passwordTextController.text,
+                                  );
+
+                                  setState(() {
+                                    _isProcessing = false;
+                                  });
+
+                                  if (user != null) {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            MobileScreenLayout(user: user),
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                              child: Text(
+                                'Sign In',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 24.0),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => RegisterPage(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Register',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                SizedBox(
+                  height: 24,
+                ),
+                InkWell(
+                  onTap: () {
+                    final provider =
+                        Provider.of<FireAuth>(context, listen: false);
+                    provider.googleLogin();
+                  },
+                  child: Image(
+                    image: AssetImage("assets/images/google_logo.png"),
+                    height: 50,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
