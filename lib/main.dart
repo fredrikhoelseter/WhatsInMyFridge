@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             fontFamily: GoogleFonts.openSans().fontFamily,
-            primaryTextTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
+            primaryTextTheme:
+                GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
             brightness: Brightness.light,
             primarySwatch: Colors.green,
             elevatedButtonTheme: ElevatedButtonThemeData(
@@ -48,9 +49,14 @@ class MyApp extends StatelessWidget {
                 color: Colors.green.shade700,
                 fontWeight: FontWeight.w500,
               ),
-              bodyText1: TextStyle(fontSize: 18.0, fontFamily: GoogleFonts.openSans().fontFamily,),
-              bodyText2: TextStyle(fontSize: 12, fontFamily: GoogleFonts.openSans().fontFamily,),
-
+              bodyText1: TextStyle(
+                fontSize: 18.0,
+                fontFamily: GoogleFonts.openSans().fontFamily,
+              ),
+              bodyText2: TextStyle(
+                fontSize: 12,
+                fontFamily: GoogleFonts.openSans().fontFamily,
+              ),
             ),
           ),
           home: AuthWrapper(),
@@ -62,16 +68,16 @@ class MyApp extends StatelessWidget {
 }
 
 class AuthWrapper extends StatelessWidget {
-   const AuthWrapper({Key? key}) : super(key: key);
+  const AuthWrapper({Key? key}) : super(key: key);
 
-   @override
-   Widget build(BuildContext context) {
-     final firebaseUser = context.watch<User?>();
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User?>();
 
-     if (firebaseUser != null) {
-       return MobileScreenLayout(user: firebaseUser);
-     } else {
-       return LoginPage();
-     }
-   }
+    if (firebaseUser != null) {
+      return MobileScreenLayout(user: firebaseUser);
+    } else {
+      return LoginPage();
+    }
+  }
 }

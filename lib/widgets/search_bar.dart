@@ -14,16 +14,15 @@ class SearchBar extends StatefulWidget {
   TextEditingController searchBarController;
   final Function() notifyParent;
 
-  SearchBar({Key? key, required this.searchBarController,
-    required this.notifyParent})
+  SearchBar(
+      {Key? key, required this.searchBarController, required this.notifyParent})
       : super(key: key);
-
 
   @override
   _searchBarState createState() => _searchBarState();
 }
-class _searchBarState extends State<SearchBar> {
 
+class _searchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return TextField(
@@ -36,12 +35,10 @@ class _searchBarState extends State<SearchBar> {
       ),
       textInputAction: TextInputAction.search,
       decoration: const InputDecoration(
-        enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white)
-        ),
-        focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white)
-        ),
+        enabledBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        focusedBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         hintText: 'Search',
         hintStyle: TextStyle(
           color: Colors.white60,
@@ -54,5 +51,4 @@ class _searchBarState extends State<SearchBar> {
       },
     );
   }
-
 }

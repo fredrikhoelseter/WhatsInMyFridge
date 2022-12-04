@@ -127,7 +127,8 @@ class _SettingsPageState extends State<SettingsPage> {
             //A group for the settings items.
             SettingsGroup(
               settingsGroupTitle: "Account: ${_currentUser.email}",
-              settingsGroupTitleStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+              settingsGroupTitleStyle:
+                  TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
               items: [
                 //Send a link to the current users email
                 //User can verify email

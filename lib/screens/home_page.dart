@@ -20,7 +20,6 @@ import 'package:google_fonts/google_fonts.dart';
 class HomePage extends StatefulWidget {
   final User user;
 
-
   const HomePage({required this.user});
 
   @override
@@ -28,13 +27,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   late User _currentUser;
 
   List<RecipeModel> recipes = <RecipeModel>[];
 
   late String ingridents;
   bool _loading = false;
+
   ///input from recipe-search
   String query = "";
   TextEditingController recipeSearchController = new TextEditingController();
@@ -46,7 +45,8 @@ class _HomePageState extends State<HomePage> {
     ///Clears recipe list
     recipes.clear();
 
-    String url = "https://api.edamam.com/search?q=$query&app_id=fe4d49fb&app_key=a69ae39077969bd8cf29bc34ce2d6816";
+    String url =
+        "https://api.edamam.com/search?q=$query&app_id=fe4d49fb&app_key=a69ae39077969bd8cf29bc34ce2d6816";
 
     var response = await http.get(Uri.parse(url));
     Map<String, dynamic> jsonData = jsonDecode(response.body);
@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> {
       RecipeModel recipeModel =
           new RecipeModel(url: '', source: '', image: '', label: '');
       recipeModel = RecipeModel.fromMap(element["recipe"]);
+
       ///Adds recipe to list
       recipes.add(recipeModel);
     });
@@ -73,7 +74,6 @@ class _HomePageState extends State<HomePage> {
     _currentUser = widget.user;
     super.initState();
   }
-
 
   Future<String?> getID() async {
     String? userID = await FireAuth.getCurrentUserID();
@@ -92,7 +92,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(
-        title: Text('Whats in my fridge', style: GoogleFonts.pacifico(fontSize: 28),
+        title: Text(
+          'Whats in my fridge',
+          style: GoogleFonts.pacifico(fontSize: 28),
         ),
       ),
       body: SingleChildScrollView(
@@ -104,15 +106,18 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Text(
                     'Welcome back',
-                    style: GoogleFonts.openSans(fontSize: 25,
+                    style: GoogleFonts.openSans(
+                        fontSize: 25,
                         fontWeight: FontWeight.w400,
-                        color: Colors.green),),
+                        color: Colors.green),
+                  ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
                     '${_currentUser.displayName}',
-                    style: GoogleFonts.openSans(fontSize: 25,
+                    style: GoogleFonts.openSans(
+                      fontSize: 25,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -121,7 +126,10 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 20,
               ),
-              Text("Here are some of your available food items stored in your containers: ", style: GoogleFonts.openSans(fontSize: 20),),
+              Text(
+                "Here are some of your available food items stored in your containers: ",
+                style: GoogleFonts.openSans(fontSize: 20),
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -129,41 +137,54 @@ class _HomePageState extends State<HomePage> {
               /// Section displaying stored foods on homepage.
               Container(
                 height: 250,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1), borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
-                  child: StreamBuilder(
-                      stream: foodItems.orderBy(CurrentStringSortSelected).snapshots(),
-                      builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                        getIDAsString();
-                        if (streamSnapshot.hasData) {
-                          return ListView.builder(
-                              itemCount: streamSnapshot.data!.docs.length,
-                              itemBuilder: (context, index) {
-                            final DocumentSnapshot documentSnapshot =
-                            streamSnapshot.data!.docs[index];
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 1),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+                child: StreamBuilder(
+                    stream: foodItems
+                        .orderBy(CurrentStringSortSelected)
+                        .snapshots(),
+                    builder:
+                        (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                      getIDAsString();
+                      if (streamSnapshot.hasData) {
+                        return ListView.builder(
+                            itemCount: streamSnapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final DocumentSnapshot documentSnapshot =
+                                  streamSnapshot.data!.docs[index];
 
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.green, width: 2), borderRadius: BorderRadius.all(Radius.circular(15)),
-                                //  border: Border(bottom: BorderSide(color: Colors.black))
-                                ),
-                                child: ListTile(
-                                  title: Text(documentSnapshot['Product Name'], style: TextStyle(fontSize: 18),),
-                                  subtitle: Text("Expiring:   ${documentSnapshot['Expiration Date']}"),
-                                ),
-                              ),
-                            );
-                          }
-                          );
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                                child: (documentSnapshot["User ID"] ==
+                                        _currentUser.uid)
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.green, width: 2),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
+                                          //  border: Border(bottom: BorderSide(color: Colors.black))
+                                        ),
+                                        child: ListTile(
+                                          title: Text(
+                                            documentSnapshot['Product Name'],
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                          subtitle: Text(
+                                              "Expiring:   ${documentSnapshot['Expiration Date']}"),
+                                        ),
+                                      )
+                                    : SizedBox(),
+                              );
+                            });
                       }
-                  ),
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }),
               ),
 
               SizedBox(
@@ -185,14 +206,16 @@ class _HomePageState extends State<HomePage> {
                       child: TextField(
                         controller: recipeSearchController,
                         decoration: InputDecoration(
-                            hintText: 'Enter Ingridients',
-                            hintStyle: TextStyle(fontSize: 18),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.grey, width: 2),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
+                          hintText: 'Enter Ingridients',
+                          hintStyle: TextStyle(fontSize: 18),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.grey, width: 2),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black, width: 2),
+                            borderSide:
+                                const BorderSide(color: Colors.black, width: 2),
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
@@ -214,7 +237,10 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                       child: Container(
-                        child: Icon(Icons.search, size: 40,),
+                        child: Icon(
+                          Icons.search,
+                          size: 40,
+                        ),
                       ),
                     )
                   ],
@@ -223,6 +249,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 30,
               ),
+
               /// Section for recipes from API-search shown in a grid.
               Container(
                 child: GridView.count(
@@ -292,8 +319,9 @@ class _RecipeTileState extends State<RecipeTile> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                     builder: (context) => RecipeView(postUrl: widget.url,))
-              );
+                      builder: (context) => RecipeView(
+                            postUrl: widget.url,
+                          )));
             }
           },
           child: Container(

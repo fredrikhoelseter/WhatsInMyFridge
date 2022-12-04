@@ -132,7 +132,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                               .pushAndRemoveUntil(
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  MobileScreenLayout(user: user),
+                                                  MobileScreenLayout(
+                                                      user: user),
                                             ),
                                             ModalRoute.withName('/'),
                                           );
