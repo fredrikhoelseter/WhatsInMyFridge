@@ -248,136 +248,140 @@ class _storagePageState extends State<StoragePage> {
   Widget build(BuildContext context) {
     SearchBar searchBar = SearchBar(
         searchBarController: _searchBarController, notifyParent: refresh);
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-            title: _search
-                ? searchBar
-                : Text(
-                    "Storage",
-                    style: GoogleFonts.openSans(),
+    return LayoutBuilder(
+      builder: (BuildContext , BoxConstraints ) {
+        return Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+                title: _search
+                    ? searchBar
+                    : Text(
+                  "Storage",
+                  style: GoogleFonts.openSans(),
+                ),
+                actions: !_search
+                    ? [
+                  SortSelector(
+                    notifyParent: refresh,
                   ),
-            actions: !_search
-                ? [
-                    SortSelector(
-                      notifyParent: refresh,
-                    ),
-                    IconButton(
-                        icon: Icon(Icons.search),
-                        onPressed: () {
-                          setState(() {
-                            _search = true;
-                          });
-                        }),
-                  ]
-                : [
-                    IconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: () => {
-                              hideSearchBar(),
-                              setState(() {}),
-                            })
-                  ]),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Stack(children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: _buildContainerButton("Fridge"),
+                  IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () {
+                        setState(() {
+                          _search = true;
+                        });
+                      }),
+                ]
+                    : [
+                  IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () => {
+                        hideSearchBar(),
+                        setState(() {}),
+                      })
+                ]),
+            body: Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Stack(children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _buildContainerButton("Fridge"),
+                      ),
+                      Expanded(
+                        child: _buildContainerButton("Freezer"),
+                      ),
+                      Expanded(
+                        child: _buildContainerButton("Other"),
+                      )
+                    ],
                   ),
-                  Expanded(
-                    child: _buildContainerButton("Freezer"),
-                  ),
-                  Expanded(
-                    child: _buildContainerButton("Other"),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 75),
-              child: StreamBuilder(
-                stream: foodItems
-                    .orderBy(CurrentStringSortSelected,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 75),
+                  child: StreamBuilder(
+                    stream: foodItems
+                        .orderBy(CurrentStringSortSelected,
                         descending: CurrentSortSelectedIsDescending)
-                    .snapshots(),
-                builder:
-                    (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                  getIDAsString();
-                  if (streamSnapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: streamSnapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        final DocumentSnapshot documentSnapshot =
+                        .snapshots(),
+                    builder:
+                        (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                      getIDAsString();
+                      if (streamSnapshot.hasData) {
+                        return ListView.builder(
+                          itemCount: streamSnapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            final DocumentSnapshot documentSnapshot =
                             streamSnapshot.data!.docs[index];
 
-                        return FoodLogic.shouldProductShow(documentSnapshot,
-                            _search, containerString, id)
-                            ? Card(
-                                margin: const EdgeInsets.all(10),
-                                child: GestureDetector(
-                                  onLongPress: () => _update(documentSnapshot),
-                                  child: ListTile(
-                                    title:
-                                        Text(documentSnapshot['Product Name']),
-                                    subtitle: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                            return FoodLogic.shouldProductShow(documentSnapshot,
+                                _search, containerString, id)
+                                ? Card(
+                              margin: const EdgeInsets.all(10),
+                              child: GestureDetector(
+                                onLongPress: () => _update(documentSnapshot),
+                                child: ListTile(
+                                  title:
+                                  Text(documentSnapshot['Product Name']),
+                                  subtitle: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(documentSnapshot[
+                                      'Product Category']),
+                                      ExpirationDateMessage(documentSnapshot:
+                                      documentSnapshot,),
+                                    ],
+                                  ),
+                                  trailing: SizedBox(
+                                    width: 100,
+                                    child: Row(
                                       children: [
-                                        Text(documentSnapshot[
-                                            'Product Category']),
-                                        ExpirationDateMessage(documentSnapshot:
-                                          documentSnapshot,),
+                                        IconButton(
+                                            icon: const Icon(
+                                              Icons.edit_note,
+                                              color: Colors.lightBlueAccent,
+                                              size: 35,
+                                            ),
+                                            onPressed: () =>
+                                                _update(documentSnapshot)),
+                                        IconButton(
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                              size: 35,
+                                            ),
+                                            onPressed: () =>
+                                                _delete(documentSnapshot.id)),
                                       ],
-                                    ),
-                                    trailing: SizedBox(
-                                      width: 100,
-                                      child: Row(
-                                        children: [
-                                          IconButton(
-                                              icon: const Icon(
-                                                Icons.edit_note,
-                                                color: Colors.lightBlueAccent,
-                                                size: 35,
-                                              ),
-                                              onPressed: () =>
-                                                  _update(documentSnapshot)),
-                                          IconButton(
-                                              icon: const Icon(
-                                                Icons.delete,
-                                                color: Colors.red,
-                                                size: 35,
-                                              ),
-                                              onPressed: () =>
-                                                  _delete(documentSnapshot.id)),
-                                        ],
-                                      ),
                                     ),
                                   ),
                                 ),
-                              )
-                            : SizedBox();
-                      },
-                    );
-                  }
+                              ),
+                            )
+                                : SizedBox();
+                          },
+                        );
+                      }
 
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                ),
+              ]),
             ),
-          ]),
-        ),
 // Add new product
-        floatingActionButton: FloatingActionButton.large(
-          onPressed: () => _create(),
-          child: const Icon(Icons.add),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
+            floatingActionButton: FloatingActionButton.large(
+              onPressed: () => _create(),
+              child: const Icon(Icons.add),
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
+      },
+    );
   }
 
 
