@@ -183,8 +183,8 @@ class _storagePageState extends State<StoragePage> {
           );
         });
 
-    //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-    //    content: Text('You have successfully deleted a product')));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('You have successfully deleted a product')));
   }
 
   Future<String?> getID() async {
@@ -251,7 +251,7 @@ class _storagePageState extends State<StoragePage> {
     SearchBar searchBar = SearchBar(
         searchBarController: _searchBarController, notifyParent: refresh);
     return LayoutBuilder(
-      builder: (BuildContext , BoxConstraints ) {
+      builder: (BuildContext, BoxConstraints) {
         print(BoxConstraints.maxWidth);
         if (BoxConstraints.maxWidth < 400) {
           containerButtonTextSize = 16;
@@ -265,30 +265,30 @@ class _storagePageState extends State<StoragePage> {
                 title: _search
                     ? searchBar
                     : Text(
-                  "Storage",
-                  style: GoogleFonts.openSans(),
-                ),
+                        "Storage",
+                        style: GoogleFonts.openSans(),
+                      ),
                 actions: !_search
                     ? [
-                  SortSelector(
-                    notifyParent: refresh,
-                  ),
-                  IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        setState(() {
-                          _search = true;
-                        });
-                      }),
-                ]
+                        SortSelector(
+                          notifyParent: refresh,
+                        ),
+                        IconButton(
+                            icon: Icon(Icons.search),
+                            onPressed: () {
+                              setState(() {
+                                _search = true;
+                              });
+                            }),
+                      ]
                     : [
-                  IconButton(
-                      icon: Icon(Icons.clear),
-                      onPressed: () => {
-                        hideSearchBar(),
-                        setState(() {}),
-                      })
-                ]),
+                        IconButton(
+                            icon: Icon(Icons.clear),
+                            onPressed: () => {
+                                  hideSearchBar(),
+                                  setState(() {}),
+                                })
+                      ]),
             body: Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: Stack(children: <Widget>[
@@ -313,7 +313,7 @@ class _storagePageState extends State<StoragePage> {
                   child: StreamBuilder(
                     stream: foodItems
                         .orderBy(CurrentStringSortSelected,
-                        descending: CurrentSortSelectedIsDescending)
+                            descending: CurrentSortSelectedIsDescending)
                         .snapshots(),
                     builder:
                         (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
@@ -323,53 +323,57 @@ class _storagePageState extends State<StoragePage> {
                           itemCount: streamSnapshot.data!.docs.length,
                           itemBuilder: (context, index) {
                             final DocumentSnapshot documentSnapshot =
-                            streamSnapshot.data!.docs[index];
+                                streamSnapshot.data!.docs[index];
 
                             return FoodLogic.shouldProductShow(documentSnapshot,
-                                _search, containerString, id)
+                                    _search, containerString, id)
                                 ? Card(
-                              margin: const EdgeInsets.all(10),
-                              child: GestureDetector(
-                                onLongPress: () => _update(documentSnapshot),
-                                child: ListTile(
-                                  title:
-                                  Text(documentSnapshot['Product Name']),
-                                  subtitle: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(documentSnapshot[
-                                      'Product Category']),
-                                      ExpirationDateMessage(documentSnapshot:
-                                      documentSnapshot,),
-                                    ],
-                                  ),
-                                  trailing: SizedBox(
-                                    width: 100,
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                            icon: const Icon(
-                                              Icons.edit_note,
-                                              color: Colors.lightBlueAccent,
-                                              size: 35,
+                                    margin: const EdgeInsets.all(10),
+                                    child: GestureDetector(
+                                      onLongPress: () =>
+                                          _update(documentSnapshot),
+                                      child: ListTile(
+                                        title: Text(
+                                            documentSnapshot['Product Name']),
+                                        subtitle: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(documentSnapshot[
+                                                'Product Category']),
+                                            ExpirationDateMessage(
+                                              documentSnapshot:
+                                                  documentSnapshot,
                                             ),
-                                            onPressed: () =>
-                                                _update(documentSnapshot)),
-                                        IconButton(
-                                            icon: const Icon(
-                                              Icons.delete,
-                                              color: Colors.red,
-                                              size: 35,
-                                            ),
-                                            onPressed: () =>
-                                                _delete(documentSnapshot.id)),
-                                      ],
+                                          ],
+                                        ),
+                                        trailing: SizedBox(
+                                          width: 100,
+                                          child: Row(
+                                            children: [
+                                              IconButton(
+                                                  icon: const Icon(
+                                                    Icons.edit_note,
+                                                    color:
+                                                        Colors.lightBlueAccent,
+                                                    size: 35,
+                                                  ),
+                                                  onPressed: () => _update(
+                                                      documentSnapshot)),
+                                              IconButton(
+                                                  icon: const Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                    size: 35,
+                                                  ),
+                                                  onPressed: () => _delete(
+                                                      documentSnapshot.id)),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            )
+                                  )
                                 : SizedBox();
                           },
                         );
@@ -388,10 +392,9 @@ class _storagePageState extends State<StoragePage> {
               onPressed: () => _create(),
               child: const Icon(Icons.add),
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat);
       },
     );
   }
-
-
 }

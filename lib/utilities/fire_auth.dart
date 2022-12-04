@@ -101,6 +101,10 @@ class FireAuth with ChangeNotifier {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
+  Future<void> resetPasswordNotSignedIn({required email}) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+
   //Google sign in
 
   Future googleLogin() async {
