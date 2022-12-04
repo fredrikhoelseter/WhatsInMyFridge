@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:whats_in_my_fridge/screens/storage_page.dart';
-import 'package:whats_in_my_fridge/screens/login_page.dart';
+import 'package:whats_in_my_fridge/screens/redirect_page.dart';
 import 'package:whats_in_my_fridge/screens/recipe_view.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:whats_in_my_fridge/utilities/global_variable.dart';

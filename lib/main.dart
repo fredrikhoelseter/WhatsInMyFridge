@@ -7,7 +7,7 @@ import 'package:whats_in_my_fridge/screens/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/login_page.dart';
+import 'screens/redirect_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,7 +77,7 @@ class AuthWrapper extends StatelessWidget {
     if (firebaseUser != null) {
       return MobileScreenLayout(user: firebaseUser);
     } else {
-      return LoginPage();
+      return RedirectPage();
     }
   }
 }
