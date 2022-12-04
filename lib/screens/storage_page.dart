@@ -57,6 +57,7 @@ class _storagePageState extends State<StoragePage> {
 
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
     user = await FireAuth.getCurrentUser();
+    _containerInput.text = containerString;
     await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
