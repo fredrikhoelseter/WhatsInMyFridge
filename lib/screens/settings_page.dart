@@ -9,6 +9,7 @@ import 'package:whats_in_my_fridge/screens/login_page.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:whats_in_my_fridge/widgets/bottom_navbar.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:whats_in_my_fridge/utilities/global_variable.dart';
 
 //Using babstrap_settings_screen 0.1.3 dependency to create this settings page, code has been added/modified to meet our demands.
 
@@ -34,7 +35,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   late User _currentUser;
   final ImagePicker _picker = ImagePicker();
-  late PickedFile _imageFile;
 
   @override
   void initState() {
@@ -119,23 +119,17 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source,);
-    setState(() {
-      _imageFile = pickedFile as PickedFile;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Settings'),
+        title: Text('Account'),
       ),
       body: Stack(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 10),
+            padding: EdgeInsets.only(top: 50),
             child: Align(
               alignment: Alignment.topCenter,
               child: InkWell(
@@ -150,117 +144,144 @@ class _SettingsPageState extends State<SettingsPage> {
                   backgroundColor: Colors.black,
                   child: CircleAvatar(
                     radius: 63,
-                    // backgroundImage: _imageFile == null
-                    //     ? AssetImage("assets/images/boy.png")
-                    //     : FileImage(_imageFile!.path) as ImageProvider,
+                    backgroundImage: AssetImage(imageFile),
                   ),
                 ),
               ),
             ),
           ),
-          Padding(padding: EdgeInsets.only(top: 150),child: Align(alignment: Alignment.topCenter, child: Text("Tap on image to change"))),
           Padding(
-          padding: const EdgeInsets.fromLTRB(15, 220, 15, 15),
-          child: ListView(
-            children: [
-              //A group for the settings items.
-              SettingsGroup(
-                settingsGroupTitle: "Account: ${_currentUser.email}",
-                settingsGroupTitleStyle:
-                    TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                items: [
-                  //Send a link to the current users email
-                  //User can verify email
-                  SettingsItem(
-                    onTap: () {
-                      if (!getIfEmailIsVerified()) {
-                        _currentUser.sendEmailVerification();
-                        sendingEmailVerification();
-                        setState(() {});
-                      }
-                    },
-                    icons: Icons.email_rounded,
-                    title: emailVerified,
-                    subtitle: sendingVerificationEmailText,
+              padding: EdgeInsets.only(top: 180),
+              child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text("Tap to change Avatar"))),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                children: [
+                  Text(
+                    "Logged in as: ${_currentUser.displayName}",
+                    style: TextStyle(fontSize: 22),
                   ),
-
-                  //To refresh the user, this is needed after verifying the email.
-                  SettingsItem(
-                    onTap: () async {
-                      User? user = await FireAuth.refreshUser(_currentUser);
-                      if (user != null) {
-                        setState(() {
-                          _currentUser = user;
-                          userRefreshed();
-                          setState(() {});
-                        });
-                      }
-                    },
-                    icons: Icons.refresh_rounded,
-                    title: "Refresh user",
-                    subtitle: userRefreshedText,
+                  SizedBox(
+                    height: 170,
                   ),
-
-                  //Sends a link to the current users email
-                  //User can change password on that link
-                  SettingsItem(
-                      onTap: () async {
-                        await FireAuth.resetPassword(
-                            email: '${_currentUser.email}');
-                        resettingPassword();
-                        setState(() {});
-                      },
-                      icons: CupertinoIcons.lock_fill,
-                      title: "Reset passowrd",
-                      subtitle: resettingPasswordText),
-
-                  //Button to sign the user out of the app.
-                  //Gets pushed back to the login page.
-                  SettingsItem(
-                    onTap: () async {
-                      setState(() {
-                        _isSigningOut = true;
-                      });
-                      await FirebaseAuth.instance.signOut();
-                      setState(() {
-                        _isSigningOut = false;
-                      });
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => LoginPage(),
-                        ),
-                      );
-                    },
-                    icons: Icons.exit_to_app_rounded,
-                    title: "Sign Out",
+                  Text(
+                    "Email: ${_currentUser.email}",
+                    style: TextStyle(fontSize: 16),
                   ),
-
-                  //Button that calls the delete user function.
-                  //Gets pushed back to the login page.
-                  SettingsItem(
-                    onTap: () {
-                      showAlertDialog(context);
-                    },
-                    icons: CupertinoIcons.delete_solid,
-                    title: "Delete account",
-                    titleStyle: const TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Text(
+                    "Member since: ${_currentUser.metadata.creationTime}",
+                    style: TextStyle(fontSize: 16),
+                  )
                 ],
               ),
-            ],
+            ),
           ),
-        ),
-    ],
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 270, 15, 15),
+            child: ListView(
+              children: [
+                //A group for the settings items.
+                SettingsGroup(
+                  settingsGroupTitle: "Settings:",
+                  settingsGroupTitleStyle:
+                      TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  items: [
+                    //Send a link to the current users email
+                    //User can verify email
+                    SettingsItem(
+                      onTap: () {
+                        if (!getIfEmailIsVerified()) {
+                          _currentUser.sendEmailVerification();
+                          sendingEmailVerification();
+                          setState(() {});
+                        }
+                      },
+                      icons: Icons.email_rounded,
+                      title: emailVerified,
+                      subtitle: sendingVerificationEmailText,
+                    ),
+
+                    //To refresh the user, this is needed after verifying the email.
+                    SettingsItem(
+                      onTap: () async {
+                        User? user = await FireAuth.refreshUser(_currentUser);
+                        if (user != null) {
+                          setState(() {
+                            _currentUser = user;
+                            userRefreshed();
+                            setState(() {});
+                          });
+                        }
+                      },
+                      icons: Icons.refresh_rounded,
+                      title: "Refresh user",
+                      subtitle: userRefreshedText,
+                    ),
+
+                    //Sends a link to the current users email
+                    //User can change password on that link
+                    SettingsItem(
+                        onTap: () async {
+                          await FireAuth.resetPassword(
+                              email: '${_currentUser.email}');
+                          resettingPassword();
+                          setState(() {});
+                        },
+                        icons: CupertinoIcons.lock_fill,
+                        title: "Reset passowrd",
+                        subtitle: resettingPasswordText),
+
+                    //Button to sign the user out of the app.
+                    //Gets pushed back to the login page.
+                    SettingsItem(
+                      onTap: () async {
+                        setState(() {
+                          _isSigningOut = true;
+                        });
+                        await FirebaseAuth.instance.signOut();
+                        setState(() {
+                          _isSigningOut = false;
+                        });
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ),
+                        );
+                      },
+                      icons: Icons.exit_to_app_rounded,
+                      title: "Sign Out",
+                    ),
+
+                    //Button that calls the delete user function.
+                    //Gets pushed back to the login page.
+                    SettingsItem(
+                      onTap: () {
+                        showAlertDialog(context);
+                      },
+                      icons: CupertinoIcons.delete_solid,
+                      title: "Delete account",
+                      titleStyle: const TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget bottomSheet() {
     return Container(
-      height: 100.0,
+      height: 150.0,
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(
         horizontal: 20,
@@ -269,7 +290,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Column(
         children: <Widget>[
           const Text(
-            "Choose Profile photo",
+            "Choose Avatar",
             style: TextStyle(
               fontSize: 20.0,
             ),
@@ -278,19 +299,81 @@ class _SettingsPageState extends State<SettingsPage> {
             height: 20,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            TextButton.icon(
-              icon: Icon(Icons.camera),
-              onPressed: () {
-                takePhoto(ImageSource.camera);
-              },
-              label: Text("Camera"),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.black,
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      imageFile = 'assets/images/boy.png';
+                    });
+                  },
+                  child: const CircleAvatar(
+                    radius: 28,
+                    backgroundColor: Colors.lightGreen,
+                    backgroundImage: AssetImage('assets/images/boy.png'),
+                  ),
+                ),
+              ),
             ),
-            TextButton.icon(
-              icon: Icon(Icons.image),
-              onPressed: () {
-                takePhoto(ImageSource.gallery);
-              },
-              label: Text("Gallery"),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    imageFile = 'assets/images/boytwo.png';
+                  });
+                },
+                child: CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Colors.black,
+                  child: CircleAvatar(
+                    radius: 28,
+                    backgroundColor: Colors.lightGreen,
+                    backgroundImage: AssetImage('assets/images/boytwo.png'),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    imageFile = 'assets/images/girl.png';
+                  });
+                },
+                child: CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Colors.black,
+                  child: CircleAvatar(
+                    radius: 28,
+                    backgroundColor: Colors.lightGreen,
+                    backgroundImage: AssetImage('assets/images/girl.png'),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    imageFile = 'assets/images/girltwo.png';
+                  });
+                },
+                child: CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Colors.black,
+                  child: CircleAvatar(
+                    radius: 28,
+                    backgroundColor: Colors.lightGreen,
+                    backgroundImage: AssetImage('assets/images/girltwo.png'),
+                  ),
+                ),
+              ),
             ),
           ])
         ],

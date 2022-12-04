@@ -41,13 +41,13 @@ class _TrueLoginPageState extends State<TrueLoginPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Whats in my fridge", style: GoogleFonts.pacifico(fontSize: 28)),
+          Text("Whats in my fridge", style: GoogleFonts.pacifico(fontSize: 36)),
           Padding(
             padding: const EdgeInsets.only(bottom: 24.0),
-            child: Text(
-              'Login',
-              style: Theme.of(context).textTheme.headline1,
-            ),
+            // child: Text(
+            //   'Login',
+            //   style: Theme.of(context).textTheme.headline4,
+            // ),
           ),
           Form(
             key: _formKey,

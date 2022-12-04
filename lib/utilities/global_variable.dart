@@ -18,3 +18,5 @@ String CurrentStringSortSelected = "Expiration Date";
 bool CurrentSortSelectedIsDescending = false;
 
 CollectionReference foodItems = FirebaseFirestore.instance.collection('foodItems');
+
+String imageFile = '';
