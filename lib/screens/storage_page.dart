@@ -40,7 +40,6 @@ class _storagePageState extends State<StoragePage> {
   var foodCategories = ['Beverage', 'Dairy', 'Meats', 'Dry', 'Other'];
 
   var foodContainers = ['Fridge', 'Freezer', 'Other'];
-  double containerButtonTextSize = 24;
 
   String containerString = "Fridge";
 
@@ -220,7 +219,7 @@ class _storagePageState extends State<StoragePage> {
     _searchBarController.text = "";
   }
 
-  Widget _buildContainerButton(String containerName) {
+  Widget _buildContainerButton(String containerName, double textSize) {
     return ElevatedButton(
       onPressed: () => setContainer(containerName),
       style: ElevatedButton.styleFrom(
@@ -240,7 +239,7 @@ class _storagePageState extends State<StoragePage> {
         style: TextStyle(
           fontFamily: GoogleFonts.openSans().fontFamily,
           color: containerString == containerName ? Colors.green : Colors.white,
-          fontSize: containerButtonTextSize,
+          fontSize: textSize,
         ),
       ),
     );
@@ -251,13 +250,17 @@ class _storagePageState extends State<StoragePage> {
     SearchBar searchBar = SearchBar(
         searchBarController: _searchBarController, notifyParent: refresh);
     return LayoutBuilder(
-      builder: (BuildContext, BoxConstraints) {
-        print(BoxConstraints.maxWidth);
-        if (BoxConstraints.maxWidth < 400) {
-          containerButtonTextSize = 16;
-        } else {
-          containerButtonTextSize = 24;
+      builder: (buildContext, boxConstraints) {
+        double expTextSize = 13.0;
+        double containerButtonTextSize = 24.0;
+        double iconSize = 35.0;
+
+        if (boxConstraints.maxWidth < 400) {
+          expTextSize = 10.0;
+          containerButtonTextSize = 16.0;
+          iconSize = 25.0;
         }
+
 
         return Scaffold(
             resizeToAvoidBottomInset: false,
@@ -297,13 +300,13 @@ class _storagePageState extends State<StoragePage> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: _buildContainerButton("Fridge"),
+                        child: _buildContainerButton("Fridge", containerButtonTextSize),
                       ),
                       Expanded(
-                        child: _buildContainerButton("Freezer"),
+                        child: _buildContainerButton("Freezer", containerButtonTextSize),
                       ),
                       Expanded(
-                        child: _buildContainerButton("Other"),
+                        child: _buildContainerButton("Other", containerButtonTextSize),
                       )
                     ],
                   ),
@@ -344,6 +347,7 @@ class _storagePageState extends State<StoragePage> {
                                             ExpirationDateMessage(
                                               documentSnapshot:
                                                   documentSnapshot,
+                                              fontSize: expTextSize,
                                             ),
                                           ],
                                         ),
@@ -352,19 +356,19 @@ class _storagePageState extends State<StoragePage> {
                                           child: Row(
                                             children: [
                                               IconButton(
-                                                  icon: const Icon(
+                                                  icon: Icon(
                                                     Icons.edit_note,
                                                     color:
                                                         Colors.lightBlueAccent,
-                                                    size: 35,
+                                                    size: iconSize,
                                                   ),
                                                   onPressed: () => _update(
                                                       documentSnapshot)),
                                               IconButton(
-                                                  icon: const Icon(
+                                                  icon: Icon(
                                                     Icons.delete,
                                                     color: Colors.red,
-                                                    size: 35,
+                                                    size: iconSize,
                                                   ),
                                                   onPressed: () => _delete(
                                                       documentSnapshot.id)),

@@ -7,7 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ExpirationDateMessage extends StatelessWidget {
 
   DocumentSnapshot documentSnapshot;
-  ExpirationDateMessage({Key? key, required this.documentSnapshot}) : super(key: key);
+  double fontSize;
+  ExpirationDateMessage({Key? key, required this.documentSnapshot,
+    required this.fontSize}) : super(key: key);
 
 
 
@@ -45,6 +47,7 @@ class ExpirationDateMessage extends StatelessWidget {
     return Text(
       expirationMessage,
       style: TextStyle(
+        fontSize: fontSize,
         color: expiredOrSoon ? Colors.red : Colors.grey,
       ),
     );

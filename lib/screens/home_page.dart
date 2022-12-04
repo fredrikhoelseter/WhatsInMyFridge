@@ -91,192 +91,210 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var _foodItems;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar(
-        title: Text(
-          'Whats in my fridge',
-          style: GoogleFonts.pacifico(fontSize: 28),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(15),
-          child: Column(
-            children: <Widget>[
-              Column(
-                children: [
-                  Text(
-                    'Welcome back',
-                    style: GoogleFonts.openSans(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.green),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    '${_currentUser.displayName}',
-                    style: GoogleFonts.openSans(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w400,
+    return LayoutBuilder(
+        builder: (context, boxConstraints) {
+          double titleFontSize = 30.0;
+          double headerSize = 26.0;
+          double textSize = 18.0;
+          double expTextSize = 14.0;
+
+          if (boxConstraints.maxWidth < 400) {
+            titleFontSize = 28.0;
+            headerSize = 24.0;
+            textSize = 16.0;
+            expTextSize = 12.0;
+          }
+
+
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: CustomAppBar(
+              title: Text(
+                'Whats in my fridge',
+                style: GoogleFonts.pacifico(fontSize: titleFontSize),
+              ),
+            ),
+            body: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  children: <Widget>[
+                    Column(
+                      children: [
+                        Text(
+                          'Welcome back',
+                          style: GoogleFonts.openSans(
+                              fontSize: headerSize,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.green),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          '${_currentUser.displayName}',
+                          style: GoogleFonts.openSans(
+                            fontSize: headerSize,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Here are some of your available food items that expire soon",
-                style: GoogleFonts.openSans(fontSize: 20),
-              ),
-              SizedBox(
-                height: 20,
-              ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Here are some of your available food items that expire soon",
+                      style: GoogleFonts.openSans(fontSize: textSize),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
 
-              /// Section displaying stored foods on homepage.
-              Container(
-                height: 250,
-                // decoration: BoxDecoration(
-                //     border: Border(left: BorderSide(color: Colors.black))
-                // ),
-                child: StreamBuilder(
-                    stream: foodItems
-                        .orderBy(CurrentStringSortSelected)
-                        .snapshots(),
-                    builder:
-                        (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                      getIDAsString();
-                      if (streamSnapshot.hasData) {
-                        return ListView.builder(
-                            itemCount: streamSnapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
-                              final DocumentSnapshot documentSnapshot =
-                                  streamSnapshot.data!.docs[index];
+                    /// Section displaying stored foods on homepage.
+                    Container(
+                      height: 250,
+                      // decoration: BoxDecoration(
+                      //     border: Border(left: BorderSide(color: Colors.black))
+                      // ),
+                      child: StreamBuilder(
+                          stream: foodItems
+                              .orderBy(CurrentStringSortSelected)
+                              .snapshots(),
+                          builder:
+                              (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                            getIDAsString();
+                            if (streamSnapshot.hasData) {
+                              return ListView.builder(
+                                  itemCount: streamSnapshot.data!.docs.length,
+                                  itemBuilder: (context, index) {
+                                    final DocumentSnapshot documentSnapshot =
+                                    streamSnapshot.data!.docs[index];
 
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                child: (documentSnapshot["User ID"] ==
-                                        _currentUser.uid &&
-                                    FoodLogic.expirationDifferenceInSeconds(documentSnapshot) < 60*60*24*7)
-                                    ? Card(
-                                      child: InkWell(
-                                        onTap: () => {
-                                          getRecipes(documentSnapshot["Product Name"]),
-                                        },
+                                    return Padding(
+                                      padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                      child: (documentSnapshot["User ID"] ==
+                                          _currentUser.uid &&
+                                          FoodLogic.expirationDifferenceInSeconds(documentSnapshot) < 60*60*24*7)
+                                          ? Card(
+                                        child: InkWell(
+                                          onTap: () => {
+                                            getRecipes(documentSnapshot["Product Name"]),
+                                          },
                                           child: ListTile(
                                             title: Stack(
                                               children: [
                                                 Text(
                                                   documentSnapshot['Product Name'],
-                                                  style: TextStyle(fontSize: 18),
+                                                  style: TextStyle(fontSize: textSize),
                                                 ),
-                                                Align(alignment: Alignment.centerRight, child: ExpirationDateMessage(documentSnapshot: documentSnapshot,))
+                                                Align(alignment: Alignment.centerRight, child:
+                                                ExpirationDateMessage(documentSnapshot: documentSnapshot, fontSize: expTextSize,))
                                               ],
                                             ),
                                           ),
                                         ),
-                                    )
-                                    : SizedBox(),
-                              );
-                            });
-                      }
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }),
-              ),
+                                      )
+                                          : SizedBox(),
+                                    );
+                                  });
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }),
+                    ),
 
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                  'Enter your ingredients or click the items above and we will show the best recipes for you',
-                  style: GoogleFonts.openSans(fontSize: 20)),
-              SizedBox(
-                height: 20,
-              ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                        'Enter your ingredients or click the items above and we will show the best recipes for you',
+                        style: GoogleFonts.openSans(fontSize: textSize)),
+                    SizedBox(
+                      height: 20,
+                    ),
 
-              /// Searchfield for recipe-searches
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        controller: recipeSearchController,
-                        decoration: InputDecoration(
-                          hintText: 'Enter Ingridients',
-                          hintStyle: TextStyle(fontSize: 18),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.grey, width: 2),
-                            borderRadius: BorderRadius.circular(15),
+                    /// Searchfield for recipe-searches
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(
+                              controller: recipeSearchController,
+                              decoration: InputDecoration(
+                                hintText: 'Enter Ingridients',
+                                hintStyle: TextStyle(fontSize: 18),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                  const BorderSide(color: Colors.grey, width: 2),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                  const BorderSide(color: Colors.black, width: 2),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                              style: GoogleFonts.openSans(),
+                            ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.black, width: 2),
-                            borderRadius: BorderRadius.circular(15),
+                          SizedBox(
+                            width: 16,
                           ),
-                        ),
-                        style: GoogleFonts.openSans(),
+
+                          /// onTap trigger Recipe-search based on the content of the textfield
+                          InkWell(
+                            onTap: () async {
+                              if (recipeSearchController.text.isNotEmpty) {
+                                getRecipes(recipeSearchController.text);
+                                print("Just do it");
+                              } else {
+                                print("Just dont do it");
+                              }
+                            },
+                            child: Container(
+                              child: Icon(
+                                Icons.search,
+                                size: 40,
+                                color: Colors.green,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     SizedBox(
-                      width: 16,
+                      height: 30,
                     ),
 
-                    /// onTap trigger Recipe-search based on the content of the textfield
-                    InkWell(
-                      onTap: () async {
-                        if (recipeSearchController.text.isNotEmpty) {
-                          getRecipes(recipeSearchController.text);
-                          print("Just do it");
-                        } else {
-                          print("Just dont do it");
-                        }
-                      },
-                      child: Container(
-                        child: Icon(
-                          Icons.search,
-                          size: 40,
-                          color: Colors.green,
-                        ),
+                    /// Section for recipes from API-search shown in a grid.
+                    Container(
+                      child: GridView.count(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        physics: ClampingScrollPhysics(),
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        children: List.generate(recipes.length, (index) {
+                          return GridTile(
+                              child: RecipeTile(
+                                title: recipes[index].label,
+                                imgUrl: recipes[index].image,
+                                desc: recipes[index].source,
+                                url: recipes[index].url,
+                              ));
+                        }),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: 30,
-              ),
-
-              /// Section for recipes from API-search shown in a grid.
-              Container(
-                child: GridView.count(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  physics: ClampingScrollPhysics(),
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  children: List.generate(recipes.length, (index) {
-                    return GridTile(
-                        child: RecipeTile(
-                      title: recipes[index].label,
-                      imgUrl: recipes[index].image,
-                      desc: recipes[index].source,
-                      url: recipes[index].url,
-                    ));
-                  }),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }
     );
   }
 }
