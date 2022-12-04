@@ -183,8 +183,8 @@ class _storagePageState extends State<StoragePage> {
           );
         });
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('You have successfully deleted a product')));
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //     content: Text('You have successfully deleted a product')));
   }
 
   Future<String?> getID() async {
