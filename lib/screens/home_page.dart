@@ -139,9 +139,9 @@ class _HomePageState extends State<HomePage> {
               /// Section displaying stored foods on homepage.
               Container(
                 height: 250,
-                decoration: BoxDecoration(
-                    border: Border(left: BorderSide(color: Colors.black))
-                ),
+                // decoration: BoxDecoration(
+                //     border: Border(left: BorderSide(color: Colors.black))
+                // ),
                 child: StreamBuilder(
                     stream: foodItems
                         .orderBy(CurrentStringSortSelected)
@@ -158,23 +158,28 @@ class _HomePageState extends State<HomePage> {
 
                               return Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                                    const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                 child: (documentSnapshot["User ID"] ==
                                         _currentUser.uid &&
                                     FoodLogic.expirationDifferenceInSeconds(documentSnapshot) < 60*60*24*7)
-                                    ? Container(
-                                        decoration: BoxDecoration(
-                                            border: Border(bottom: BorderSide(color: Colors.black))
-                                        ),
-                                        child: ListTile(
-                                          title: Text(
-                                            documentSnapshot['Product Name'],
-                                            style: TextStyle(fontSize: 18),
+                                    ? Card(
+                                      child: Container(
+                                          // decoration: BoxDecoration(
+                                          //     border: Border(bottom: BorderSide(color: Colors.black))
+                                          // ),
+                                          child: ListTile(
+                                            title: Stack(
+                                              children: [
+                                                Text(
+                                                  documentSnapshot['Product Name'],
+                                                  style: TextStyle(fontSize: 18),
+                                                ),
+                                                Align(alignment: Alignment.centerRight, child: ExpirationDateMessage(documentSnapshot: documentSnapshot,))
+                                              ],
+                                            ),
                                           ),
-                                          subtitle:
-                                          ExpirationDateMessage(documentSnapshot: documentSnapshot,)
                                         ),
-                                      )
+                                    )
                                     : SizedBox(),
                               );
                             });
