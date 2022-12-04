@@ -20,10 +20,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final _focusEmail = FocusNode();
   final _focusPassword = FocusNode();
-
 
   Future<FirebaseApp> _initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
@@ -34,14 +32,14 @@ class _LoginPageState extends State<LoginPage> {
     return firebaseApp;
   }
 
-  void sendToMobileLayout(User user){
+  void sendToMobileLayout(User user) {
     if (user != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => MobileScreenLayout(user: user),
         ),
       );
-    } 
+    }
   }
 
   late User currentUser;
@@ -59,35 +57,32 @@ class _LoginPageState extends State<LoginPage> {
         _focusPassword.unfocus();
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text(
-            'Whats in my fridge',
-            style: GoogleFonts.pacifico(fontSize: 28),
-          ),
-          centerTitle: true,
-        ),
-        body: FutureBuilder(
-          future: _initializeFirebase(),
-          builder: (context, snapshot) {
-            return StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot){
-              if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-              child: CircularProgressIndicator(),
-              );
-              } else if (snapshot.hasData) {
-                setCurrentUser();
-              return MobileScreenLayout(user: currentUser);
-              } else{
-              return TrueLoginPage();
-              }
-              }
-            );
-          }
-    )
-          ),
-      );
+          resizeToAvoidBottomInset: false,
+          // appBar: AppBar(
+          //   title: Text(
+          //     'Whats in my fridge',
+          //     style: GoogleFonts.pacifico(fontSize: 28),
+          //   ),
+          //   centerTitle: true,
+          // ),
+          body: FutureBuilder(
+              future: _initializeFirebase(),
+              builder: (context, snapshot) {
+                return StreamBuilder(
+                    stream: FirebaseAuth.instance.authStateChanges(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasData) {
+                        setCurrentUser();
+                        return MobileScreenLayout(user: currentUser);
+                      } else {
+                        return TrueLoginPage();
+                      }
+                    });
+              })),
+    );
   }
 }
