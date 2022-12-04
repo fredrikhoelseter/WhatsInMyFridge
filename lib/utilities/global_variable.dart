@@ -19,4 +19,4 @@ bool CurrentSortSelectedIsDescending = false;
 
 CollectionReference foodItems = FirebaseFirestore.instance.collection('foodItems');
 
-String imageFile = '';
+String imageFile = 'assets/images/account.png';

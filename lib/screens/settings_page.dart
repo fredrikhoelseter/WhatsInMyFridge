@@ -150,7 +150,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       },
                       child: CircleAvatar(
                         radius: 65,
-                        backgroundColor: Colors.black,
+                        backgroundColor: Colors.white,
                         child: CircleAvatar(
                           radius: 63,
                           backgroundImage: AssetImage(imageFile),

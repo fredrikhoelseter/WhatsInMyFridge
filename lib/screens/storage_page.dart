@@ -392,10 +392,15 @@ class _storagePageState extends State<StoragePage> {
               ]),
             ),
 // Add new product
-            floatingActionButton: FloatingActionButton.large(
+            floatingActionButton: boxConstraints.maxWidth >= 400 ? FloatingActionButton.large(
               onPressed: () => _create(),
               child: const Icon(Icons.add),
-            ),
+            )
+            : FloatingActionButton(
+              onPressed: () => _create(),
+              child: const Icon(Icons.add),
+            )
+            ,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat);
       },
