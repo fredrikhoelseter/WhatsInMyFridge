@@ -186,9 +186,9 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 //A group for the settings items.
                 SettingsGroup(
-                  settingsGroupTitle: "Settings:",
+                  settingsGroupTitle: "Settings",
                   settingsGroupTitleStyle:
-                      TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                      TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                   items: [
                     //Send a link to the current users email
                     //User can verify email
