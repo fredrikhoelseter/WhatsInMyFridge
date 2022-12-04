@@ -238,6 +238,7 @@ class _HomePageState extends State<HomePage> {
                         child: Icon(
                           Icons.search,
                           size: 40,
+                          color: Colors.green,
                         ),
                       ),
                     )
