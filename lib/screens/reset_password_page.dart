@@ -27,6 +27,7 @@ class _ResetPasswordScreenPage extends State<ResetPasswordPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         width: size.width,
         height: size.height,
