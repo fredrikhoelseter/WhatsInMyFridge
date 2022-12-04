@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                 height: 20,
               ),
               Text(
-                  'Just enter ingredrients you have and we will show the best recipe for you',
+                  'Enter your ingredients and we will show the best recipes for you',
                   style: GoogleFonts.openSans(fontSize: 20)),
               SizedBox(
                 height: 20,
@@ -268,9 +268,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      // floatingActionButton: NavigationButtons(),
-      // floatingActionButtonLocation:
-      //     FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }
@@ -338,14 +335,14 @@ class _RecipeTileState extends State<RecipeTile> {
                           begin: FractionalOffset.centerRight,
                           end: FractionalOffset.centerLeft)),
                   child: Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
                           widget.title,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 15,
                             color: Colors.black54,
                           ),
                         ),
