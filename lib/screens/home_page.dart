@@ -167,6 +167,9 @@ class _HomePageState extends State<HomePage> {
                                             border: Border(bottom: BorderSide(color: Colors.black))
                                         ),
                                         child: ListTile(
+                                          onTap: () => {
+                                            getRecipes(documentSnapshot["Product Name"]),
+                                          },
                                           title: Text(
                                             documentSnapshot['Product Name'],
                                             style: TextStyle(fontSize: 18),
@@ -189,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                 height: 20,
               ),
               Text(
-                  'Enter your ingredients and we will show the best recipes for you',
+                  'Enter your ingredients or click the items above and we will show the best recipes for you',
                   style: GoogleFonts.openSans(fontSize: 20)),
               SizedBox(
                 height: 20,

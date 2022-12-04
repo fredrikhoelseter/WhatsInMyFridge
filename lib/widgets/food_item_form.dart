@@ -58,22 +58,6 @@ class _foodItemFormState extends State<FoodItemForm> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                cursorColor: Colors.green,
-                decoration: InputDecoration(
-                    filled: true,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
-                    hintText: 'Search',
-                    prefixIcon: Container(
-                      padding: EdgeInsets.all(10),
-                      child: const Icon(Icons.search),
-                    )),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
               TextFormField(
                 controller: widget.productNameController,
                 validator: (value) =>
