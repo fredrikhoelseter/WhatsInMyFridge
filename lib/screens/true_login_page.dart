@@ -8,6 +8,7 @@ import 'package:whats_in_my_fridge/screens/reset_password_page.dart';
 import '../responsive/mobile_screen_layout.dart';
 import '../utilities/fire_auth.dart';
 import '../utilities/validator.dart';
+import 'package:whats_in_my_fridge/widgets/snackbar.dart';
 
 class TrueLoginPage extends StatefulWidget {
   const TrueLoginPage({Key? key}) : super(key: key);
@@ -152,6 +153,11 @@ class _TrueLoginPageState extends State<TrueLoginPage> {
                                         builder: (context) =>
                                             MobileScreenLayout(user: user),
                                       ),
+                                    );
+                                  } else {
+                                    CustomSnackBar.showErrorSnackBar(
+                                      context,
+                                      message: "Incorrect email or password!",
                                     );
                                   }
                                 }
