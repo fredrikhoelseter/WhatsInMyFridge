@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_in_my_fridge/screens/register_page.dart';
+import 'package:whats_in_my_fridge/screens/reset_password_page.dart';
 
 import '../responsive/mobile_screen_layout.dart';
 import '../utilities/fire_auth.dart';
@@ -88,6 +89,37 @@ class _TrueLoginPageState extends State<TrueLoginPage> {
                   ),
                 ),
                 SizedBox(height: 24.0),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                  child: Text(
+                    'Have you forgotten your password?',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ResetPasswordPage(),
+                      ),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 0.0),
+                  ),
+                  child: const Text(
+                    'Click here to recover it.',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 _isProcessing
                     ? CircularProgressIndicator()
                     : Row(
