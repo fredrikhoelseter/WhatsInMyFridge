@@ -17,6 +17,7 @@ import '../models/recipe_model.dart';
 import '../widgets/navigation_buttons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:whats_in_my_fridge/utilities/food_logic.dart';
+import 'package:whats_in_my_fridge/widgets/expiration_date_message.dart';
 
 class HomePage extends StatefulWidget {
   final User user;
@@ -170,8 +171,8 @@ class _HomePageState extends State<HomePage> {
                                             documentSnapshot['Product Name'],
                                             style: TextStyle(fontSize: 18),
                                           ),
-                                          subtitle: Text(
-                                              "Expiring:   ${documentSnapshot['Expiration Date']}"),
+                                          subtitle:
+                                          ExpirationDateMessage(documentSnapshot: documentSnapshot,)
                                         ),
                                       )
                                     : SizedBox(),
