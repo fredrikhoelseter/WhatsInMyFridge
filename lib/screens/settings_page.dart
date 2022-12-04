@@ -280,104 +280,113 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget bottomSheet() {
-    return Container(
-      height: 150.0,
-      width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Column(
-        children: <Widget>[
-          const Text(
-            "Choose Avatar",
-            style: TextStyle(
-              fontSize: 20.0,
+    return LayoutBuilder(
+        builder: (BuildContext, BoxConstraints) {
+          double radius = 30;
+          if (BoxConstraints.maxWidth < 400) {
+            radius = 24;
+          }
+
+          return Container(
+            height: 150.0,
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 20,
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.black,
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      imageFile = 'assets/images/boy.png';
-                    });
-                  },
-                  child: const CircleAvatar(
-                    radius: 28,
-                    backgroundColor: Colors.lightGreen,
-                    backgroundImage: AssetImage('assets/images/boy.png'),
+            child: Column(
+              children: <Widget>[
+                const Text(
+                  "Choose Avatar",
+                  style: TextStyle(
+                    fontSize: 20.0,
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: InkWell(
-                onTap: () {
-                  setState(() {
-                    imageFile = 'assets/images/boytwo.png';
-                  });
-                },
-                child: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.black,
-                  child: CircleAvatar(
-                    radius: 28,
-                    backgroundColor: Colors.lightGreen,
-                    backgroundImage: AssetImage('assets/images/boytwo.png'),
-                  ),
+                const SizedBox(
+                  height: 20,
                 ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: InkWell(
-                onTap: () {
-                  setState(() {
-                    imageFile = 'assets/images/girl.png';
-                  });
-                },
-                child: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.black,
-                  child: CircleAvatar(
-                    radius: 28,
-                    backgroundColor: Colors.lightGreen,
-                    backgroundImage: AssetImage('assets/images/girl.png'),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: CircleAvatar(
+                      radius: radius,
+                      backgroundColor: Colors.black,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            imageFile = 'assets/images/boy.png';
+                          });
+                        },
+                        child: CircleAvatar(
+                          radius: radius-2,
+                          backgroundColor: Colors.lightGreen,
+                          backgroundImage: AssetImage('assets/images/boy.png'),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: InkWell(
-                onTap: () {
-                  setState(() {
-                    imageFile = 'assets/images/girltwo.png';
-                  });
-                },
-                child: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.black,
-                  child: CircleAvatar(
-                    radius: 28,
-                    backgroundColor: Colors.lightGreen,
-                    backgroundImage: AssetImage('assets/images/girltwo.png'),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          imageFile = 'assets/images/boytwo.png';
+                        });
+                      },
+                      child: CircleAvatar(
+                        radius: radius,
+                        backgroundColor: Colors.black,
+                        child: CircleAvatar(
+                          radius: radius-2,
+                          backgroundColor: Colors.lightGreen,
+                          backgroundImage: AssetImage('assets/images/boytwo.png'),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          imageFile = 'assets/images/girl.png';
+                        });
+                      },
+                      child: CircleAvatar(
+                        radius: radius,
+                        backgroundColor: Colors.black,
+                        child: CircleAvatar(
+                          radius: radius-2,
+                          backgroundColor: Colors.lightGreen,
+                          backgroundImage: AssetImage('assets/images/girl.png'),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          imageFile = 'assets/images/girltwo.png';
+                        });
+                      },
+                      child: CircleAvatar(
+                        radius: radius,
+                        backgroundColor: Colors.black,
+                        child: CircleAvatar(
+                          radius: radius-2,
+                          backgroundColor: Colors.lightGreen,
+                          backgroundImage: AssetImage('assets/images/girltwo.png'),
+                        ),
+                      ),
+                    ),
+                  ),
+                ])
+              ],
             ),
-          ])
-        ],
-      ),
+          );
+        }
     );
   }
 }

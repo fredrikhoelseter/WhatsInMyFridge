@@ -40,6 +40,7 @@ class _storagePageState extends State<StoragePage> {
   var foodCategories = ['Beverage', 'Dairy', 'Meats', 'Dry', 'Other'];
 
   var foodContainers = ['Fridge', 'Freezer', 'Other'];
+  double containerButtonTextSize = 24;
 
   String containerString = "Fridge";
 
@@ -239,6 +240,7 @@ class _storagePageState extends State<StoragePage> {
         style: TextStyle(
           fontFamily: GoogleFonts.openSans().fontFamily,
           color: containerString == containerName ? Colors.green : Colors.white,
+          fontSize: containerButtonTextSize,
         ),
       ),
     );
@@ -250,6 +252,13 @@ class _storagePageState extends State<StoragePage> {
         searchBarController: _searchBarController, notifyParent: refresh);
     return LayoutBuilder(
       builder: (BuildContext , BoxConstraints ) {
+        print(BoxConstraints.maxWidth);
+        if (BoxConstraints.maxWidth < 400) {
+          containerButtonTextSize = 16;
+        } else {
+          containerButtonTextSize = 24;
+        }
+
         return Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
