@@ -138,8 +138,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 height: 250,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 1),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                    border: Border(left: BorderSide(color: Colors.black))
                 ),
                 child: StreamBuilder(
                     stream: foodItems
@@ -157,16 +156,12 @@ class _HomePageState extends State<HomePage> {
 
                               return Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                                    const EdgeInsets.fromLTRB(0, 0, 20, 0),
                                 child: (documentSnapshot["User ID"] ==
                                         _currentUser.uid)
                                     ? Container(
                                         decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.green, width: 2),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
-                                          //  border: Border(bottom: BorderSide(color: Colors.black))
+                                            border: Border(bottom: BorderSide(color: Colors.black))
                                         ),
                                         child: ListTile(
                                           title: Text(
