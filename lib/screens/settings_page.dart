@@ -129,61 +129,64 @@ class _SettingsPageState extends State<SettingsPage> {
       body: Stack(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 50),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: ((builder) => bottomSheet()),
-                  );
-                },
-                child: CircleAvatar(
-                  radius: 65,
-                  backgroundColor: Colors.black,
-                  child: CircleAvatar(
-                    radius: 63,
-                    backgroundImage: AssetImage(imageFile),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-              padding: EdgeInsets.only(top: 180),
-              child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Text("Tap to change Avatar"))),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Column(
-                children: [
-                  Text(
-                    "Logged in as: ${_currentUser.displayName}",
-                    style: TextStyle(fontSize: 22),
-                  ),
-                  SizedBox(
-                    height: 170,
-                  ),
-                  Text(
-                    "Email: ${_currentUser.email}",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    "Member since: ${_currentUser.metadata.creationTime?.toString().substring(0, 16)}",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(15, 300, 15, 15),
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             child: ListView(
               children: [
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    "Logged in as: ${_currentUser.displayName}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                Align(
+                    alignment: Alignment.topCenter,
+                    child: InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: ((builder) => bottomSheet()),
+                        );
+                      },
+                      child: CircleAvatar(
+                        radius: 65,
+                        backgroundColor: Colors.black,
+                        child: CircleAvatar(
+                          radius: 63,
+                          backgroundImage: AssetImage(imageFile),
+                        ),
+                      ),
+                    ),
+                  ),
+                Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Text("Tap to change Avatar", style: TextStyle(fontSize: 12),))),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          "Email: ${_currentUser.email}",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          "Member since: ${_currentUser.metadata.creationTime?.toString().substring(0, 16)}",
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
                 //A group for the settings items.
                 SettingsGroup(
                   settingsGroupTitle: "Settings",
