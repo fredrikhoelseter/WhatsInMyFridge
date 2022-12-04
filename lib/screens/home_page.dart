@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:whats_in_my_fridge/screens/storage_page.dart';
 import 'package:whats_in_my_fridge/screens/login_page.dart';
 import 'package:whats_in_my_fridge/screens/recipe_view.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
+import 'package:whats_in_my_fridge/utilities/global_variable.dart';
 import 'package:whats_in_my_fridge/widgets/bottom_navbar.dart';
 import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
 import 'package:http/http.dart' as http;
@@ -26,10 +28,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _isSendingVerification = false;
-  bool _isSigningOut = false;
-  bool _isDeletingUser = false;
-  bool _isResettingPassword = false;
 
   late User _currentUser;
 
@@ -37,6 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   late String ingridents;
   bool _loading = false;
+  ///input from recipe-search
   String query = "";
   TextEditingController recipeSearchController = new TextEditingController();
 
@@ -47,13 +46,12 @@ class _HomePageState extends State<HomePage> {
     ///Clears recipe list
     recipes.clear();
 
-    String url =
-        "https://api.edamam.com/search?q=$query&app_id=fe4d49fb&app_key=a69ae39077969bd8cf29bc34ce2d6816";
+    String url = "https://api.edamam.com/search?q=$query&app_id=fe4d49fb&app_key=a69ae39077969bd8cf29bc34ce2d6816";
 
     var response = await http.get(Uri.parse(url));
     Map<String, dynamic> jsonData = jsonDecode(response.body);
 
-    ///Checks every recipe that contains the key words(?)
+    ///Checks every recipe that contains the key words
     jsonData["hits"].forEach((element) {
       //print(element.toString());
 
@@ -76,8 +74,21 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+
+  Future<String?> getID() async {
+    String? userID = await FireAuth.getCurrentUserID();
+    return userID;
+  }
+
+  String id = "";
+
+  void getIDAsString() async {
+    id = (await getID())!;
+  }
+
   @override
   Widget build(BuildContext context) {
+    var _foodItems;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(
@@ -86,10 +97,9 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(15),
           child: Column(
             children: <Widget>[
-              SizedBox(height: 16,),
               Column(
                 children: [
                   Text(
@@ -109,12 +119,55 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(
-                height: 50,
+                height: 20,
               ),
               Text("Here are some of your available food items stored in your containers: ", style: GoogleFonts.openSans(fontSize: 20),),
+              SizedBox(
+                height: 20,
+              ),
+
+              /// Section displaying stored foods on homepage.
+              Container(
+                height: 250,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1), borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                  child: StreamBuilder(
+                      stream: foodItems.orderBy(CurrentStringSortSelected).snapshots(),
+                      builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                        getIDAsString();
+                        if (streamSnapshot.hasData) {
+                          return ListView.builder(
+                              itemCount: streamSnapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                            final DocumentSnapshot documentSnapshot =
+                            streamSnapshot.data!.docs[index];
+
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.green, width: 2), borderRadius: BorderRadius.all(Radius.circular(15)),
+                                //  border: Border(bottom: BorderSide(color: Colors.black))
+                                ),
+                                child: ListTile(
+                                  title: Text(documentSnapshot['Product Name'], style: TextStyle(fontSize: 18),),
+                                  subtitle: Text("Expiring:   ${documentSnapshot['Expiration Date']}"),
+                                ),
+                              ),
+                            );
+                          }
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                  ),
+              ),
 
               SizedBox(
-                height: 50,
+                height: 20,
               ),
               Text(
                   'Just enter ingredrients you have and we will show the best recipe for you',
@@ -122,6 +175,8 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 20,
               ),
+
+              /// Searchfield for recipe-searches
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Row(
@@ -147,6 +202,8 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       width: 16,
                     ),
+
+                    /// onTap trigger Recipe-search based on the content of the textfield
                     InkWell(
                       onTap: () async {
                         if (recipeSearchController.text.isNotEmpty) {
@@ -166,6 +223,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 30,
               ),
+              /// Section for recipes from API-search shown in a grid.
               Container(
                 child: GridView.count(
                   shrinkWrap: true,
@@ -210,7 +268,9 @@ class RecipeTile extends StatefulWidget {
 
 class _RecipeTileState extends State<RecipeTile> {
   _launchURL(String url) async {
-    print(url);
+    if (kDebugMode) {
+      print(url);
+    }
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -218,6 +278,7 @@ class _RecipeTileState extends State<RecipeTile> {
     }
   }
 
+  ///onTap push navigator to webpage url showing original recipe from API.
   @override
   Widget build(BuildContext context) {
     return Wrap(

@@ -32,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
         appBar: AppBar(
         title: Row(
-          children: [
+          children: const [
             Text('Profile Page'),
             SizedBox(width: 220,),
             CircleAvatar(
@@ -50,10 +50,10 @@ class _ProfilePageState extends State<ProfilePage> {
       body:
          Stack(
           children: <Widget> [
-            Align(
+            const Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.only(top: 30.0),
+              padding: EdgeInsets.only(top: 30.0),
               child: CircleAvatar(
                 radius: 85,
                 backgroundColor: Colors.black,
@@ -78,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           onTap: () {
 
                           },
-                        child: CircleAvatar(
+                        child: const CircleAvatar(
                           radius: 28,
                           backgroundColor: Colors.white,
                           backgroundImage: AssetImage('assets/images/boy.png'),
@@ -86,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(21),
                       child: CircleAvatar(
                         radius: 30,
@@ -98,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(21),
                       child: CircleAvatar(
                         radius: 30,
@@ -110,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(21),
                       child: CircleAvatar(
                         radius: 30,
