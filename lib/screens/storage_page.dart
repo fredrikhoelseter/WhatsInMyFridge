@@ -13,6 +13,8 @@ import 'package:whats_in_my_fridge/widgets/food_item_form.dart';
 import 'package:whats_in_my_fridge/widgets/search_bar.dart';
 import 'package:whats_in_my_fridge/utilities/global_variable.dart';
 import 'package:whats_in_my_fridge/widgets/sort_selector.dart';
+import 'package:whats_in_my_fridge/utilities/food_logic.dart';
+import 'package:whats_in_my_fridge/widgets/expiration_date_message.dart';
 
 class StoragePage extends StatefulWidget {
   static String routeName = '/storagePage';
@@ -311,7 +313,8 @@ class _storagePageState extends State<StoragePage> {
                         final DocumentSnapshot documentSnapshot =
                             streamSnapshot.data!.docs[index];
 
-                        return shouldProductShow(documentSnapshot)
+                        return FoodLogic.shouldProductShow(documentSnapshot,
+                            _search, containerString, id)
                             ? Card(
                                 margin: const EdgeInsets.all(10),
                                 child: GestureDetector(
@@ -325,8 +328,8 @@ class _storagePageState extends State<StoragePage> {
                                       children: [
                                         Text(documentSnapshot[
                                             'Product Category']),
-                                        _buildExpirationMessage(
-                                            documentSnapshot),
+                                        ExpirationDateMessage(documentSnapshot:
+                                          documentSnapshot,),
                                       ],
                                     ),
                                     trailing: SizedBox(
@@ -376,112 +379,5 @@ class _storagePageState extends State<StoragePage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
 
-  Widget _buildExpirationMessage(DocumentSnapshot documentSnapshot) {
-    int secondsDifference = expirationDifferenceInSeconds(documentSnapshot);
-    String expirationMessage = "";
-    bool expiredOrSoon = false;
-    int day = 60 * 60 * 24;
-    if (documentSnapshot["Expiration Date"].toString().isEmpty) {
-      expirationMessage = "";
-    } else if (secondsDifference < 0) {
-      expirationMessage = "Expired: " + documentSnapshot["Expiration Date"];
-    } else if (secondsDifference >= 0 && secondsDifference < day) {
-      expirationMessage = "Expires today";
-    } else if (secondsDifference >= day && secondsDifference < 2 * day) {
-      expirationMessage = "Expires tomorrow";
-    } else if (secondsDifference >= 2 * day && secondsDifference < 7 * day) {
-      expirationMessage = "Expires in " +
-          (secondsDifference / day).round().toString() +
-          " days";
-    } else if (secondsDifference >= 7 * day && secondsDifference < 14 * day) {
-      expirationMessage = "Expires in 1 week";
-    } else if (secondsDifference >= 14 * day && secondsDifference < 21 * day) {
-      expirationMessage = "Expires in 2 weeks";
-    } else if (secondsDifference >= 21 * day && secondsDifference < 28 * day) {
-      expirationMessage = "Expires in 3 weeks";
-    } else {
-      expirationMessage = "Expires in 1 month+";
-    }
 
-    if (secondsDifference <= 2 * day) {
-      expiredOrSoon = true;
-    }
-
-    return Text(
-      expirationMessage,
-      style: TextStyle(
-        color: expiredOrSoon ? Colors.red : Colors.grey,
-      ),
-    );
-  }
-
-  /// Parses the documentSnapshot of the expiration date to a DateTime
-  /// and returns the difference from the current time in seconds.
-  /// Prone to error if the documentSnapshot has an invalid date format,
-  int expirationDifferenceInSeconds(DocumentSnapshot documentSnapshot) {
-    if (documentSnapshot["Expiration Date"].toString().isEmpty) {
-      return 1000000;
-    }
-
-    try {
-      final DateTime currentTime = DateTime.now();
-      DateTime expirationDate =
-          DateTime.parse(documentSnapshot["Expiration Date"]);
-      expirationDate = DateTime(
-          expirationDate.year, expirationDate.month, expirationDate.day + 1);
-
-      Duration difference = expirationDate.difference(currentTime);
-
-      return difference.inSeconds;
-    } catch (e) {
-      print("The expiration date was in an invalid format. " + e.toString());
-      return 1000000;
-    }
-  }
-
-  /// Checks whether a product in the document snapshot should be shown on the page.
-  /// The document snapshot needs to have fields with these exact names 'User ID',
-  /// 'Container', 'Product Name', 'Manufacturer'
-  bool shouldProductShow(DocumentSnapshot documentSnapshot) {
-    /// If the product UID does not match the user UID, returns false
-    if (documentSnapshot['User ID'] != id) {
-      return false;
-    }
-
-    /// If the user is not searching and the containerString matches
-    /// the product container name, return true
-    if (documentSnapshot['Container'] == containerString && !_search) {
-      return true;
-    }
-
-    /// If the user is not searching, returns false.
-    if (!_search) {
-      return false;
-    }
-
-    /// Split the search up into keywords based on spacing.
-    final List<String> searchKeywords = SearchStringItemPage.split(" ");
-    final String productName =
-        documentSnapshot['Product Name'].toString().toLowerCase();
-    final String manufacturerName =
-        documentSnapshot['Manufacturer'].toString().toLowerCase();
-    int keywordMatchCount = 0;
-
-    /// Iterates over all the keywords and increments a counter based on if the
-    /// keyword matches the product name or manufacturer name.
-    for (int i = 0; i < searchKeywords.length; i++) {
-      if (productName.contains(searchKeywords[i]) ||
-          manufacturerName.contains(searchKeywords[i])) {
-        keywordMatchCount++;
-      }
-    }
-
-    /// If the keywordMatchCount matches (or is greater than) the length of the
-    /// keywords, returns true.
-    if (keywordMatchCount >= searchKeywords.length) {
-      return true;
-    }
-
-    return false;
-  }
 }

@@ -16,6 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/recipe_model.dart';
 import '../widgets/navigation_buttons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:whats_in_my_fridge/utilities/food_logic.dart';
 
 class HomePage extends StatefulWidget {
   final User user;
@@ -127,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                 height: 20,
               ),
               Text(
-                "Here are some of your available food items stored in your containers: ",
+                "Here are some of your available food items that expire soon",
                 style: GoogleFonts.openSans(fontSize: 20),
               ),
               SizedBox(
@@ -159,7 +160,8 @@ class _HomePageState extends State<HomePage> {
                                 padding:
                                     const EdgeInsets.fromLTRB(20, 5, 20, 0),
                                 child: (documentSnapshot["User ID"] ==
-                                        _currentUser.uid)
+                                        _currentUser.uid &&
+                                    FoodLogic.expirationDifferenceInSeconds(documentSnapshot) < 60*60*24*7)
                                     ? Container(
                                         decoration: BoxDecoration(
                                           border: Border.all(
