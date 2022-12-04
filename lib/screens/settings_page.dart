@@ -33,6 +33,8 @@ class _SettingsPageState extends State<SettingsPage> {
   late String resettingPasswordText;
 
   late User _currentUser;
+  final ImagePicker _picker = ImagePicker();
+  late PickedFile _imageFile;
 
   @override
   void initState() {
@@ -117,16 +119,12 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  late File _image;
-    final picker = ImagePicker();
-
-    Future getImage() async {
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-      setState(() {
-        _image = pickedFile as File;
-      });
-    }
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source,);
+    setState(() {
+      _imageFile = pickedFile as PickedFile;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,16 +139,20 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Align(
               alignment: Alignment.topCenter,
               child: InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: ((builder) => bottomSheet()),
+                  );
+                },
                 child: CircleAvatar(
                   radius: 65,
                   backgroundColor: Colors.black,
                   child: CircleAvatar(
                     radius: 63,
-                    child: ClipOval(
-                      child: (_image != null)
-                        ? Image.file(_image)
-                        : Image.asset('assets/images/boy.png'),
-                    ),
+                    // backgroundImage: _imageFile == null
+                    //     ? AssetImage("assets/images/boy.png")
+                    //     : FileImage(_imageFile!.path) as ImageProvider,
                   ),
                 ),
               ),
@@ -252,6 +254,46 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
     ],
+      ),
+    );
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          const Text(
+            "Choose Profile photo",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            TextButton.icon(
+              icon: Icon(Icons.camera),
+              onPressed: () {
+                takePhoto(ImageSource.camera);
+              },
+              label: Text("Camera"),
+            ),
+            TextButton.icon(
+              icon: Icon(Icons.image),
+              onPressed: () {
+                takePhoto(ImageSource.gallery);
+              },
+              label: Text("Gallery"),
+            ),
+          ])
+        ],
       ),
     );
   }
