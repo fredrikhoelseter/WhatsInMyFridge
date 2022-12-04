@@ -62,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   //If the user email verification gets sent, this updates the subtitle of the settingsitem.
   void sendingEmailVerification() {
-    sendingVerificationEmailText = ("Link sent to your connect email!");
+    sendingVerificationEmailText = ("Link sent to your connected email!");
   }
 
   //If the user gets refreshed, this sets the subtitle to the settingsitem.
@@ -77,7 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   //Updates the subtitle of the settingsitem if the user presses the reset password button.
   void resettingPassword() {
-    resettingPasswordText = "Link sent to your connect email!";
+    resettingPasswordText = "Link sent to your connected email!";
   }
 
   //Show warning pop up dialog when user tries to delete accout.
@@ -173,7 +173,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: TextStyle(fontSize: 16),
                   ),
                   Text(
-                    "Member since: ${_currentUser.metadata.creationTime}",
+                    "Member since: ${_currentUser.metadata.creationTime?.toString().substring(0, 16)}",
                     style: TextStyle(fontSize: 16),
                   )
                 ],
@@ -181,14 +181,14 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(15, 270, 15, 15),
+            padding: const EdgeInsets.fromLTRB(15, 300, 15, 15),
             child: ListView(
               children: [
                 //A group for the settings items.
                 SettingsGroup(
-                  settingsGroupTitle: "Settings:",
+                  settingsGroupTitle: "Settings",
                   settingsGroupTitleStyle:
-                      TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                      TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                   items: [
                     //Send a link to the current users email
                     //User can verify email
