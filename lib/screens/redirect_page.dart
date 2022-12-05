@@ -22,15 +22,24 @@ class _RedirectPageState extends State<RedirectPage> {
   final _focusEmail = FocusNode();
   final _focusPassword = FocusNode();
 
+  late User currentUser;
+
+  ///Gets the user from Firebase and sets currentUser to it
+  void setCurrentUser() {
+    User? loginUser = FirebaseAuth.instance.currentUser;
+    currentUser = loginUser!;
+  }
+
+  ///Initialize Firebase app
   Future<FirebaseApp> _initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
 
-    User? user = FirebaseAuth.instance.currentUser;
+    setCurrentUser();
 
-    if (user != null) {
+    if (currentUser != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => MobileScreenLayout(user: user),
+          builder: (context) => MobileScreenLayout(user: currentUser),
         ),
       );
     }
@@ -38,13 +47,6 @@ class _RedirectPageState extends State<RedirectPage> {
     return firebaseApp;
   }
 
-
-  late User currentUser;
-
-  void setCurrentUser() {
-    User? loginUser = FirebaseAuth.instance.currentUser;
-    currentUser = loginUser!;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,15 +63,19 @@ class _RedirectPageState extends State<RedirectPage> {
                 return StreamBuilder(
                     stream: FirebaseAuth.instance.authStateChanges(),
                     builder: (context, snapshot) {
+                      ///Checks the state of the stream snapshot
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
+                        return const Center(
+                          ///if waiting shows loading
                           child: CircularProgressIndicator(),
                         );
                       } else if (snapshot.hasData) {
+                        ///If it has data will set the user and log them in
                         setCurrentUser();
                         return MobileScreenLayout(user: currentUser);
                       } else {
-                        return LoginPage();
+                        ///Will show the login page
+                        return const LoginPage();
                       }
                     });
               })),
