@@ -27,7 +27,7 @@ class FoodLogic {
     }
 
     /// Split the search up into keywords based on spacing.
-    final List<String> searchKeywords = SearchStringItemPage.split(" ");
+    final List<String> searchKeywords = SearchStringItemPage.toLowerCase().split(" ");
     final String productName =
     documentSnapshot['Product Name'].toString().toLowerCase();
     final String manufacturerName =
