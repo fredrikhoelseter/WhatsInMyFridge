@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:whats_in_my_fridge/widgets/google_signin_button.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Text title;

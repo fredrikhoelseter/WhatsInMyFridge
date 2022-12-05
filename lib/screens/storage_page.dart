@@ -63,8 +63,6 @@ class _storagePageState extends State<StoragePage> {
         context: context,
         builder: (BuildContext ctx) {
           return FoodItemForm(
-            foodItems: foodItems,
-            user: user,
             productNameController: _productNameController,
             productCategoryController: _productCategoryController,
             manufacturerController: _manufacturerController,
@@ -113,8 +111,6 @@ class _storagePageState extends State<StoragePage> {
         context: context,
         builder: (BuildContext ctx) {
           return FoodItemForm(
-            foodItems: foodItems,
-            user: user,
             productNameController: _productNameController,
             productCategoryController: _productCategoryController,
             manufacturerController: _manufacturerController,

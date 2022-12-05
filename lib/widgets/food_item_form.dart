@@ -9,9 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:whats_in_my_fridge/utilities/validator.dart';
 
+///
 class FoodItemForm extends StatefulWidget {
-  User? user;
-  CollectionReference foodItems;
   Widget? child;
 
   TextEditingController productNameController;
@@ -24,8 +23,6 @@ class FoodItemForm extends StatefulWidget {
   FoodItemForm(
       {Key? key,
       this.child,
-      this.user,
-      required this.foodItems,
       required this.productNameController,
       required this.productCategoryController,
       required this.manufacturerController,

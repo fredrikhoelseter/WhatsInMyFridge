@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:whats_in_my_fridge/screens/redirect_page.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
-import 'package:whats_in_my_fridge/widgets/bottom_navbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:whats_in_my_fridge/utilities/global_variable.dart';
 
