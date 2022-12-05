@@ -52,27 +52,28 @@ class FoodLogic {
     return false;
   }
 
-  /// Parses the documentSnapshot of the expiration date to a DateTime
+  /// Parses the expirationDateString to a DateTime
   /// and returns the difference from the current time in seconds.
-  /// Prone to error if the documentSnapshot has an invalid date format,
-  static int expirationDifferenceInSeconds(DocumentSnapshot documentSnapshot) {
-    if (documentSnapshot["Expiration Date"].toString().isEmpty) {
-      return 1000000;
+  /// Prone to error if the expirationDateString has an invalid date format,
+  static int expirationDifferenceInSeconds(String expirationDateString) {
+    if (expirationDateString.isEmpty) {
+      return 0;
     }
 
     try {
       final DateTime currentTime = DateTime.now();
       DateTime expirationDate =
-      DateTime.parse(documentSnapshot["Expiration Date"]);
+      DateTime.parse(expirationDateString);
       expirationDate = DateTime(
-          expirationDate.year, expirationDate.month, expirationDate.day + 1);
+          expirationDate.year, expirationDate.month, expirationDate.day + 1,
+      expirationDate.hour, expirationDate.minute, expirationDate.second);
 
       Duration difference = expirationDate.difference(currentTime);
 
       return difference.inSeconds;
     } catch (e) {
       print("The expiration date was in an invalid format. " + e.toString());
-      return 1000000;
+      return 0;
     }
   }
 }

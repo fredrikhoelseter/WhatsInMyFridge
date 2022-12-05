@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                                       const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                       child: (documentSnapshot["User ID"] ==
                                           _currentUser.uid &&
-                                          FoodLogic.expirationDifferenceInSeconds(documentSnapshot) < 60*60*24*7)
+                                          FoodLogic.expirationDifferenceInSeconds(documentSnapshot["Expiration Date"]) < 60*60*24*7)
                                           ? Card(
                                         child: InkWell(
                                           onTap: () => {

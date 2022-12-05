@@ -16,7 +16,7 @@ class ExpirationDateMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int secondsDifference = FoodLogic.expirationDifferenceInSeconds(documentSnapshot);
+    int secondsDifference = FoodLogic.expirationDifferenceInSeconds(documentSnapshot["Expiration Date"]);
     String expirationMessage = "";
     bool expiredOrSoon = false;
     int day = 60 * 60 * 24;

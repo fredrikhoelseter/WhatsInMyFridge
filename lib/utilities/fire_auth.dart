@@ -7,14 +7,14 @@ import '../responsive/mobile_screen_layout.dart';
 import '../screens/redirect_page.dart';
 
 class FireAuth with ChangeNotifier {
-  final _auth = FirebaseAuth.instance;
+
   final googleSignIn = GoogleSignIn();
 
   GoogleSignInAccount? _user;
 
   GoogleSignInAccount get user => _user!;
 
-  // For registering a new user
+  /// For registering a new user
   static Future<User?> registerUsingEmailPassword({
     required String name,
     required String email,
@@ -46,7 +46,7 @@ class FireAuth with ChangeNotifier {
     return user;
   }
 
-  // For signing in an user (have already registered)
+  /// For signing in an user (have already registered)
   static Future<User?> signInUsingEmailPassword({
     required String email,
     required String password,
@@ -80,10 +80,12 @@ class FireAuth with ChangeNotifier {
     return refreshedUser;
   }
 
+  /// Returns a Future of the current user.
   static Future<User?> getCurrentUser() async {
     return FirebaseAuth.instance.currentUser;
   }
 
+  /// Returns a Future of the current user id.
   static Future<String?> getCurrentUserID() async {
     return FirebaseAuth.instance.currentUser?.uid;
   }
