@@ -51,7 +51,7 @@ class _foodItemFormState extends State<FoodItemForm> {
             top: 20,
             left: 20,
             right: 30,
-            bottom: MediaQuery.of(context).size.height * 0.15),
+            bottom: MediaQuery.of(context).size.height * 0),
         child: Form(
           key: FoodItemForm.ProductFormKey,
           child: Column(
@@ -149,7 +149,7 @@ class _foodItemFormState extends State<FoodItemForm> {
                 },
               ),
               const SizedBox(
-                height: 50,
+                height: 30,
               ),
               Container(
                 child: Align(alignment: Alignment.center, child: widget.child),
