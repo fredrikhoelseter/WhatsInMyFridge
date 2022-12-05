@@ -42,6 +42,11 @@ void main() {
     expect(Validator.validateProductField(field: ''), 'Field must be filled out');
   });
 
+  test('invalid product name', () {
+    expect(Validator.validateProductField(field: 'qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm'),
+        'Field cannot exceed 30 characters');
+  });
+
   test('invalid/empty storage container', () {
     expect(Validator.validateContainer(container: ''), 'Choose a container');
   });
