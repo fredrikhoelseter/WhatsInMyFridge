@@ -35,4 +35,15 @@ void main() {
     expect(Validator.validateEmail(email: 'eirik.no'), 'Enter a correct email');
   });
 
+  ///Validation for adding products to containers
+
+  ///tests for empty product name and storage unit, should return errormessage in ui
+  test('invalid/empty product name', () {
+    expect(Validator.validateProductField(field: ''), 'Field must be filled out');
+  });
+
+  test('invalid/empty storage container', () {
+    expect(Validator.validateContainer(container: ''), 'Choose a container');
+  });
+
 }
