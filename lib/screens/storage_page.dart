@@ -1,14 +1,8 @@
-import 'dart:ffi';
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
-import 'package:intl/intl.dart';
-import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
 import 'package:whats_in_my_fridge/widgets/food_item_form.dart';
 import 'package:whats_in_my_fridge/widgets/search_bar.dart';
 import 'package:whats_in_my_fridge/utilities/global_variable.dart';
@@ -60,43 +54,46 @@ class _storagePageState extends State<StoragePage> {
     user = await FireAuth.getCurrentUser();
     _containerInput.text = containerString;
     await showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext ctx) {
-          return FoodItemForm(
-            productNameController: _productNameController,
-            productCategoryController: _productCategoryController,
-            manufacturerController: _manufacturerController,
-            dateInput: _dateinput,
-            containerInput: _containerInput,
-            child: ElevatedButton(
-              child: const Text('Add product'),
-              onPressed: () async {
-                final String productName = _productNameController.text;
-                final String productCategory = _productCategoryController.text;
-                final String manufacturer = _manufacturerController.text;
-                final String container = _containerInput.text;
-                final String expDate = _dateinput.text;
+            isScrollControlled: true,
+            context: context,
+            builder: (BuildContext ctx) {
+              return FoodItemForm(
+                productNameController: _productNameController,
+                productCategoryController: _productCategoryController,
+                manufacturerController: _manufacturerController,
+                dateInput: _dateinput,
+                containerInput: _containerInput,
+                child: ElevatedButton(
+                  child: const Text('Add product'),
+                  onPressed: () async {
+                    final String productName = _productNameController.text;
+                    final String productCategory =
+                        _productCategoryController.text;
+                    final String manufacturer = _manufacturerController.text;
+                    final String container = _containerInput.text;
+                    final String expDate = _dateinput.text;
 
-                /// If food item form fields are valid, create a new product
-                if (FoodItemForm.ProductFormKey.currentState!.validate()) {
-                  await foodItems.add({
-                    "User ID": user?.uid,
-                    "Product Name": productName,
-                    "Product Category": productCategory,
-                    "Manufacturer": manufacturer,
-                    "Container": container,
-                    "Expiration Date": expDate
-                  });
+                    /// If food item form fields are valid, create a new product
+                    if (FoodItemForm.ProductFormKey.currentState!.validate()) {
+                      await foodItems.add({
+                        "User ID": user?.uid,
+                        "Product Name": productName,
+                        "Product Category": productCategory,
+                        "Manufacturer": manufacturer,
+                        "Container": container,
+                        "Expiration Date": expDate
+                      });
 
-                  resetTextFields();
+                      resetTextFields();
 
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          );
-        }).whenComplete(() => {resetTextFields()}); // When closing the modal, reset the fields
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              );
+            })
+        .whenComplete(() =>
+            {resetTextFields()}); // When closing the modal, reset the fields
   }
 
   /// Shows the update food item form page.
@@ -110,41 +107,45 @@ class _storagePageState extends State<StoragePage> {
     }
 
     await showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext ctx) {
-          return FoodItemForm(
-            productNameController: _productNameController,
-            productCategoryController: _productCategoryController,
-            manufacturerController: _manufacturerController,
-            dateInput: _dateinput,
-            containerInput: _containerInput,
-            child: ElevatedButton(
-              child: const Text('Update'),
-              onPressed: () async {
-                final String productName = _productNameController.text;
-                final String productCategory = _productCategoryController.text;
-                final String manufacturer = _manufacturerController.text;
-                final String container = _containerInput.text;
-                final String date = _dateinput.text;
-                /// If food item form fields are valid, update the product.
-                if (FoodItemForm.ProductFormKey.currentState!.validate()) {
-                  await foodItems.doc(documentSnapshot!.id).update({
-                    "Product Name": productName,
-                    "Product Category": productCategory,
-                    "Manufacturer": manufacturer,
-                    "Container": container,
-                    "Expiration Date": date,
-                  });
+            isScrollControlled: true,
+            context: context,
+            builder: (BuildContext ctx) {
+              return FoodItemForm(
+                productNameController: _productNameController,
+                productCategoryController: _productCategoryController,
+                manufacturerController: _manufacturerController,
+                dateInput: _dateinput,
+                containerInput: _containerInput,
+                child: ElevatedButton(
+                  child: const Text('Update'),
+                  onPressed: () async {
+                    final String productName = _productNameController.text;
+                    final String productCategory =
+                        _productCategoryController.text;
+                    final String manufacturer = _manufacturerController.text;
+                    final String container = _containerInput.text;
+                    final String date = _dateinput.text;
 
-                  resetTextFields();
+                    /// If food item form fields are valid, update the product.
+                    if (FoodItemForm.ProductFormKey.currentState!.validate()) {
+                      await foodItems.doc(documentSnapshot!.id).update({
+                        "Product Name": productName,
+                        "Product Category": productCategory,
+                        "Manufacturer": manufacturer,
+                        "Container": container,
+                        "Expiration Date": date,
+                      });
 
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          );
-        }).whenComplete(() => resetTextFields()); // When closing the modal, reset the fields
+                      resetTextFields();
+
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              );
+            })
+        .whenComplete(() =>
+            resetTextFields()); // When closing the modal, reset the fields
   }
 
   /// Show the delete item modal page.
@@ -263,7 +264,6 @@ class _storagePageState extends State<StoragePage> {
           iconSize = 25.0;
         }
 
-
         return Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
@@ -301,13 +301,16 @@ class _storagePageState extends State<StoragePage> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: _buildContainerButton("Fridge", containerButtonTextSize),
+                        child: _buildContainerButton(
+                            "Fridge", containerButtonTextSize),
                       ),
                       Expanded(
-                        child: _buildContainerButton("Freezer", containerButtonTextSize),
+                        child: _buildContainerButton(
+                            "Freezer", containerButtonTextSize),
                       ),
                       Expanded(
-                        child: _buildContainerButton("Other", containerButtonTextSize),
+                        child: _buildContainerButton(
+                            "Other", containerButtonTextSize),
                       )
                     ],
                   ),
@@ -316,7 +319,9 @@ class _storagePageState extends State<StoragePage> {
                   padding: const EdgeInsets.only(top: 75),
                   child: StreamBuilder(
                     stream: foodItems
-                        .orderBy(CurrentStringSortSelected, /// Order the collection
+                        .orderBy(CurrentStringSortSelected,
+
+                            /// Order the collection
                             descending: CurrentSortSelectedIsDescending)
                         .snapshots(),
                     builder:
@@ -328,6 +333,7 @@ class _storagePageState extends State<StoragePage> {
                           itemBuilder: (context, index) {
                             final DocumentSnapshot documentSnapshot =
                                 streamSnapshot.data!.docs[index];
+
                             /// Shows the product or an empty SizedBox
                             return FoodLogic.shouldProductShow(documentSnapshot,
                                     _search, containerString, id)
@@ -393,15 +399,15 @@ class _storagePageState extends State<StoragePage> {
               ]),
             ),
 // Add new product
-            floatingActionButton: boxConstraints.maxWidth >= 400 ? FloatingActionButton.large(
-              onPressed: () => _create(),
-              child: const Icon(Icons.add),
-            )
-            : FloatingActionButton(
-              onPressed: () => _create(),
-              child: const Icon(Icons.add),
-            )
-            ,
+            floatingActionButton: boxConstraints.maxWidth >= 400
+                ? FloatingActionButton.large(
+                    onPressed: () => _create(),
+                    child: const Icon(Icons.add),
+                  )
+                : FloatingActionButton(
+                    onPressed: () => _create(),
+                    child: const Icon(Icons.add),
+                  ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat);
       },

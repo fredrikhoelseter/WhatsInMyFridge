@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:whats_in_my_fridge/responsive/mobile_screen_layout.dart';
 import 'package:whats_in_my_fridge/screens/storage_page.dart';
-import 'package:whats_in_my_fridge/screens/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +11,7 @@ import 'screens/redirect_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -37,10 +36,10 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.green,
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontSize: 24.0,
                 ),
-                padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
               ),
             ),
             textTheme: TextTheme(
@@ -59,9 +58,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          home: AuthWrapper(),
+          home: const AuthWrapper(),
           routes: {
-            StoragePage.routeName: (context) => StoragePage(),
+            StoragePage.routeName: (context) => const StoragePage(),
           },
         ));
   }
@@ -77,7 +76,7 @@ class AuthWrapper extends StatelessWidget {
     if (firebaseUser != null) {
       return MobileScreenLayout(user: firebaseUser);
     } else {
-      return RedirectPage();
+      return const RedirectPage();
     }
   }
 }

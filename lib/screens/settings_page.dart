@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,17 +13,13 @@ import 'package:whats_in_my_fridge/utilities/global_variable.dart';
 class SettingsPage extends StatefulWidget {
   final User user;
 
-  const SettingsPage({required this.user});
+  const SettingsPage({super.key, required this.user});
 
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _isSendingVerification = false;
-  bool _isSigningOut = false;
-  bool _isDeletingUser = false;
-  bool _isResettingPassword = false;
   late String emailVerified;
   late bool verified;
   late String sendingVerificationEmailText;
@@ -83,7 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = TextButton(
-      child: Text("Cancel"),
+      child: const Text("Cancel"),
       onPressed: () {
         Navigator.of(context).pop(); // dismiss dialog
       },
@@ -101,9 +95,9 @@ class _SettingsPageState extends State<SettingsPage> {
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Confirm Dialog"),
-      content:
-          Text("Are you sure you want to permanently delete your account?"),
+      title: const Text("Confirm Dialog"),
+      content: const Text(
+          "Are you sure you want to permanently delete your account?"),
       actions: [
         cancelButton,
         continueButton,
@@ -123,7 +117,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Account'),
+        title: const Text('Account'),
       ),
       body: Stack(
         children: <Widget>[
@@ -139,36 +133,39 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 Align(
-                    alignment: Alignment.topCenter,
-                    child: InkWell(
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: ((builder) => bottomSheet()),
-                        );
-                      },
+                  alignment: Alignment.topCenter,
+                  child: InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: ((builder) => bottomSheet()),
+                      );
+                    },
+                    child: CircleAvatar(
+                      radius: 65,
+                      backgroundColor: Colors.white,
                       child: CircleAvatar(
-                        radius: 65,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 63,
-                          backgroundImage: AssetImage(imageFile),
-                        ),
+                        radius: 63,
+                        backgroundImage: AssetImage(imageFile),
                       ),
                     ),
                   ),
-                Padding(
+                ),
+                const Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: Align(
                         alignment: Alignment.topCenter,
-                        child: Text("Tap to change Avatar", style: TextStyle(fontSize: 12),))),
+                        child: Text(
+                          "Tap to change Avatar",
+                          style: TextStyle(fontSize: 12),
+                        ))),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                         Text(
@@ -183,14 +180,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
                 //A group for the settings items.
                 SettingsGroup(
                   settingsGroupTitle: "Settings",
-                  settingsGroupTitleStyle:
-                      TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                  settingsGroupTitleStyle: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 20),
                   items: [
                     //Send a link to the current users email
                     //User can verify email
@@ -234,20 +231,14 @@ class _SettingsPageState extends State<SettingsPage> {
                           setState(() {});
                         },
                         icons: CupertinoIcons.lock_fill,
-                        title: "Reset passowrd",
+                        title: "Reset password",
                         subtitle: resettingPasswordText),
 
                     //Button to sign the user out of the app.
                     //Gets pushed back to the login page.
                     SettingsItem(
                       onTap: () async {
-                        setState(() {
-                          _isSigningOut = true;
-                        });
                         await FirebaseAuth.instance.signOut();
-                        setState(() {
-                          _isSigningOut = false;
-                        });
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => RedirectPage(),
@@ -282,113 +273,115 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget bottomSheet() {
-    return LayoutBuilder(
-        builder: (BuildContext, BoxConstraints) {
-          double radius = 30;
-          if (BoxConstraints.maxWidth < 400) {
-            radius = 24;
-          }
+    return LayoutBuilder(builder: (BuildContext, BoxConstraints) {
+      double radius = 30;
+      if (BoxConstraints.maxWidth < 400) {
+        radius = 24;
+      }
 
-          return Container(
-            height: 150.0,
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 20,
+      return Container(
+        height: 150.0,
+        width: MediaQuery.of(context).size.width,
+        margin: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ),
+        child: Column(
+          children: <Widget>[
+            const Text(
+              "Choose Avatar",
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
             ),
-            child: Column(
-              children: <Widget>[
-                const Text(
-                  "Choose Avatar",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(10),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: CircleAvatar(
+                  radius: radius,
+                  backgroundColor: Colors.black,
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        imageFile = 'assets/images/boy.png';
+                      });
+                    },
                     child: CircleAvatar(
-                      radius: radius,
-                      backgroundColor: Colors.black,
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            imageFile = 'assets/images/boy.png';
-                          });
-                        },
-                        child: CircleAvatar(
-                          radius: radius-2,
-                          backgroundColor: Colors.lightGreen,
-                          backgroundImage: AssetImage('assets/images/boy.png'),
-                        ),
-                      ),
+                      radius: radius - 2,
+                      backgroundColor: Colors.lightGreen,
+                      backgroundImage:
+                          const AssetImage('assets/images/boy.png'),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          imageFile = 'assets/images/boytwo.png';
-                        });
-                      },
-                      child: CircleAvatar(
-                        radius: radius,
-                        backgroundColor: Colors.black,
-                        child: CircleAvatar(
-                          radius: radius-2,
-                          backgroundColor: Colors.lightGreen,
-                          backgroundImage: AssetImage('assets/images/boytwo.png'),
-                        ),
-                      ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      imageFile = 'assets/images/boytwo.png';
+                    });
+                  },
+                  child: CircleAvatar(
+                    radius: radius,
+                    backgroundColor: Colors.black,
+                    child: CircleAvatar(
+                      radius: radius - 2,
+                      backgroundColor: Colors.lightGreen,
+                      backgroundImage:
+                          const AssetImage('assets/images/boytwo.png'),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          imageFile = 'assets/images/girl.png';
-                        });
-                      },
-                      child: CircleAvatar(
-                        radius: radius,
-                        backgroundColor: Colors.black,
-                        child: CircleAvatar(
-                          radius: radius-2,
-                          backgroundColor: Colors.lightGreen,
-                          backgroundImage: AssetImage('assets/images/girl.png'),
-                        ),
-                      ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      imageFile = 'assets/images/girl.png';
+                    });
+                  },
+                  child: CircleAvatar(
+                    radius: radius,
+                    backgroundColor: Colors.black,
+                    child: CircleAvatar(
+                      radius: radius - 2,
+                      backgroundColor: Colors.lightGreen,
+                      backgroundImage:
+                          const AssetImage('assets/images/girl.png'),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          imageFile = 'assets/images/girltwo.png';
-                        });
-                      },
-                      child: CircleAvatar(
-                        radius: radius,
-                        backgroundColor: Colors.black,
-                        child: CircleAvatar(
-                          radius: radius-2,
-                          backgroundColor: Colors.lightGreen,
-                          backgroundImage: AssetImage('assets/images/girltwo.png'),
-                        ),
-                      ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      imageFile = 'assets/images/girltwo.png';
+                    });
+                  },
+                  child: CircleAvatar(
+                    radius: radius,
+                    backgroundColor: Colors.black,
+                    child: CircleAvatar(
+                      radius: radius - 2,
+                      backgroundColor: Colors.lightGreen,
+                      backgroundImage:
+                          const AssetImage('assets/images/girltwo.png'),
                     ),
                   ),
-                ])
-              ],
-            ),
-          );
-        }
-    );
+                ),
+              ),
+            ])
+          ],
+        ),
+      );
+    });
   }
 }
