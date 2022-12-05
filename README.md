@@ -1,16 +1,10 @@
-# whats_in_my_fridge
+# What's in my fridge.
+A simple app to organize your food items. You can use your registered items to search a recipe API, to help you use the ingredients you already have before buying new ones!
 
-A new Flutter project.
+## How to run this app.
+All you need to do to get this app running on a simulator is having your flutter IDE of your choice installed with a compatible version of either IOS simulator or Android Emulator.
+When you have cloned this project, run pub get from the project root and run the app in your simulator/emulator.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### App preview.
+![combine_images-3](https://user-images.githubusercontent.com/73555530/205643310-5aa6ac07-a52f-4d21-9ad2-05366db5f6ea.jpg)
