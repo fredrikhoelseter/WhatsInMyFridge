@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:whats_in_my_fridge/utilities/global_variable.dart';
 
 class SortSelector extends StatefulWidget {
+
+  ///List of fields user can sort by.
   static const List<String> sortBy = [
     'Expiration Date',
     'Product Name',
@@ -25,16 +27,19 @@ class _SortSelectorState extends State<SortSelector> {
       items: SortSelector.sortBy
           .map((sort) => DropdownMenuItem(value: sort, child: Text(sort)))
           .toList(),
-      onChanged: (sort) => _sortSelected(sort),
+      onChanged: (sort) => _sortSelected(sort), ///When selected sort is changed will call _sortSelected method
     );
   }
 
+  ///Sets the Firestore field to sort after
   void _sortSelected(String? sort) {
-    print("I get here when you press me");
 
+    ///If the selected sort is the same as what it currently is set as,
+    ///then will change if the sort is descending or ascending
     if (CurrentStringSortSelected == sort) {
       print("Sort is the same");
 
+      ///Switches isDescending
       if (CurrentSortSelectedIsDescending == false) {
         CurrentSortSelectedIsDescending = true;
         widget.notifyParent();
@@ -45,6 +50,9 @@ class _SortSelectorState extends State<SortSelector> {
     } else {
       print("Sort is not the same");
 
+      ///If selected sort is not the same as what it currently is set as,
+      ///sets the sort to the selected sort and resets  isDescending to false
+      CurrentSortSelectedIsDescending = false;
       CurrentStringSortSelected = sort!;
       widget.notifyParent();
     }

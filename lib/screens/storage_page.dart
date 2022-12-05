@@ -208,11 +208,11 @@ class _storagePageState extends State<StoragePage> {
   }
 
   /// Sets the containerString and hides the search bar and then
-  /// calls set state. This changes the product content on the page.
+  /// calls refresh. This changes the product content on the page.
   void setContainer(String string) {
     containerString = string;
     hideSearchBar();
-    setState(() {});
+    refresh();
   }
 
   /// Hides the searchBar. Needs a setState call to update in the UI.
@@ -281,9 +281,8 @@ class _storagePageState extends State<StoragePage> {
                         IconButton(
                             icon: Icon(Icons.search),
                             onPressed: () {
-                              setState(() {
-                                _search = true;
-                              });
+                              _search = true;
+                              refresh();
                             }),
                       ]
                     : [
@@ -291,7 +290,7 @@ class _storagePageState extends State<StoragePage> {
                             icon: Icon(Icons.clear),
                             onPressed: () => {
                                   hideSearchBar(),
-                                  setState(() {}),
+                                  refresh(),
                                 })
                       ]),
             body: Padding(
