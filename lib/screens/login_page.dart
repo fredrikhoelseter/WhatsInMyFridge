@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_in_my_fridge/screens/register_page.dart';
 import 'package:whats_in_my_fridge/screens/reset_password_page.dart';
+import 'package:whats_in_my_fridge/widgets/snackbar.dart';
 
 import '../responsive/mobile_screen_layout.dart';
 import '../utilities/fire_auth.dart';
@@ -158,6 +159,9 @@ class _LoginPageState extends State<LoginPage> {
                                             MobileScreenLayout(user: user),
                                       ),
                                     );
+                                  } else {
+                                    CustomSnackBar.showErrorSnackBar(context,
+                                    message: "Incorrect email or password");
                                   }
                                 }
                               },
