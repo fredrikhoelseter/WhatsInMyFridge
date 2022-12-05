@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whats_in_my_fridge/utilities/global_variable.dart';
 
 
-
+/// Static functions for food items/ products.
 class FoodLogic {
 
   /// Checks whether a product in the document snapshot should be shown on the page.

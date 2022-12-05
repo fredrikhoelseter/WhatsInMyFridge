@@ -45,8 +45,8 @@ class _SettingsPageState extends State<SettingsPage> {
     checkEmailVerfied();
   }
 
-  //This checks wheter or not the email of the current user is verified or not.
-  //Sets the text of the settingsitem to reflect the state of verification.
+  /// This checks whether or not the email of the current user is verified or not.
+  /// Sets the text of the settingsitem to reflect the state of verification.
   void checkEmailVerfied() async {
     if (_currentUser.emailVerified) {
       emailVerified = ("Email already verified");
@@ -59,27 +59,27 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  //If the user email verification gets sent, this updates the subtitle of the settingsitem.
+  /// If the user email verification gets sent, this updates the subtitle of the settingsitem.
   void sendingEmailVerification() {
     sendingVerificationEmailText = ("Link sent to your connected email!");
   }
 
-  //If the user gets refreshed, this sets the subtitle to the settingsitem.
+  /// If the user gets refreshed, this sets the subtitle to the settingsitem.
   void userRefreshed() {
     userRefreshedText = ("Refreshed user!");
   }
 
-  //Gets the state of the users email, if it is verified or not
+  /// Gets the state of the users email, if it is verified or not
   bool getIfEmailIsVerified() {
     return verified;
   }
 
-  //Updates the subtitle of the settingsitem if the user presses the reset password button.
+  /// Updates the subtitle of the settingsitem if the user presses the reset password button.
   void resettingPassword() {
     resettingPasswordText = "Link sent to your connected email!";
   }
 
-  //Show warning pop up dialog when user tries to delete accout.
+  /// Show warning pop up dialog when user tries to delete accout.
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = TextButton(

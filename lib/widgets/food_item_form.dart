@@ -9,7 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:whats_in_my_fridge/utilities/validator.dart';
 
-///
+/// A food item form for showing / updating / creating items.
+/// Takes in a child widget that should be the Update or Create button.
 class FoodItemForm extends StatefulWidget {
   Widget? child;
 

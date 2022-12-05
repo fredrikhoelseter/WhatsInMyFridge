@@ -55,6 +55,7 @@ class _storagePageState extends State<StoragePage> {
     super.initState();
   }
 
+  /// Shows the modal create food item form page.
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
     user = await FireAuth.getCurrentUser();
     _containerInput.text = containerString;
@@ -77,6 +78,7 @@ class _storagePageState extends State<StoragePage> {
                 final String container = _containerInput.text;
                 final String expDate = _dateinput.text;
 
+                /// If food item form fields are valid, create a new product
                 if (FoodItemForm.ProductFormKey.currentState!.validate()) {
                   await foodItems.add({
                     "User ID": user?.uid,
@@ -94,9 +96,10 @@ class _storagePageState extends State<StoragePage> {
               },
             ),
           );
-        }).whenComplete(() => {resetTextFields()});
+        }).whenComplete(() => {resetTextFields()}); // When closing the modal, reset the fields
   }
 
+  /// Shows the update food item form page.
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
     if (documentSnapshot != null) {
       _productNameController.text = documentSnapshot['Product Name'];
@@ -124,6 +127,7 @@ class _storagePageState extends State<StoragePage> {
                 final String manufacturer = _manufacturerController.text;
                 final String container = _containerInput.text;
                 final String date = _dateinput.text;
+                /// If food item form fields are valid, update the product.
                 if (FoodItemForm.ProductFormKey.currentState!.validate()) {
                   await foodItems.doc(documentSnapshot!.id).update({
                     "Product Name": productName,
@@ -140,9 +144,10 @@ class _storagePageState extends State<StoragePage> {
               },
             ),
           );
-        }).whenComplete(() => resetTextFields());
+        }).whenComplete(() => resetTextFields()); // When closing the modal, reset the fields
   }
 
+  /// Show the delete item modal page.
   Future<void> _delete(String productId) async {
     await showModalBottomSheet(
         isScrollControlled: true,
@@ -193,6 +198,7 @@ class _storagePageState extends State<StoragePage> {
     id = (await getID())!;
   }
 
+  /// Resets the text fields for the product modal page.
   void resetTextFields() {
     _productNameController.text = '';
     _productCategoryController.text = '';
@@ -311,19 +317,19 @@ class _storagePageState extends State<StoragePage> {
                   padding: const EdgeInsets.only(top: 75),
                   child: StreamBuilder(
                     stream: foodItems
-                        .orderBy(CurrentStringSortSelected,
+                        .orderBy(CurrentStringSortSelected, /// Order the collection
                             descending: CurrentSortSelectedIsDescending)
                         .snapshots(),
                     builder:
                         (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                      getIDAsString();
+                      getIDAsString(); // Make sure the id is set
                       if (streamSnapshot.hasData) {
                         return ListView.builder(
                           itemCount: streamSnapshot.data!.docs.length,
                           itemBuilder: (context, index) {
                             final DocumentSnapshot documentSnapshot =
                                 streamSnapshot.data!.docs[index];
-
+                            /// Shows the product or an empty SizedBox
                             return FoodLogic.shouldProductShow(documentSnapshot,
                                     _search, containerString, id)
                                 ? Card(

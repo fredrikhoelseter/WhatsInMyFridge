@@ -3,7 +3,8 @@ import 'package:whats_in_my_fridge/utilities/global_variable.dart';
 import 'package:whats_in_my_fridge/utilities/food_logic.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
+/// Creates a expiration message Text based on the Expiration Date field
+/// of the required documentSnapshot. Also takes in a fontSize.
 class ExpirationDateMessage extends StatelessWidget {
 
   DocumentSnapshot documentSnapshot;
