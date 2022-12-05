@@ -17,20 +17,13 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:whats_in_my_fridge/widgets/custom_appbar.dart';
 import 'package:whats_in_my_fridge/widgets/search_bar.dart';
 
-///UI-test suite for whats in my fridge application.
+///Widget-test for whats in my fridge application.
 void main() {
 
   /// Testing CustomAppBar widget
-
-  testWidgets('finds widgets of type elevatedButtons', (WidgetTester tester) async {
-    await tester.pumpWidget(
-        MaterialApp(
-            home: CustomAppBar(title: Text("ChuckNorris"), height: 20,)
-        )
-    );
-    final textFinder = find.text("ChuckNorris");
-    ///final textField = find.byKey(const Key("passwordFieldKey"));
-
+  testWidgets('Test for CustomAppBar Widget', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home: CustomAppBar(title: Text("Whats in my fridge"), height: 20,)));
+    final textFinder = find.text("Whats in my fridge");
     expect(textFinder, findsOneWidget);
   });
 }
