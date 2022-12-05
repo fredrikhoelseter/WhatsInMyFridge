@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:whats_in_my_fridge/utilities/fire_auth.dart';
 import '../utilities/validator.dart';
 
-//The UI of this page is taken from https://github.com/dev-tayy/fuzzy-eureka/tree/master/lib/screens with some changes.
-//Using our methods to reset password and validate.
+///The UI of this page is taken from https://github.com/dev-tayy/fuzzy-eureka/tree/master/lib/screens with some changes.
+///Using our methods to reset password and validate.
 class ResetPasswordPage extends StatefulWidget {
   static const String id = 'reset_password';
   const ResetPasswordPage({Key? key}) : super(key: key);
@@ -17,6 +17,7 @@ class _ResetPasswordScreenPage extends State<ResetPasswordPage> {
   final _emailController = TextEditingController();
   final _authService = FireAuth();
 
+  ///Disposed controller when no longer needed. This will ensure we discard any resources used by the object.
   @override
   void dispose() {
     _emailController.dispose();
@@ -90,7 +91,7 @@ class _ResetPasswordScreenPage extends State<ResetPasswordPage> {
                               email: _emailController.text.trim());
                     }
                   },
-                  child: Text('Reset password',
+                  child: const Text('Reset password',
                       style: TextStyle(color: Colors.white)),
                 )),
                 const SizedBox(height: 20),

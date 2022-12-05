@@ -25,11 +25,14 @@ class _LoginPageState extends State<LoginPage> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
 
+  ///Used to set the state of processing a method.
   bool _isProcessing = false;
 
   @override
   Widget build(BuildContext context) {
     appBar:
+
+    ///Shows the logo on the login screen.
     AppBar(
       title: Text(
         'Whats in my fridge',
@@ -43,13 +46,7 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text("Whats in my fridge", style: GoogleFonts.pacifico(fontSize: 36)),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 24.0),
-            // child: Text(
-            //   'Login',
-            //   style: Theme.of(context).textTheme.headline4,
-            // ),
-          ),
+          const Padding(padding: EdgeInsets.only(bottom: 24.0)),
           Form(
             key: _formKey,
             child: Column(
@@ -59,6 +56,8 @@ class _LoginPageState extends State<LoginPage> {
                   focusNode: _focusEmail,
                   validator: (value) => Validator.validateEmail(
                     email: value,
+
+                    ///Validate email to only accept properly formatted emails, check the validator class for requirements.
                   ),
                   decoration: InputDecoration(
                     hintText: "Email",
@@ -77,6 +76,8 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true,
                   validator: (value) => Validator.validatePassword(
                     password: value,
+
+                    ///Validate password to only accept properly formatted passwords, check the validator class for requirements.
                   ),
                   decoration: InputDecoration(
                     hintText: "Password",
@@ -89,6 +90,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(height: 24.0),
+
+                ///Redirect to page where user can reset password without logging in.
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
                   child: Text(
@@ -120,6 +123,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
+
+                ///Displays a circular progress indicator, if the user is not signed instantly.
                 _isProcessing
                     ? CircularProgressIndicator()
                     : Row(
@@ -163,6 +168,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           SizedBox(width: 24.0),
+
+                          ///Redirects the user to the register user page
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {
